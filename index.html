@@ -36,7 +36,6 @@ const appIcon=px=>new Promise(res=>{const im=new Image();im.onload=()=>{const c=
 html,body{margin:0;height:100%;background:#303030;color:var(--text);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;scrollbar-width:none;-ms-overflow-style:none;overflow-x:hidden}
 html::-webkit-scrollbar,body::-webkit-scrollbar{display:none}
 button,input{font-family:inherit;color:inherit}
-/* iOS zooms into fields under 16px and never zooms back in a home-screen app */
 @supports(-webkit-touch-callout:none){input,select,textarea{font-size:16px!important}}
 a{color:var(--accent);text-decoration:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -68,14 +67,11 @@ input[type=text]:focus,input[type=text]:focus-visible{outline:none}
 .loading-row{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;pointer-events:none;margin:0;padding:0}
 #bottomnav{position:relative;z-index:85}
 
-/* the page behind stays visible, darkened and softly blurred */
-/* solid card at 75% opacity */
 .loading-glass{position:relative;width:min(250px,calc(100vw - 48px));height:92px;border-radius:22px;display:flex;align-items:center;justify-content:center;
   background:color-mix(in srgb,var(--bg-card) 75%,transparent);
   border:1px solid rgba(150,150,150,.4);
   animation:nx-glass-in .35s cubic-bezier(.22,1,.36,1) both}
 .loading-text{position:relative;display:flex;align-items:center;justify-content:center;height:40px;line-height:40px;width:100%;text-align:center;margin-top:-14px}
-/* one shared 1.5s cycle: the letters' blur wave and the bar's sweep start together, run left to right and end together */
 .loading-text-words{display:inline-block;margin:0 2.5px;color:#fff;font-family:'Quattrocento Sans',sans-serif;font-size:14px;font-weight:700;filter:blur(0);animation:nx-blur-text 1.5s linear infinite}
 .loading-line{position:absolute;left:50%;top:calc(100% + 6px);width:calc(100% - 64px);height:2px;transform:translateX(-50%);border-radius:2px;background:rgba(160,160,160,.5);overflow:hidden}
 .loading-line::after{content:"";position:absolute;top:0;bottom:0;left:0;width:100%;background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);transform:translateX(-100%);animation:nx-line-sweep 1.5s ease-in-out infinite}
@@ -108,7 +104,6 @@ input[type=text]:focus,input[type=text]:focus-visible{outline:none}
 .msg.fade{opacity:0}
 code{background:var(--bg-elev);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:4px}
-/* thin screens: a fixed number of posters per row (change --thin-cols to taste); wider screens fit as many as the width allows */
 :root{--thin-cols:3}
 @media(max-width:600px){.grid{grid-template-columns:repeat(var(--thin-cols),minmax(0,1fr))}.poster-overlay{padding:20px 6px 6px}.poster-overlay .name{font-size:11px}.poster-type{top:5px;left:5px;font-size:8px;padding:3px 6px}.poster-rating{top:5px;right:5px;font-size:9px;padding:3px 6px}}
 .poster{background:var(--bg-card);border:1px solid var(--border);border-radius:4px;overflow:hidden;cursor:pointer}
@@ -278,6 +273,8 @@ html,body,body *{touch-action:pan-x pan-y}
 #outlet.explore-route{padding:0}
 #outlet.shows-route{padding-top:0}
 #outlet.shows-route.upcoming-route{padding-bottom:0}
+html:has(#outlet.upcoming-route),html:has(#outlet.upcoming-route) body{background:#2e2e2e}
+html,body{transition:background-color .35s ease}
 .shows-tabs{display:flex;border-bottom:1px solid var(--border);margin:0 -20px 20px;padding:0;position:sticky;top:0;z-index:5;background:var(--bg)}
 .shows-tabs.upcoming-active{margin-bottom:0}
 .shows-tab{flex:1;text-align:center;padding:12px 20px 11px;font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--text-dim);cursor:pointer;background:none;border:none;border-bottom:3px solid transparent;transition:color .3s ease}
@@ -288,7 +285,7 @@ html,body,body *{touch-action:pan-x pan-y}
 .upcoming-date-pill-wrap:first-child{margin-top:2px}
 .upcoming-date-pill{display:inline-block;width:auto;background:#767676;border:none;border-radius:999px;padding:6px 16px;font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;line-height:1;letter-spacing:.04em;text-transform:uppercase;color:#ffffff;box-shadow:0 2px 6px rgba(0,0,0,.35)}
 .upcoming-date-pill.today{background:var(--accent);color:#2b1200}
-.upcoming-list{background:#202020;border:none;box-shadow:none;border-radius:0;margin:0 -20px;padding:20px;flex:1}
+.upcoming-list{background:#2e2e2e;border:none;box-shadow:none;border-radius:0;margin:0 -20px;padding:20px;flex:1}
 .upcoming-row{display:flex;align-items:center;gap:12px;background:#000;border:none;border-radius:14px;padding:10px;margin-bottom:10px;cursor:pointer}
 .upcoming-row:hover{background:#0a0a0a}
 .upcoming-thumb{width:64px;height:64px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--bg-elev)}
@@ -303,10 +300,8 @@ html,body,body *{touch-action:pan-x pan-y}
 .upcoming-airtime{font-family:'Poppins',sans-serif;font-weight:600;font-size:12px;color:var(--text);white-space:nowrap}
 .upcoming-channel{font-size:11px;color:var(--text-dim);white-space:nowrap;max-width:120px;overflow:hidden;text-overflow:ellipsis}
 .upcoming-days-left{font-family:'Poppins',sans-serif;font-weight:400;font-size:20px;color:#ffffff;flex-shrink:0;white-space:nowrap}
-/* heart badge on favorited posters */
 .fav-badge{position:absolute;top:6px;left:6px;z-index:3;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,.5);pointer-events:none}
 .fav-badge svg{width:13px;height:13px;display:block;fill:#ff4d6d;stroke:none}
-/* movie upcoming: pill + poster grid */
 .upcoming-list.upcoming-movies{background:transparent;margin:0;padding:0 0 20px}
 .upcoming-list.upcoming-movies .upcoming-date-pill-wrap{margin:16px auto 12px}
 .up-poster{position:relative;aspect-ratio:2/3;background:var(--bg-elev);border-radius:4px;overflow:hidden;cursor:pointer}
@@ -315,7 +310,6 @@ html,body,body *{touch-action:pan-x pan-y}
 .up-poster-cd b{display:block;font-size:22px;font-weight:700}
 .up-poster-cd span{display:block;font-size:11px;font-weight:600;letter-spacing:.04em;margin-top:2px}
 @media(max-width:600px){.up-poster-cd{padding:26px 7px 7px}.up-poster-cd b{font-size:18px}.up-poster-cd span{font-size:10px}}
-/* bottom-nav icon motion */
 .nav-icon{display:inline-flex;transition:transform .28s cubic-bezier(.3,1.4,.5,1)}
 .nav-item.active .nav-icon{transform:none}
 .nav-pill{display:none}
@@ -362,7 +356,6 @@ html,body,body *{touch-action:pan-x pan-y}
 .lazy-grid-sentinel{width:100%;height:1px}
 @media(max-width:720px){.hero{flex-direction:column}.hero img{width:140px;min-width:140px;height:210px;flex-basis:auto}.brand span:last-child{display:none}.nav-label{font-size:9px}.continue-watching-list{gap:6px}.continue-watching-list .feed-thumb{width:101px}.continue-watching-list .feed-content{padding:8px 6px;gap:4px}.continue-watching-list .feed-title{font-size:11px}.continue-watching-list .ep-meta{font-size:13px}.continue-watching-list .check{width:24px;height:24px;font-size:12px;margin-right:0}}
 @media(max-width:600px){
-  /* "50% of the original size" = half of the 1200px content-area cap. */
   .hero img{display:none}
 }
 @media(max-width:480px){
@@ -377,7 +370,6 @@ html,body,body *{touch-action:pan-x pan-y}
   .modal-card{padding:16px}
   .season-toggle{padding:10px 12px}
 }
-/* ===== Settings overlay controls ===== */
 .profile-edit-overlay .setting-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .profile-edit-overlay .setting-block{display:flex;flex-direction:column;gap:6px}
 .setting-label{font-size:12px;font-weight:600;color:var(--text-dim)}
@@ -385,7 +377,6 @@ html,body,body *{touch-action:pan-x pan-y}
 .profile-edit-overlay select:focus{outline:none;border-color:var(--accent)}
 .profile-edit-overlay select:disabled{opacity:.5}
 
-/* ===== Settings overlay sections ===== */
 .profile-edit-overlay .setting-cat{font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--cat-color);padding-bottom:6px;border-bottom:1px solid var(--border);margin-top:8px}
 .profile-edit-overlay .setting-cat:first-child{margin-top:0}
 .profile-edit-overlay .setting-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -409,21 +400,16 @@ html,body,body *{touch-action:pan-x pan-y}
 @media(max-width:480px){.no-upcoming-text{font-size:15px}}
 .cast-toggle{display:block;margin:-8px 0 20px}
 
-/* segmented photo / banner buttons */
 .profile-edit-overlay .setting-pair.seg{gap:2px}
 .profile-edit-overlay label.field-btn{padding:10px 12px}
 .profile-edit-overlay label.fb-left{border-radius:999px 0 0 999px}
 .profile-edit-overlay label.fb-right{border-radius:0 999px 999px 0}
-/* roomier selects, wider connect / disconnect */
 .profile-edit-overlay select{border-radius:14px;padding:11px 12px;font-size:13px}
 .profile-edit-overlay .conn-row .btn{min-width:128px}
-/* theme switch */
-/* "?" help tips */
 .help-tip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;margin-left:6px;border-radius:50%;border:1px solid currentColor;font:700 10px/1 'Inter',sans-serif;color:var(--text-dim);cursor:help;vertical-align:middle;transition:color .15s ease}
 .help-tip:hover,.help-tip:focus-visible{color:var(--accent-text);outline:none}
 .help-tip::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translate(-50%,4px);width:max-content;max-width:230px;padding:8px 10px;border-radius:10px;background:#262b36;color:#eef0f3;border:1px solid #3a3f4c;font:500 11px/1.45 'Inter',sans-serif;text-align:left;white-space:normal;box-shadow:0 8px 24px rgba(0,0,0,.35);opacity:0;visibility:hidden;pointer-events:none;z-index:5;transition:opacity .16s ease,transform .18s ease,visibility 0s linear .18s}
 .help-tip:hover::after,.help-tip:focus-visible::after{opacity:1;visibility:visible;transform:translate(-50%,0);transition-delay:0s}
-/* profile lists: Shows | Favorite shows, Movies | Favorite movies */
 .profile-list-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px}
 .profile-list-pair .hscroll-section{margin:0;min-width:0;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:14px 14px 12px}
 .profile-list-pair .hscroll-head{margin-bottom:12px}
@@ -439,7 +425,6 @@ html,body,body *{touch-action:pan-x pan-y}
 @media(max-width:600px){.profile-list-pair .hscroll-track{display:none}.profile-list-pair .hscroll-head{margin-bottom:0}}
 .profile-list-pair .hscroll-item img{width:88px;height:132px;border-radius:8px}
 .profile-list-pair .hscroll-empty{font-size:12px;line-height:1.4}
-/* press animations - profile page only */
 .profile-route .btn,.profile-route .profile-edit-btn,.profile-route label.field-btn,.profile-route .hscroll-item,.profile-route .hscroll-head,.profile-route .see-more-btn{transition:transform .15s cubic-bezier(.3,.7,.4,1),background-color .2s ease,border-color .2s ease,color .2s ease,filter .2s ease}
 .profile-route .btn:active,.profile-route .profile-edit-btn:active,.profile-route label.field-btn:active{transform:scale(.94)}
 .profile-route .btn:hover,.profile-route .profile-edit-btn:hover,.profile-route label.field-btn:hover,.profile-route .back:hover{transform:translateY(-1px)}
@@ -451,13 +436,10 @@ html,body,body *{touch-action:pan-x pan-y}
 .profile-route .hscroll-item:active{transform:scale(.95)}
 .profile-route .hscroll-head:active{transform:scale(.985)}
 
-/* overlay header */
 .profile-edit-overlay .overlay-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:2px}
 .profile-edit-overlay .overlay-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:24px;line-height:1.2;color:var(--text)}
 .profile-edit-overlay .overlay-head + .setting-cat{margin-top:4px}
-/* more space between photo / banner */
 .profile-edit-overlay .setting-pair.seg{gap:8px}
-/* full-width theme switch */
 .profile-edit-overlay .setting-row{display:block}
 .switch{position:relative;display:block;width:100%;height:40px;cursor:pointer}
 .switch input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:2}
@@ -473,21 +455,16 @@ html,body,body *{touch-action:pan-x pan-y}
 .switch:active .thumb{transform:scale(1.05,.9)}
 .switch:active input:checked + .slider .thumb{transform:translateX(calc(284.6% - 6px)) scale(1.05,.9)}
 .switch input:focus-visible + .slider{outline:2px solid var(--accent);outline-offset:2px}
-/* hover: neutral buttons pick up a hint of the accent colour */
 .btn:not(.btn-accent):not(.btn-connect):not(.btn-disconnect):not(.btn-stopped):not(.rewatch-inc):not(.rewatch-dec):hover,
 .profile-edit-overlay label.field-btn:hover,
 .profile-edit-btn:hover{background:rgba(255,212,0,.14);border-color:var(--accent);color:var(--accent-text)}
-/* tooltip: own dark + light looks */
 html[data-theme="light"] .help-tip::after{background:#fffffe;color:#161b27;border-color:#dde1e8;box-shadow:0 8px 24px rgba(30,40,60,.16)}
-/* list icons */
 .hscroll-icon{display:flex;color:var(--accent-text);font-size:21px;flex-shrink:0}
 .hscroll-icon svg{width:1em;height:1em}
 .profile-list-pair .hscroll-icon{font-size:17px}
 @media(max-width:520px){.profile-list-pair .hscroll-icon{font-size:13px}}
-/* cast dropdown */
 .cast-group{margin:22px 0 14px}
 .cast-group .cast-track{padding-top:4px}
-/* overlay entrance: stronger pop + staggered sections */
 .profile-edit-overlay{transform:translate(-50%,-43%) scale(.92);transition:opacity .28s ease,transform .45s cubic-bezier(.2,.9,.25,1.08),visibility 0s linear .45s}
 @keyframes settingsItemIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .profile-edit-overlay.open > *{animation:settingsItemIn .45s cubic-bezier(.2,.8,.25,1) both}
@@ -505,17 +482,14 @@ html[data-theme="light"] .help-tip::after{background:#fffffe;color:#161b27;borde
 .profile-edit-overlay.open > *:nth-child(12){animation-delay:0.480s}
 .profile-edit-overlay.open > *:nth-child(13){animation-delay:0.515s}
 .profile-edit-overlay.open > *:nth-child(14){animation-delay:0.550s}
-/* morph mode: no slide/scale transition; the clip-path animation does the work */
 .profile-edit-overlay.morph,.profile-edit-overlay.morph:not(.open){transition:none!important;transform:translate(-50%,-50%)}
 .profile-edit-overlay.morph + .settings-backdrop{transition:none!important}
 .profile-edit-overlay.morph.open > *{animation:none}
 .profile-edit-overlay.open > *{animation:none!important}
-/* settings close: quick, whole panel at once (the opening transition above is the slower one) */
 .profile-edit-overlay:not(.open){transition:opacity .16s ease,transform .2s cubic-bezier(.4,0,.6,1),visibility 0s linear .2s}
 .settings-backdrop{transition:opacity .2s ease,backdrop-filter .2s ease,-webkit-backdrop-filter .2s ease,visibility 0s linear .2s}
 .profile-edit-overlay.open + .settings-backdrop{transition:opacity .3s ease,backdrop-filter .3s ease,-webkit-backdrop-filter .3s ease,visibility 0s linear 0s}
 
-/* ===== Glass style (Flat = original look). Real backdrop blur, light tint, 1px rim bright at two corners, tight neutral shadow. ===== */
 html[data-style="glass"] .nav-pill{display:block;position:absolute;top:6px;bottom:6px;left:0;width:0;border-radius:28px;z-index:0;pointer-events:none;
   background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(10px) saturate(1.6);backdrop-filter:blur(10px) saturate(1.6);
   box-shadow:inset 1px 1px 0 rgba(255,255,255,.42),inset -1px -1px 0 rgba(255,255,255,.3),0 2px 8px rgba(0,0,0,.2);
@@ -527,13 +501,11 @@ html[data-style="glass"] #bottomnav .nav-item{flex:1 1 0;max-width:none;position
 html[data-style="glass"] #bottomnav .nav-item:hover{color:rgba(255,255,255,.85)}
 html[data-style="glass"] #bottomnav .nav-item.active{color:#fff}
 html[data-style="glass"] .nav-item.active .nav-icon{transform:scale(1.06)}
-/* edge definition: thin rim, bright only at the top-left and bottom-right corners */
 html[data-style="glass"] .btn::before,html[data-style="glass"] .profile-edit-btn::before,html[data-style="glass"] label.field-btn::before,html[data-style="glass"] .back::before,html[data-style="glass"] .see-more-btn::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:1;
   background:linear-gradient(135deg,rgba(255,255,255,.42) 0%,rgba(255,255,255,.07) 24%,rgba(255,255,255,.02) 50%,rgba(255,255,255,.07) 76%,rgba(255,255,255,.3) 100%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
 html[data-style="glass"] .btn::after,html[data-style="glass"] .profile-edit-btn::after,html[data-style="glass"] label.field-btn::after,html[data-style="glass"] .back::after,html[data-style="glass"] .see-more-btn::after{content:none}
 html[data-style="glass"] #outlet,html[data-style="glass"] #outlet.shows-route.upcoming-route,html[data-style="glass"] #outlet.explore-route,html[data-style="glass"] #outlet.detail-view{padding-bottom:calc(104px + env(safe-area-inset-bottom))!important}
-/* glass buttons */
 html[data-style="glass"] .btn,html[data-style="glass"] .profile-edit-btn,html[data-style="glass"] label.field-btn,html[data-style="glass"] .back,html[data-style="glass"] .see-more-btn{position:relative;isolation:isolate;border:none!important;color:#fff;text-shadow:none;
   background:rgba(255,255,255,.08)!important;
   -webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);
@@ -558,17 +530,13 @@ html[data-style="glass"][data-theme="light"] .rewatch-dec,html[data-style="glass
 html[data-style="glass"] .btn-stopped,html[data-style="glass"] .btn-stopped:hover{color:#fff!important;background:rgba(255,69,58,.66)!important;box-shadow:0 3px 10px rgba(0,0,0,.2),inset 0 0 0 1px rgba(255,69,58,.85)!important;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 html[data-style="glass"][data-theme="light"] .btn-stopped,html[data-style="glass"][data-theme="light"] .btn-stopped:hover{color:#6e0a04!important;background:rgba(255,105,95,.72)!important;text-shadow:none}
 html[data-style="glass"][data-theme="light"] .btn-accent,html[data-style="glass"][data-theme="light"] .btn-connect,html[data-style="glass"][data-theme="light"] .btn-accent:hover,html[data-style="glass"][data-theme="light"] .btn-connect:hover{color:#3d2e00!important;background:color-mix(in srgb,var(--accent) 80%,rgba(255,255,255,.3))!important;text-shadow:none}
-/* "bglass": nav-bar glass (grey fill, 20px blur, saturate 1.6) shared by the bottom nav and the Settings sheet. Both use the same inset rim lines and no drop shadow. */
 html[data-style="glass"] .bglass{background:rgba(130,130,136,.16);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);box-shadow:0 6px 18px rgba(0,0,0,.22)}
 html[data-style="glass"]{--rim:inset 1px 1px 0 rgba(255,255,255,.42),inset -1px -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.05);--rim-soft:inset 1px 1px 0 rgba(255,255,255,.2),inset -1px -1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(255,255,255,.03)}
 html[data-style="glass"][data-theme="light"]{--rim:inset 1px 1px 0 rgba(255,255,255,.9),inset -1px -1px 0 rgba(255,255,255,.7);--rim-soft:inset 1px 1px 0 rgba(255,255,255,.55),inset -1px -1px 0 rgba(255,255,255,.4)}
-/* liquid glass (Chromium): only the nav bar, the settings sheet and the lists overlay refract what is behind them through #glass-filter */
 html.liquid[data-style="glass"],html.liquid[data-style="glass"][data-theme="light"]{--rim:inset 0 0 2px 1px rgba(255,255,255,.35),inset 0 0 10px 4px rgba(255,255,255,.15),inset 0 4px 16px rgba(17,17,26,.05),inset 0 8px 24px rgba(17,17,26,.05),inset 0 6px 56px rgba(17,17,26,.05)}
 html.liquid[data-style="glass"] :is(#bottomnav,.profile-edit-overlay.bglass,.sheet-surf.bglass,.list-overlay.bglass){-webkit-backdrop-filter:url(#glass-filter) saturate(1.2);backdrop-filter:url(#glass-filter) saturate(1.2)}
-/* stats and closed lists keep the plain glass look and a dimmer edge in every glass style */
 html[data-style="glass"] #outlet :is(.stat-card2,.profile-list-pair .hscroll-section)::after{box-shadow:var(--rim-soft)}
 html[data-style="glass"] .profile-edit-overlay :is(.btn,.back,.profile-edit-btn,label.field-btn,.seg-toggle,.seg-toggle button,.thumb,.slider,select,input),html[data-style="glass"] .list-overlay :is(.btn,.back){-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-/* sheets that scroll draw the edge as an inset shadow; nav, cards, list boxes and the lists overlay draw it in ::after so it stays above the items inside */
 html[data-style="glass"] .profile-edit-overlay.bglass,html[data-style="glass"] .sheet-surf.bglass{border-color:transparent;box-shadow:var(--rim)}
 html[data-style="glass"] .list-overlay.bglass,html[data-style="glass"] #bottomnav.bglass{border-color:transparent;box-shadow:none}
 html[data-style="glass"] .profile-list-pair .hscroll-section,html[data-style="glass"] .stat-card2{position:relative}
@@ -581,6 +549,10 @@ html[data-style="glass"] .season-mark-btn{background:rgba(255,255,255,.08);borde
 html[data-style="glass"] .season-mark-btn.on{background:color-mix(in srgb,var(--green) 66%,transparent);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--green) 85%,transparent),0 3px 10px rgba(0,0,0,.2)}
 html[data-style="glass"][data-theme="light"] .season-mark-btn{background:rgba(255,255,255,.5);box-shadow:inset 1px 1px 0 rgba(255,255,255,.9),inset -1px -1px 0 rgba(255,255,255,.7),0 3px 10px rgba(30,40,60,.12)}
 html[data-style="glass"][data-theme="light"] .season-mark-btn.on{background:color-mix(in srgb,var(--green) 80%,rgba(255,255,255,.3));color:#0b2a00;text-shadow:none}
+html[data-style="glass"] button.search-add-btn{position:relative;isolation:isolate;border:none;color:#fff;background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:0 3px 10px rgba(0,0,0,.18),inset 1px 1px 0 rgba(255,255,255,.42),inset -1px -1px 0 rgba(255,255,255,.3)}
+html[data-style="glass"] button.search-add-btn.on{background:color-mix(in srgb,var(--accent) 66%,transparent);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);box-shadow:0 3px 10px rgba(0,0,0,.2),inset 0 0 0 1px color-mix(in srgb,var(--accent) 85%,transparent)}
+html[data-style="glass"][data-theme="light"] button.search-add-btn{color:#161b27;background:rgba(255,255,255,.5);box-shadow:0 3px 10px rgba(30,40,60,.12),inset 1px 1px 0 rgba(255,255,255,.9),inset -1px -1px 0 rgba(255,255,255,.7)}
+html[data-style="glass"][data-theme="light"] button.search-add-btn.on{color:#3d2e00;background:color-mix(in srgb,var(--accent) 80%,rgba(255,255,255,.3));text-shadow:none}
 html[data-style="glass"] .see-more-btn{padding:6px 16px;margin:4px 0 14px;border-radius:999px;color:#fff;font-weight:700;text-decoration:none}
 html[data-style="glass"] .see-more-btn:hover{background:rgba(255,255,255,.13)!important;text-decoration:none}
 html[data-style="glass"] .list-ov-sep{background:rgba(255,255,255,.45)}
@@ -589,7 +561,6 @@ html[data-style="glass"][data-theme="light"] .list-ov-sep{background:rgba(30,40,
 html[data-style="glass"][data-theme="light"] .profile-edit-overlay .setting-cat,html[data-style="glass"][data-theme="light"] .stat-card2-head{border-bottom-color:rgba(30,40,60,.25)}
 html[data-style="glass"] .profile-edit-overlay.bglass,html[data-style="glass"] .list-overlay.bglass{background:rgba(12,14,20,.64)}
 html[data-style="glass"][data-theme="light"] .profile-edit-overlay.bglass,html[data-style="glass"][data-theme="light"] .list-overlay.bglass{background:rgba(206,213,227,.66)}
-/* compact nav: shrinks once the page is scrolled, grows back on hover / near the bar / tap */
 html[data-style="glass"] #bottomnav{transition:max-width .4s cubic-bezier(.3,.9,.4,1),min-height .35s ease,padding .35s ease}
 html[data-style="glass"] #bottomnav .nav-item{transition:color .15s ease,min-height .35s ease,padding .35s ease}
 html[data-style="glass"] #bottomnav .nav-icon{transition:transform .28s cubic-bezier(.3,1.4,.5,1),width .35s ease,height .35s ease}
@@ -601,7 +572,6 @@ html[data-style="glass"] #bottomnav.compact .nav-label{max-height:0;opacity:0;ov
 html[data-style="glass"] #bottomnav.compact .nav-icon{width:20px;height:20px}
 html[data-style="glass"] #bottomnav.compact .nav-pill{top:3px;bottom:3px}
 html[data-style="glass"][data-theme="light"] #bottomnav.bglass{background:rgba(255,255,255,.45)}
-/* toggles: the theme switch and the Flat | Glass pill get the same glass as the buttons */
 html[data-style="glass"] .switch .slider,html[data-style="glass"] .seg-toggle{position:absolute;isolation:isolate;border:none;background:rgba(255,255,255,.08);
   -webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:0 3px 10px rgba(0,0,0,.18)}
 html[data-style="glass"] .seg-toggle{position:relative}
@@ -617,14 +587,12 @@ html[data-style="glass"] .seg-toggle button{position:relative;z-index:1}
 html[data-style="glass"][data-theme="light"] .switch .slider,html[data-style="glass"][data-theme="light"] .seg-toggle{background:rgba(255,255,255,.5);box-shadow:0 3px 10px rgba(30,40,60,.12)}
 html[data-style="glass"][data-theme="light"] .switch .slider::before,html[data-style="glass"][data-theme="light"] .seg-toggle::before{background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,.3) 24%,rgba(255,255,255,.12) 50%,rgba(255,255,255,.3) 76%,rgba(255,255,255,.8))}
 html[data-style="glass"][data-theme="light"] .switch input:checked + .slider{background:color-mix(in srgb,var(--accent) 80%,transparent)}
-/* style switch + version note */
 .seg-toggle{display:inline-flex;background:var(--bg-elev);border:1px solid var(--border);border-radius:999px;padding:3px;gap:2px}
 .seg-toggle button{border:none;background:none;border-radius:999px;padding:6px 18px;font-size:12px;font-weight:700;color:var(--text-dim);cursor:pointer;transition:background-color .2s ease,color .2s ease}
 .seg-toggle button.active{background:var(--accent);color:#2b1200}
 .profile-edit-overlay .seg-toggle{display:flex;width:100%;height:40px;padding:3px}
 .profile-edit-overlay .seg-toggle button{flex:1;padding:0}
 .settings-version{text-align:center;font-size:11px;color:var(--text-dim);padding:6px 0 2px}
-/* light / dark transition (only while the switch is flipped) */
 html.style-anim *:not(.switch):not(.switch *):not(#bottomnav):not(#bottomnav *),html.style-anim *::before,html.style-anim *::after{transition:background-color .8s ease,color .8s ease,border-color .8s ease,box-shadow .8s ease,backdrop-filter .8s ease,-webkit-backdrop-filter .8s ease,border-radius .8s ease,padding .8s ease,margin .8s ease,width .8s ease,max-width .8s ease,height .8s ease}
 #bottomnav.nav-morph,#bottomnav.nav-morph *{transition:none!important}
 html.style-anim :is(.stat-card2,.profile-list-pair .hscroll-section,.list-overlay)::after{animation:rimFade .9s ease}
@@ -649,7 +617,8 @@ html[data-theme="light"] .btn-disconnect{color:var(--red)}
 .list-ov-head .hscroll-icon,.list-ov-head .hscroll-heart{font-size:20px}
 .list-ov-head .hscroll-count{margin-right:6px}
 .profile-list-pair.lov-ghost{display:block;margin:0;position:absolute;left:0;top:0;pointer-events:none;z-index:2}
-.lov-ghost .hscroll-section{height:100%;box-sizing:border-box;overflow:hidden}
+.lov-ghost .hscroll-section{height:100%;box-sizing:border-box;overflow:hidden;background:none!important;border-color:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.lov-ghost .hscroll-section::before,.lov-ghost .hscroll-section::after{display:none!important}
 .list-ov-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:20px;line-height:30px;color:var(--text);min-width:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .list-ov-head .back{width:70px;height:30px;padding:0;justify-content:center;font-size:14px;flex-shrink:0}
 .list-ov-sep{height:1px;background:var(--border);margin:0 15px;flex-shrink:0}
@@ -670,10 +639,8 @@ html[data-theme="light"] .btn-disconnect{color:var(--red)}
 .list-ov-body>*{flex-shrink:0}
 .list-ov-body>.empty{margin:auto;width:100%;max-width:480px;flex-shrink:1}
 .list-overlay .empty{margin:auto}
-/* rewatch count badge on movie posters */
 .lp-rw{position:absolute;top:6px;right:6px;z-index:3;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--accent);color:#2b1200;font-size:12px;font-weight:800;line-height:22px;text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.55),0 1px 2px rgba(0,0,0,.4);pointer-events:none}
 
-/* ===== Light mode: swaps the variables and overrides the few hard-coded dark colours; hero banners sit on photos and stay dark. ===== */
 :root{--accent-text:var(--accent)}
 html[data-theme="light"],html[data-theme="light"] .profile-edit-overlay{
   --bg:#f6f8fb; --bg-card:#fafbfd; --bg-elev:#eff1f5; --border:#dde1e8;
@@ -737,7 +704,6 @@ html[data-theme="light"] .upcoming-row,
 html[data-theme="light"] .card{box-shadow:0 1px 3px rgba(30,40,60,.07)}
 html[data-theme="light"] .profile-edit-overlay input[type=text]{background:var(--bg-elev);border-color:var(--border)}
 html[data-theme="light"] .hscroll-count{background:var(--bg-elev)}
-/* poster rows: a subtle drop shadow under each item (the track gets bottom room so it isn't clipped) */
 .hscroll-track,.profile-list-pair .hscroll-track{padding-bottom:14px;margin-bottom:-10px}
 .hscroll-track .hscroll-item img{box-shadow:0 4px 10px -3px rgba(0,0,0,.5)}
 html[data-theme="light"] .hscroll-track .hscroll-item img{box-shadow:0 4px 10px -3px rgba(30,40,60,.3)}
@@ -792,7 +758,6 @@ const K={prog:'nx.prog',apikey:'nx.apikey',omdb:'nx.omdb',token:'nx.token',exp:'
 let _progCache=null,_todayK='',_todayAt=0,showsDirty=false,moviesDirty=false;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function lget(k,f){const r=localStorage.getItem(k);if(r===null)return f;try{return JSON.parse(r)}catch{return f}}
-// lpeek: shared parsed copy for read-only lookups (never mutate it); lset drops the entry
 const _pk=new Map();
 function lpeek(k,f){if(_pk.has(k))return _pk.get(k);const v=lget(k,f);_pk.set(k,v);return v}
 function lset(k,v){
@@ -901,7 +866,6 @@ const FileSync={
   }
 };
 function showHasWatched(id){return Object.values(lpeek(K.watched,{})).some(r=>r&&typeof r==='object'&&String(r.showId)===String(id))}
-// A show with watched episodes can't be removed: if it isn't in the library any more it comes back as "stopped watching"
 function restoreWatchedShows(){
   const ids=new Set();
   Object.values(Store.watched()).forEach(r=>{if(r&&typeof r==='object'&&r.showId!=null)ids.add(String(r.showId))});
@@ -915,7 +879,6 @@ function restoreWatchedShows(){
 }
 function isLocalDataEmpty(){return [K.lib,K.movieLib,K.watched,K.movieWatched,K.favShows,K.favMovies].every(k=>!Object.keys(lget(k,{})).length)}
 function fileHasData(t){return /\[(?:TVDB ID|tvdb|id):\s*\d+\]/i.test(t||'')}
-// two rotating copies (kept in IndexedDB, refreshed at most every 6h) of the file as it was before being overwritten
 async function rotateBackup(text){
   const b1=await idbGet('bak1');
   if(b1)await idbSet('bak2',b1);
@@ -930,14 +893,12 @@ function downloadBackup(){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-const APP_VERSION='120';
-// flat | glass | liquid. Glass and liquid share data-style="glass"; liquid adds the .liquid class (SVG refraction needs Chromium)
+const APP_VERSION='121';
 function applyStyle(st){
   const r=document.documentElement;
   r.dataset.style=st==='flat'?'flat':'glass';
   r.classList.toggle('liquid',st==='liquid'&&LIQUID_OK);
 }
-// nav bar style change: the bar itself travels from its old size/position/colour to the new one while its highlight follows the active tab
 function snapNav(bar){
   const cs=getComputedStyle(bar);
   return{rect:bar.getBoundingClientRect(),radius:cs.borderRadius,bg:cs.backgroundColor,bf:cs.backdropFilter,pad:cs.padding};
@@ -989,7 +950,6 @@ function applyTheme(t){
   const m=document.querySelector('meta[name="theme-color"]');
   if(m)m.setAttribute('content',light?'#fffffe':'#000000');
 }
-// Countries & time zones (ISO 3166 -> IANA)
 const COUNTRIES=[["AF","Afghanistan",["Asia/Kabul"]],["AL","Albania",["Europe/Tirane"]],["DZ","Algeria",["Africa/Algiers"]],["AD","Andorra",["Europe/Andorra"]],["AO","Angola",["Africa/Luanda"]],["AI","Anguilla",["America/Anguilla"]],["AQ","Antarctica",["Antarctica/Casey","Antarctica/Davis","Antarctica/DumontDUrville","Antarctica/Mawson","Antarctica/McMurdo","Antarctica/Palmer","Antarctica/Rothera","Antarctica/Syowa","Antarctica/Troll","Antarctica/Vostok"]],["AG","Antigua & Barbuda",["America/Antigua"]],["AR","Argentina",["America/Argentina/Buenos_Aires","America/Argentina/Catamarca","America/Argentina/Cordoba","America/Argentina/Jujuy","America/Argentina/La_Rioja","America/Argentina/Mendoza","America/Argentina/Rio_Gallegos","America/Argentina/Salta","America/Argentina/San_Juan","America/Argentina/San_Luis","America/Argentina/Tucuman","America/Argentina/Ushuaia"]],["AM","Armenia",["Asia/Yerevan"]],["AW","Aruba",["America/Aruba"]],["AU","Australia",["Antarctica/Macquarie","Australia/Adelaide","Australia/Brisbane","Australia/Broken_Hill","Australia/Darwin","Australia/Eucla","Australia/Hobart","Australia/Lindeman","Australia/Lord_Howe","Australia/Melbourne","Australia/Perth","Australia/Sydney"]],["AT","Austria",["Europe/Vienna"]],["AZ","Azerbaijan",["Asia/Baku"]],["BS","Bahamas",["America/Nassau"]],["BH","Bahrain",["Asia/Bahrain"]],["BD","Bangladesh",["Asia/Dhaka"]],["BB","Barbados",["America/Barbados"]],["BY","Belarus",["Europe/Minsk"]],["BE","Belgium",["Europe/Brussels"]],["BZ","Belize",["America/Belize"]],["BJ","Benin",["Africa/Porto-Novo"]],["BM","Bermuda",["Atlantic/Bermuda"]],["BT","Bhutan",["Asia/Thimphu"]],["BO","Bolivia",["America/La_Paz"]],["BA","Bosnia & Herzegovina",["Europe/Sarajevo"]],["BW","Botswana",["Africa/Gaborone"]],["BR","Brazil",["America/Araguaina","America/Bahia","America/Belem","America/Boa_Vista","America/Campo_Grande","America/Cuiaba","America/Eirunepe","America/Fortaleza","America/Maceio","America/Manaus","America/Noronha","America/Porto_Velho","America/Recife","America/Rio_Branco","America/Santarem","America/Sao_Paulo"]],["GB","Britain (UK)",["Europe/London"]],["IO","British Indian Ocean Territory",["Indian/Chagos"]],["BN","Brunei",["Asia/Brunei"]],["BG","Bulgaria",["Europe/Sofia"]],["BF","Burkina Faso",["Africa/Ouagadougou"]],["BI","Burundi",["Africa/Bujumbura"]],["KH","Cambodia",["Asia/Phnom_Penh"]],["CM","Cameroon",["Africa/Douala"]],["CA","Canada",["America/Atikokan","America/Blanc-Sablon","America/Cambridge_Bay","America/Creston","America/Dawson","America/Dawson_Creek","America/Edmonton","America/Fort_Nelson","America/Glace_Bay","America/Goose_Bay","America/Halifax","America/Inuvik","America/Iqaluit","America/Moncton","America/Rankin_Inlet","America/Regina","America/Resolute","America/St_Johns","America/Swift_Current","America/Toronto","America/Vancouver","America/Whitehorse","America/Winnipeg"]],["CV","Cape Verde",["Atlantic/Cape_Verde"]],["BQ","Caribbean NL",["America/Kralendijk"]],["KY","Cayman Islands",["America/Cayman"]],["CF","Central African Rep.",["Africa/Bangui"]],["TD","Chad",["Africa/Ndjamena"]],["CL","Chile",["America/Coyhaique","America/Punta_Arenas","America/Santiago","Pacific/Easter"]],["CN","China",["Asia/Shanghai","Asia/Urumqi"]],["CX","Christmas Island",["Indian/Christmas"]],["CC","Cocos (Keeling) Islands",["Indian/Cocos"]],["CO","Colombia",["America/Bogota"]],["KM","Comoros",["Indian/Comoro"]],["CD","Congo (Dem. Rep.)",["Africa/Kinshasa","Africa/Lubumbashi"]],["CG","Congo (Rep.)",["Africa/Brazzaville"]],["CK","Cook Islands",["Pacific/Rarotonga"]],["CR","Costa Rica",["America/Costa_Rica"]],["HR","Croatia",["Europe/Zagreb"]],["CU","Cuba",["America/Havana"]],["CW","Curaçao",["America/Curacao"]],["CY","Cyprus",["Asia/Famagusta","Asia/Nicosia"]],["CZ","Czech Republic",["Europe/Prague"]],["CI","Côte d’Ivoire",["Africa/Abidjan"]],["DK","Denmark",["Europe/Copenhagen"]],["DJ","Djibouti",["Africa/Djibouti"]],["DM","Dominica",["America/Dominica"]],["DO","Dominican Republic",["America/Santo_Domingo"]],["TL","East Timor",["Asia/Dili"]],["EC","Ecuador",["America/Guayaquil","Pacific/Galapagos"]],["EG","Egypt",["Africa/Cairo"]],["SV","El Salvador",["America/El_Salvador"]],["GQ","Equatorial Guinea",["Africa/Malabo"]],["ER","Eritrea",["Africa/Asmara"]],["EE","Estonia",["Europe/Tallinn"]],["SZ","Eswatini (Swaziland)",["Africa/Mbabane"]],["ET","Ethiopia",["Africa/Addis_Ababa"]],["FK","Falkland Islands",["Atlantic/Stanley"]],["FO","Faroe Islands",["Atlantic/Faroe"]],["FJ","Fiji",["Pacific/Fiji"]],["FI","Finland",["Europe/Helsinki"]],["FR","France",["Europe/Paris"]],["GF","French Guiana",["America/Cayenne"]],["PF","French Polynesia",["Pacific/Gambier","Pacific/Marquesas","Pacific/Tahiti"]],["TF","French S. Terr.",["Indian/Kerguelen"]],["GA","Gabon",["Africa/Libreville"]],["GM","Gambia",["Africa/Banjul"]],["GE","Georgia",["Asia/Tbilisi"]],["DE","Germany",["Europe/Berlin","Europe/Busingen"]],["GH","Ghana",["Africa/Accra"]],["GI","Gibraltar",["Europe/Gibraltar"]],["GR","Greece",["Europe/Athens"]],["GL","Greenland",["America/Danmarkshavn","America/Nuuk","America/Scoresbysund","America/Thule"]],["GD","Grenada",["America/Grenada"]],["GP","Guadeloupe",["America/Guadeloupe"]],["GU","Guam",["Pacific/Guam"]],["GT","Guatemala",["America/Guatemala"]],["GG","Guernsey",["Europe/Guernsey"]],["GN","Guinea",["Africa/Conakry"]],["GW","Guinea-Bissau",["Africa/Bissau"]],["GY","Guyana",["America/Guyana"]],["HT","Haiti",["America/Port-au-Prince"]],["HN","Honduras",["America/Tegucigalpa"]],["HK","Hong Kong",["Asia/Hong_Kong"]],["HU","Hungary",["Europe/Budapest"]],["IS","Iceland",["Atlantic/Reykjavik"]],["IN","India",["Asia/Kolkata"]],["ID","Indonesia",["Asia/Jakarta","Asia/Jayapura","Asia/Makassar","Asia/Pontianak"]],["IR","Iran",["Asia/Tehran"]],["IQ","Iraq",["Asia/Baghdad"]],["IE","Ireland",["Europe/Dublin"]],["IM","Isle of Man",["Europe/Isle_of_Man"]],["IL","Israel",["Asia/Jerusalem"]],["IT","Italy",["Europe/Rome"]],["JM","Jamaica",["America/Jamaica"]],["JP","Japan",["Asia/Tokyo"]],["JE","Jersey",["Europe/Jersey"]],["JO","Jordan",["Asia/Amman"]],["KZ","Kazakhstan",["Asia/Almaty","Asia/Aqtau","Asia/Aqtobe","Asia/Atyrau","Asia/Oral","Asia/Qostanay","Asia/Qyzylorda"]],["KE","Kenya",["Africa/Nairobi"]],["KI","Kiribati",["Pacific/Kanton","Pacific/Kiritimati","Pacific/Tarawa"]],["KP","Korea (North)",["Asia/Pyongyang"]],["KR","Korea (South)",["Asia/Seoul"]],["KW","Kuwait",["Asia/Kuwait"]],["KG","Kyrgyzstan",["Asia/Bishkek"]],["LA","Laos",["Asia/Vientiane"]],["LV","Latvia",["Europe/Riga"]],["LB","Lebanon",["Asia/Beirut"]],["LS","Lesotho",["Africa/Maseru"]],["LR","Liberia",["Africa/Monrovia"]],["LY","Libya",["Africa/Tripoli"]],["LI","Liechtenstein",["Europe/Vaduz"]],["LT","Lithuania",["Europe/Vilnius"]],["LU","Luxembourg",["Europe/Luxembourg"]],["MO","Macau",["Asia/Macau"]],["MG","Madagascar",["Indian/Antananarivo"]],["MW","Malawi",["Africa/Blantyre"]],["MY","Malaysia",["Asia/Kuala_Lumpur","Asia/Kuching"]],["MV","Maldives",["Indian/Maldives"]],["ML","Mali",["Africa/Bamako"]],["MT","Malta",["Europe/Malta"]],["MH","Marshall Islands",["Pacific/Kwajalein","Pacific/Majuro"]],["MQ","Martinique",["America/Martinique"]],["MR","Mauritania",["Africa/Nouakchott"]],["MU","Mauritius",["Indian/Mauritius"]],["YT","Mayotte",["Indian/Mayotte"]],["MX","Mexico",["America/Bahia_Banderas","America/Cancun","America/Chihuahua","America/Ciudad_Juarez","America/Hermosillo","America/Matamoros","America/Mazatlan","America/Merida","America/Mexico_City","America/Monterrey","America/Ojinaga","America/Tijuana"]],["FM","Micronesia",["Pacific/Chuuk","Pacific/Kosrae","Pacific/Pohnpei"]],["MD","Moldova",["Europe/Chisinau"]],["MC","Monaco",["Europe/Monaco"]],["MN","Mongolia",["Asia/Hovd","Asia/Ulaanbaatar"]],["ME","Montenegro",["Europe/Podgorica"]],["MS","Montserrat",["America/Montserrat"]],["MA","Morocco",["Africa/Casablanca"]],["MZ","Mozambique",["Africa/Maputo"]],["MM","Myanmar (Burma)",["Asia/Yangon"]],["NA","Namibia",["Africa/Windhoek"]],["NR","Nauru",["Pacific/Nauru"]],["NP","Nepal",["Asia/Kathmandu"]],["NL","Netherlands",["Europe/Amsterdam"]],["NC","New Caledonia",["Pacific/Noumea"]],["NZ","New Zealand",["Pacific/Auckland","Pacific/Chatham"]],["NI","Nicaragua",["America/Managua"]],["NE","Niger",["Africa/Niamey"]],["NG","Nigeria",["Africa/Lagos"]],["NU","Niue",["Pacific/Niue"]],["NF","Norfolk Island",["Pacific/Norfolk"]],["MK","North Macedonia",["Europe/Skopje"]],["MP","Northern Mariana Islands",["Pacific/Saipan"]],["NO","Norway",["Europe/Oslo"]],["OM","Oman",["Asia/Muscat"]],["PK","Pakistan",["Asia/Karachi"]],["PW","Palau",["Pacific/Palau"]],["PS","Palestine",["Asia/Gaza","Asia/Hebron"]],["PA","Panama",["America/Panama"]],["PG","Papua New Guinea",["Pacific/Bougainville","Pacific/Port_Moresby"]],["PY","Paraguay",["America/Asuncion"]],["PE","Peru",["America/Lima"]],["PH","Philippines",["Asia/Manila"]],["PN","Pitcairn",["Pacific/Pitcairn"]],["PL","Poland",["Europe/Warsaw"]],["PT","Portugal",["Atlantic/Azores","Atlantic/Madeira","Europe/Lisbon"]],["PR","Puerto Rico",["America/Puerto_Rico"]],["QA","Qatar",["Asia/Qatar"]],["RO","Romania",["Europe/Bucharest"]],["RU","Russia",["Asia/Anadyr","Asia/Barnaul","Asia/Chita","Asia/Irkutsk","Asia/Kamchatka","Asia/Khandyga","Asia/Krasnoyarsk","Asia/Magadan","Asia/Novokuznetsk","Asia/Novosibirsk","Asia/Omsk","Asia/Sakhalin","Asia/Srednekolymsk","Asia/Tomsk","Asia/Ust-Nera","Asia/Vladivostok","Asia/Yakutsk","Asia/Yekaterinburg","Europe/Astrakhan","Europe/Kaliningrad","Europe/Kirov","Europe/Moscow","Europe/Samara","Europe/Saratov","Europe/Ulyanovsk","Europe/Volgograd"]],["RW","Rwanda",["Africa/Kigali"]],["RE","Réunion",["Indian/Reunion"]],["AS","Samoa (American)",["Pacific/Pago_Pago"]],["WS","Samoa (western)",["Pacific/Apia"]],["SM","San Marino",["Europe/San_Marino"]],["ST","Sao Tome & Principe",["Africa/Sao_Tome"]],["SA","Saudi Arabia",["Asia/Riyadh"]],["SN","Senegal",["Africa/Dakar"]],["RS","Serbia",["Europe/Belgrade"]],["SC","Seychelles",["Indian/Mahe"]],["SL","Sierra Leone",["Africa/Freetown"]],["SG","Singapore",["Asia/Singapore"]],["SK","Slovakia",["Europe/Bratislava"]],["SI","Slovenia",["Europe/Ljubljana"]],["SB","Solomon Islands",["Pacific/Guadalcanal"]],["SO","Somalia",["Africa/Mogadishu"]],["ZA","South Africa",["Africa/Johannesburg"]],["GS","South Georgia & the South Sandwich Islands",["Atlantic/South_Georgia"]],["SS","South Sudan",["Africa/Juba"]],["ES","Spain",["Africa/Ceuta","Atlantic/Canary","Europe/Madrid"]],["LK","Sri Lanka",["Asia/Colombo"]],["BL","St Barthelemy",["America/St_Barthelemy"]],["SH","St Helena",["Atlantic/St_Helena"]],["KN","St Kitts & Nevis",["America/St_Kitts"]],["LC","St Lucia",["America/St_Lucia"]],["SX","St Maarten (Dutch)",["America/Lower_Princes"]],["MF","St Martin (French)",["America/Marigot"]],["PM","St Pierre & Miquelon",["America/Miquelon"]],["VC","St Vincent",["America/St_Vincent"]],["SD","Sudan",["Africa/Khartoum"]],["SR","Suriname",["America/Paramaribo"]],["SJ","Svalbard & Jan Mayen",["Arctic/Longyearbyen"]],["SE","Sweden",["Europe/Stockholm"]],["CH","Switzerland",["Europe/Zurich"]],["SY","Syria",["Asia/Damascus"]],["TW","Taiwan",["Asia/Taipei"]],["TJ","Tajikistan",["Asia/Dushanbe"]],["TZ","Tanzania",["Africa/Dar_es_Salaam"]],["TH","Thailand",["Asia/Bangkok"]],["TG","Togo",["Africa/Lome"]],["TK","Tokelau",["Pacific/Fakaofo"]],["TO","Tonga",["Pacific/Tongatapu"]],["TT","Trinidad & Tobago",["America/Port_of_Spain"]],["TN","Tunisia",["Africa/Tunis"]],["TR","Turkey",["Europe/Istanbul"]],["TM","Turkmenistan",["Asia/Ashgabat"]],["TC","Turks & Caicos Is",["America/Grand_Turk"]],["TV","Tuvalu",["Pacific/Funafuti"]],["UM","US minor outlying islands",["Pacific/Midway","Pacific/Wake"]],["UG","Uganda",["Africa/Kampala"]],["UA","Ukraine",["Europe/Kyiv","Europe/Simferopol"]],["AE","United Arab Emirates",["Asia/Dubai"]],["US","United States",["America/Adak","America/Anchorage","America/Boise","America/Chicago","America/Denver","America/Detroit","America/Indiana/Indianapolis","America/Indiana/Knox","America/Indiana/Marengo","America/Indiana/Petersburg","America/Indiana/Tell_City","America/Indiana/Vevay","America/Indiana/Vincennes","America/Indiana/Winamac","America/Juneau","America/Kentucky/Louisville","America/Kentucky/Monticello","America/Los_Angeles","America/Menominee","America/Metlakatla","America/New_York","America/Nome","America/North_Dakota/Beulah","America/North_Dakota/Center","America/North_Dakota/New_Salem","America/Phoenix","America/Sitka","America/Yakutat","Pacific/Honolulu"]],["UY","Uruguay",["America/Montevideo"]],["UZ","Uzbekistan",["Asia/Samarkand","Asia/Tashkent"]],["VU","Vanuatu",["Pacific/Efate"]],["VA","Vatican City",["Europe/Vatican"]],["VE","Venezuela",["America/Caracas"]],["VN","Vietnam",["Asia/Ho_Chi_Minh"]],["VG","Virgin Islands (UK)",["America/Tortola"]],["VI","Virgin Islands (US)",["America/St_Thomas"]],["WF","Wallis & Futuna",["Pacific/Wallis"]],["EH","Western Sahara",["Africa/El_Aaiun"]],["YE","Yemen",["Asia/Aden"]],["ZM","Zambia",["Africa/Lusaka"]],["ZW","Zimbabwe",["Africa/Harare"]],["AX","Åland Islands",["Europe/Mariehamn"]]];
 function browserTimeZone(){try{return Intl.DateTimeFormat().resolvedOptions().timeZone||''}catch{return ''}}
 function tzLabel(z){
@@ -1001,10 +961,8 @@ function tzLabel(z){
   }catch{}
   return off?`(${off}) ${z.replace(/_/g,' ')}`:z.replace(/_/g,' ');
 }
-// User's chosen time zone (Settings), else the device's.
 function getUserTimeZone(){return lpeek(K.profile,{}).timezone||browserTimeZone()||'UTC'}
 function getUserCountry(){return lpeek(K.profile,{}).country||''}
-// avatar/banner live in IndexedDB (a base64 image can be ~700KB, localStorage only holds ~5MB)
 const ProfileImg={avatar:'',banner:''};
 async function loadProfileImages(){
   const p=lget(K.profile,{});
@@ -1040,7 +998,6 @@ const Store={
   },
   inLib:(kind,id)=>Boolean(lpeek(Store._libKey(kind),{})[id]),
 
-  // Registry: permanent id -> item record (never removed), so export/import can still name items dropped from the library.
   _regKey:kind=>kind==='movie'?K.movieReg:K.showReg,
   reg:kind=>lget(Store._regKey(kind),{}),
   upsertReg:(kind,item)=>{
@@ -1060,13 +1017,10 @@ const Store={
   toggleFav:(kind,id,data)=>{const k=Store._favKey(kind);const f=lget(k,{});if(f[id])delete f[id];else f[id]={...data,favAt:Date.now()};lset(k,f);return Boolean(f[id])},
   rmFav:(kind,id)=>{const k=Store._favKey(kind);const f=lget(k,{});delete f[id];lset(k,f)},
 
-  // Per-show progress summary (see saveShowProgress); cached and shared, don't edit.
   prog:()=>{if(!_progCache)_progCache=lget(K.prog,{});return _progCache},
   watched:()=>lget(K.watched,{}),
   isWatched:id=>Boolean(lpeek(K.watched,{})[id]),
-  // Legacy entries are a plain timestamp number.
   watchedAt:id=>{const v=lpeek(K.watched,{})[id];if(v==null)return 0;return typeof v==='number'?v:(v.at||0)},
-  // ctx: {season,episode,runtime,showId,show}; show is upserted into the registry.
   setWatched:(id,v,ctx={})=>{
     const w=Store.watched();
     if(v)w[id]={at:Date.now(),s:ctx.season??null,e:ctx.episode??null,r:ctx.runtime??null,showId:ctx.showId??null};
@@ -1077,7 +1031,6 @@ const Store={
 
   movieWatched:()=>lget(K.movieWatched,{}),
   isMovieWatched:id=>Boolean(lpeek(K.movieWatched,{})[id]),
-  // extra.movie is upserted into the movie registry.
   setMovieWatched:(id,v,extra={})=>{
     const w=Store.movieWatched();
     if(v)w[id]={runtime:extra.runtime||100,watchedAt:Date.now()};
@@ -1111,7 +1064,6 @@ const Store={
   setStopped:(kind,id,v)=>{const m=Store.stoppedMap();const key=`${kind}:${id}`;if(v)m[key]=true;else delete m[key];lset(K.stopped,m)},
 };
 
-/* ===== Data file format (tv-plus-data.txt): grouped sections between separator lines; see the notes at the end of importDataText. ===== */
 const SEP='—'.repeat(35);
 
 function fmtYMD(ts){
@@ -1137,7 +1089,6 @@ function aliasNames(item){
 }
 function firstAlias(item){return aliasNames(item)[0]||''}
 function secondAlias(item){return aliasNames(item)[1]||''}
-// Compact "18d 55m" duration for the export file.
 function formatWatchedDuration(totalMinutes){
   const mins=Math.max(0,Math.round(totalMinutes||0));
   const d=Math.floor(mins/1440);
@@ -1156,14 +1107,14 @@ function buildShowExportRows(){
   const lib=Store.lib('show');
   const groups=new Map();
   Object.entries(watched).forEach(([epId,rec])=>{
-    if(!rec||typeof rec!=='object'||rec.showId==null)return; // legacy/unattributed entry - can't place it under a show
+    if(!rec||typeof rec!=='object'||rec.showId==null)return;
     if(!groups.has(rec.showId))groups.set(rec.showId,[]);
     groups.get(rec.showId).push({epId,s:rec.s,e:rec.e,r:rec.r,at:rec.at});
   });
   const rows=[];
   groups.forEach((episodes,showId)=>{
     const show=reg[showId]||lib[showId];
-    if(!show)return; // no known name for this id - nothing sensible to print
+    if(!show)return;
     episodes.sort((a,b)=>(a.s===0?1:0)-(b.s===0?1:0)||(a.s-b.s)||(a.e-b.e));
     const totalMin=episodes.reduce((sum,ep)=>{
       const runtime=ep.r||show.averageRuntime||42;
@@ -1313,7 +1264,6 @@ function exportRewatchedMoviesSection(){
   return lines;
 }
 
-// 1 year = 12 months of 30 days (as on the Profile page).
 function formatDurationFull(totalMinutes){
   const t=Math.max(0,Math.round(totalMinutes||0));
   const minutes=t%60;
@@ -1326,7 +1276,6 @@ function formatDurationFull(totalMinutes){
   const days=rem%30;
   return `${years} years, ${months} months, ${days} days, ${hours} hours, ${minutes} minutes`;
 }
-// Country/time zone as Settings shows them (falls back to a device time-zone guess).
 function effectiveCountryTz(){
   const pr=Store.profile();
   let code=pr.country||'',tz=pr.timezone||'';
@@ -1338,7 +1287,6 @@ function effectiveCountryTz(){
   if(!tz)tz=c?c[2][0]:getUserTimeZone();
   return{code,country:c,tz};
 }
-// Movie time = runtime x (1 + rewatches). TV time = every watched episode + every rewatch (fallback: show average, then 42 min).
 function showMinutesTotal(){
   const watched=Store.watched(),reg=Store.reg('show'),lib=Store.lib('show');
   const rt=rec=>{
@@ -1362,7 +1310,6 @@ function exportCountryLabel(){
   const c=effectiveCountryTz().country;
   return c?`${c[1]} (${c[0]})`:'';
 }
-// Only rewatches of episodes that still have a watched record count (same rule as the export file)
 function validEpRewatch(){const w=Store.watched();return Object.entries(Store.epRewatch()).filter(([id,n])=>n>0&&w[id])}
 function epRewatchTotalCount(){return validEpRewatch().reduce((a,[,n])=>a+n,0)}
 function rewatchedEpisodeCount(){return validEpRewatch().length}
@@ -1415,7 +1362,6 @@ function importAliasStrings(hit){
   if(Array.isArray(list))list.forEach(a=>{if(typeof a==='string')out.push(a);else if(a&&a.name)out.push(a.name)});
   return out.filter(Boolean);
 }
-// Best search hit: exact name first, alt name breaks ties.
 function pickBestSearchHit(hits,name,alt){
   if(!Array.isArray(hits)||!hits.length)return null;
   const norm=s=>(s||'').toLowerCase().trim();
@@ -1435,7 +1381,6 @@ function pickBestSearchHit(hits,name,alt){
   return hits.length===1?hits[0]:null;
 }
 const _importShowCache=new Map(),_importMovieCache=new Map();
-// Resolve by TVDB id, then name, then alt name; if nothing confirms, keep what the file says.
 async function resolveImportShow(fileId,name,alt){
   const cacheKey=`${fileId??''}|${(name||'').toLowerCase()}`;
   if(_importShowCache.has(cacheKey))return _importShowCache.get(cacheKey);
@@ -1444,7 +1389,7 @@ async function resolveImportShow(fileId,name,alt){
       try{
         const s=await Api.seriesExtended(fileId);
         return{id:String(s.id),name:s.name,image:s.image,aliases:s.aliases,averageRuntime:s.averageRuntime};
-      }catch(_e){/* ID didn't resolve - fall through to name search */}
+      }catch(_e){ }
     }
     if(name){
       try{
@@ -1459,7 +1404,7 @@ async function resolveImportShow(fileId,name,alt){
             return{id:String(hid),name:hit.name,image:hit.image_url};
           }
         }
-      }catch(_e){/* search unavailable (offline / no key) - fall through */}
+      }catch(_e){ }
     }
     return{id:fileId!=null?String(fileId):name,name};
   })();
@@ -1519,10 +1464,8 @@ async function importDataText(text){
     const m=re.exec(str);
     return m?m[1].trim():null;
   }
-  // TVDB id from "[TVDB ID: n]" or older "[tvdb:n]" / "[id:n]".
   function idOf(str){const m=/\[(?:TVDB ID|tvdb|id):\s*(\d+)\]/i.exec(str);return m?m[1]:null}
   function flag(str,label){return new RegExp('\\['+label+'\\]').test(str)}
-  // Newer exports carry [favorite:1|0]; older ones only a bare [favorite].
   function parseFavoriteFlag(rest){
     const v=bracket(rest,'favorite');
     if(v!=null)return v.trim()==='1';
@@ -1592,14 +1535,13 @@ async function importDataText(text){
     return m?{name:m[1].trim(),id:m[2],count:+m[3]}:null;
   }
 
-  // Phase 1: parse (no network).
   let importedUsername=null,importedApiKey=null,importedOmdbKey=null,importedCountry='',importedTz='';
-  const showBlocks=[];       // {id,name,alt,following,stoppedFlag,favorite,episodes:[{s,e,epId,runtime,date}]}
-  const movieWatchedRows=[]; // {id,name,alt,runtime,date}
-  const watchlistRows=[];    // {id,name}
-  const rewatchGroups=[];    // {id,name,episodes:[{s,e,epId,count}]}
-  const rewatchMovieRows=[]; // {id,name,count}
-  const favShowRows=[],favMovieRows=[]; // {id,name,alt}
+  const showBlocks=[];
+  const movieWatchedRows=[];
+  const watchlistRows=[];
+  const rewatchGroups=[];
+  const rewatchMovieRows=[];
+  const favShowRows=[],favMovieRows=[];
   let favMovieSection=false,favShowSection=false;
 
   let i=0;
@@ -1679,7 +1621,6 @@ async function importDataText(text){
   const found={shows:showBlocks.length,eps:showBlocks.reduce((n,b)=>n+b.episodes.length,0),movies:movieWatchedRows.length+watchlistRows.length};
   if(!found.shows&&!found.movies&&!rewatchGroups.length&&!rewatchMovieRows.length&&!favShowRows.length&&!favMovieRows.length)
     throw new Error('No shows or movies found in this file. Nothing was changed.');
-  // Phase 2: resolve against TVDB; offline falls back to the file's own id/name.
   const CONCURRENCY=4;
   const resolvedShowBlocks=await mapLimit(showBlocks,CONCURRENCY,async b=>({b,r:await resolveImportShow(b.id,b.name,b.alt)}));
   const resolvedRewatchGroups=await mapLimit(rewatchGroups,CONCURRENCY,async g=>({g,r:await resolveImportShow(g.id,g.name,null)}));
@@ -1689,7 +1630,6 @@ async function importDataText(text){
   const resolvedFavMovies=await mapLimit(favMovieRows,CONCURRENCY,async m=>({m,r:await resolveImportMovie(m.id,m.name,m.alt)}));
   const resolvedRewatchMovies=await mapLimit(rewatchMovieRows,CONCURRENCY,async m=>({m,r:await resolveImportMovie(m.id,m.name,null)}));
 
-  // Phase 3: commit.
   const newShowLib={},newMovieLib={},newWatched={},newMovieWatched={},
     newFavShows={},newFavMovies={},newStopped={},
     newShowReg={...Store.reg('show')},newMovieReg={...Store.reg('movie')},
@@ -1713,7 +1653,6 @@ async function importDataText(text){
     if(b.following||b.stoppedFlag)newShowLib[r.id]={...item,addedAt:Date.now()};
     if(b.stoppedFlag)newStopped[`show:${r.id}`]=true;
     if(b.favorite)newFavShows[r.id]={...item,favAt:Date.now()};
-    // progress summary: shows whose line carries none are rebuilt the next time they're loaded
     const pm=b.progress&&/^(\d+)\/(\d+),(\d),(\d+),(\d+),(.*)$/.exec(b.progress);
     if(pm)newProg[r.id]={w:+pm[1],t:+pm[2],x:+pm[3],lw:+pm[4],ra:+pm[5],nx:pm[6].trim()};
     b.episodes.forEach(ep=>{
@@ -1737,7 +1676,6 @@ async function importDataText(text){
     if(!newMovieLib[r.id])newMovieLib[r.id]={...item,addedAt:Date.now()};
   });
 
-  // FAVORITE SHOWS / FAVORITE MOVIES sections (they also cover favorites that aren't in the library lists)
   resolvedFavShows.forEach(({m,r})=>{
     const item=regItem(r,m.alts);
     newShowReg[r.id]={...newShowReg[r.id],...item};
@@ -1750,7 +1688,6 @@ async function importDataText(text){
   });
   if(favMovieSection)movieFavInfo=true;
 
-  // A rewatched title missing from the other sections still gets a registry entry and a minimal watched record.
   resolvedRewatchGroups.forEach(({g,r})=>{
     const item=regItem(r,null);
     newShowReg[r.id]={...newShowReg[r.id],...item};
@@ -1767,7 +1704,6 @@ async function importDataText(text){
     if(!newMovieLib[r.id])newMovieLib[r.id]={...item,addedAt:Date.now()};
   });
 
-  // Season rewatch = minimum rewatch count across its known episodes.
   const newSeasonRewatch={};
   const seasonEpCounts={};
   Object.entries(newWatched).forEach(([epId,rec])=>{
@@ -1780,7 +1716,6 @@ async function importDataText(text){
     if(minCount>0)newSeasonRewatch[key]=minCount;
   });
 
-  // Import merges: only what this device doesn't have yet is added (local records win; rewatch counts keep the higher number).
   const addNew=(local,incoming,onAdd)=>{for(const k in incoming)if(!(k in local)){local[k]=incoming[k];onAdd?.(k,incoming[k])}return local};
   const maxInto=(local,incoming)=>{for(const k in incoming)local[k]=Math.max(local[k]||0,incoming[k]||0);return local};
   const mLib=lget(K.lib,{}),mStopped=lget(K.stopped,{}),addedShows=new Set();
@@ -1788,7 +1723,6 @@ async function importDataText(text){
   Object.keys(newStopped).forEach(k=>{if(addedShows.has(k.split(':')[1]))mStopped[k]=true});
   const mWatched=lget(K.watched,{}),touched=new Set();
   addNew(mWatched,newWatched,(k,r)=>{if(r&&r.showId!=null)touched.add(String(r.showId))});
-  // shows that got new episodes have their progress summary rebuilt the next time they load
   const mProg=lget(K.prog,{});
   touched.forEach(id=>delete mProg[id]);
   Object.keys(newProg).forEach(id=>{if(!touched.has(String(id))&&!(id in mProg))mProg[id]=newProg[id]});
@@ -1809,7 +1743,6 @@ async function importDataText(text){
   rw.movie=maxInto(rw.movie||{},newMovieRewatch);
   lset(K.rewatch,rw);
   if(importedUsername!=null&&!Store.profile().name)Store.setProfile({name:importedUsername});
-  // Country ("Egypt (EG)") and time zone are only applied when the file actually has them.
   if(importedCountry){
     const codeM=/\(([A-Za-z]{2})\)\s*$/.exec(importedCountry);
     const code=codeM?codeM[1].toUpperCase():(COUNTRIES.find(c=>c[1].toLowerCase()===importedCountry.toLowerCase())||[])[0];
@@ -1825,7 +1758,7 @@ async function importDataText(text){
   if(importedOmdbKey)Store.setOmdb(importedOmdbKey);
   if(importedApiKey){
     Store.setApikey(importedApiKey);
-    try{await Api.login(importedApiKey)}catch(_e){/* key saved either way - user can retry Connect in Profile */}
+    try{await Api.login(importedApiKey)}catch(_e){ }
   }
   pruneEpRewatch();
   if(restoreWatchedShows())bumpShowsCache();
@@ -1834,15 +1767,7 @@ async function importDataText(text){
   return true;
 }
 
-/* Import/export notes:
-   - Per-episode runtime and the date marked watched are recorded from now on; older unattributed episodes are skipped by export.
-   - Shows with watch history stay in the registry after removal from the library (no [following]/[stopped] tag then).
-   - Show time = sum of runtime x (1 + rewatches). Alt titles come from TVDB aliases.
-   - Season rewatch counters are derived on import from the episode counts; Profile stat lines are informational only.
-   - TVDB and OMDb API keys are always exported in plain text; import also tries to log in with the TVDB key. */
-
 class ApiErr extends Error{constructor(m,s){super(m);this.status=s}}
-// Per-session caches for TVDB lookups (cleared on reload).
 function cachedApiCall(map,key,fetcher){
   if(map.has(key))return Promise.resolve(map.get(key));
   return fetcher().then(d=>{map.set(key,d);return d});
@@ -1918,7 +1843,6 @@ async function omdbFetch(params){
     }
     const j=await res.json();
     if(j.Response==='False'){
-      // OMDb answers HTTP 200 for a bad key or used-up quota; detect it by message so callers don't retry.
       const msg=j.Error||'';
       const err=new Error(msg||'OMDb error');
       err.omdbError=msg;
@@ -1940,7 +1864,7 @@ async function withOneRetry(fn){
   try{
     return await fn();
   }catch(err){
-    if(err.status===401||err.quotaExceeded||err.badKey)throw err; // retrying won't help
+    if(err.status===401||err.quotaExceeded||err.badKey)throw err;
     await sleep(700);
     return await fn();
   }
@@ -1950,7 +1874,6 @@ async function fetchRatings(imdbId){
   if(ratingsCache.has(imdbId))return ratingsCache.get(imdbId);
   try{
     const j=await withOneRetry(()=>omdbFetch({i:imdbId}));
-    // Rotten Tomatoes is one entry in OMDb's Ratings; null when missing.
     const rtEntry=(j.Ratings||[]).find(r=>r.Source==='Rotten Tomatoes');
     const out={
       imdb:j.imdbRating&&j.imdbRating!=='N/A'?j.imdbRating:null,
@@ -1959,7 +1882,6 @@ async function fetchRatings(imdbId){
     ratingsCache.set(imdbId,out);
     return out;
   }catch(err){
-    // Failures aren't cached; only genuine "no rating" results are.
     return null;
   }
 }
@@ -1988,7 +1910,6 @@ function attachRatings(container,item){
 function imgUrl(p,opts={}){
   if(!p)return placeholder();
   let url=p.startsWith('http')?p:`https://artworks.thetvdb.com${p.startsWith('/')?'':'/'}${p}`;
-  // TVDB serves a smaller "_t" copy of most artwork; used for stills and cast photos.
   if(opts.thumb)url=url.replace(/\.([a-zA-Z0-9]+)$/,'_t.$1');
   return url.replace(/["'<>\s]/g,encodeURIComponent);
 }
@@ -2012,7 +1933,6 @@ document.addEventListener('error',e=>{
 function timecode(s,e){return `S${String(s??0).padStart(2,'0')}E${String(e??0).padStart(2,'0')}`}
 function fmtDate(d){if(!d)return'TBA';const dt=new Date(d+'T00:00:00');return isNaN(dt)?d:dt.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}
 function todayKey(){const n=Date.now();if(!_todayK||n-_todayAt>30000){_todayK=dateKeyInTz(n,getUserTimeZone());_todayAt=n}return _todayK}
-// "future" = the date is after today in the profile time zone
 function isFuture(d){if(!d)return true;if(!/^\d{4}-\d{2}-\d{2}/.test(d))return false;return String(d).slice(0,10)>todayKey()}
 function upcomingDatePill(key){
   const wrap=document.createElement('div');
@@ -2049,8 +1969,6 @@ function formatDurationParts(totalMinutes){
 }
 
 const epCache=new Map();
-/* Per-show progress summary (w watched aired eps, t aired total, x ended, lw last watched, ra latest air date, nx next air date).
-   Rewritten whenever a show's episodes are loaded; saved and exported with the rest of the data. */
 function computeProgSummary(eps,ended){
   const counted=eps.filter(e=>e.seasonNumber>0&&!isFuture(e.aired));
   let nx='';
@@ -2064,7 +1982,6 @@ function saveShowProgress(id,eps,ended){
   m[id]=next;
   lset(K.prog,m);
 }
-// An episode has aired since the summary was written: its total is out of date until the show is next loaded.
 function progSummaryStale(sum){return !!(sum&&sum.nx&&!isFuture(sum.nx))}
 function progressFromSummary(sum){
   let t=sum.t;
@@ -2073,7 +1990,6 @@ function progressFromSummary(sum){
   const allWatched=sum.w>=t;
   return{pct:Math.round(sum.w/t*100),complete:Boolean(sum.x)&&allWatched,upToDate:allWatched&&!sum.x,watched:sum.w,total:t};
 }
-// Progress for the show page's bar: stores the new numbers, then redraws the bar.
 function applyShowProgress(progressEl,id,eps,ended){
   saveShowProgress(id,eps,ended);
   updateShowProgressBar(progressEl,calcShowProgress(eps,ended));
@@ -2136,7 +2052,6 @@ function isEndedStatus(series){
   return s==='ended'||s==='cancelled'||s==='canceled';
 }
 function calcShowProgress(eps,ended){
-  // Specials and unaired episodes aren't counted; any episode with a past air date is, even without a title yet.
   const counted=eps.filter(e=>e.seasonNumber>0&&!isFuture(e.aired));
   if(!counted.length)return{pct:0,complete:false,upToDate:false,watched:0,total:0};
   const total=counted.length;
@@ -2149,7 +2064,6 @@ function calcLastWatchedAt(eps){
   eps.forEach(e=>{const t=Store.watchedAt(e.id);if(t>max)max=t});
   return max;
 }
-// Date of the most recent aired episode (new-content recency, unlike lastWatchedAt).
 function calcMostRecentAiredAt(eps){
   let max=0;
   eps.forEach(e=>{
@@ -2258,7 +2172,6 @@ function detailHeroWrap({bannerUrl,backEl,heroEl,progressEl}){
 function emptyState(msg,route,label){
   return `<div class="empty">${msg}${route?` <a data-link="${route}">${label||'Go there'}</a>`:''}</div>`;
 }
-// A replaced loading card fades out over 0.4s instead of cutting.
 (function(){
   const out=node=>{
     if(!(node instanceof Element))return;
@@ -2266,6 +2179,8 @@ function emptyState(msg,route,label){
     rows.forEach(r=>{
       if(r.dataset.fading)return;
       r.dataset.fading='1';
+      const g=r.querySelector('.loading-glass');
+      if(g)g.style.animation='none';
       document.body.appendChild(r);
       const done=()=>r.remove();
       if(!r.animate){done();return}
@@ -2380,7 +2295,6 @@ function wireTrackFav(heroEl,kind,item,visibleFn){
 }
 const translationCache=new Map();
 let _trQueue=Promise.resolve();
-// Translate text that is neither English nor Arabic: it must contain non-ASCII letters (other scripts or accents) that make up a real share of it
 function needsTranslation(t){
   if(!t||isArabicText(t))return false;
   const letters=t.match(/\p{L}/gu)||[];
@@ -2408,7 +2322,6 @@ async function translateChunkNormalized(chunk){
   }
   throw lastErr||new Error('All translation providers failed');
 }
-// results are cached in localStorage (max 400 entries); requests run one at a time, 250ms apart
 function translateToEnglish(text){
   if(translationCache.has(text))return Promise.resolve(translationCache.get(text));
   const saved=lpeek(K.tr,{})[text];
@@ -2434,7 +2347,6 @@ function isArabicText(text){
   return letterChars>0&&arabicChars/letterChars>0.3;
 }
 const OVERVIEW_WORD_CAP=50;
-// Cap synopsis length by words, not characters.
 function truncateWords(text,limit){
   const words=(text||'').split(/\s+/).filter(Boolean);
   if(words.length<=limit)return{truncated:text,isLong:false};
@@ -2452,7 +2364,6 @@ function wireOverview(container,id,originalText){
   let expanded=false;
   let full=originalText||'No overview available.';
   const toggle=()=>{expanded=!expanded;sync()};
-  // keeps text and button consistent: the button exists only while the text is over 50 words (also after translation)
   const sync=()=>{
     const{truncated,isLong}=truncateWords(full,OVERVIEW_WORD_CAP);
     if(isLong&&!btn){
@@ -2507,7 +2418,6 @@ let movieBackRoute='movies';
 const SHOW_LIST_ROUTES=['shows','libshows','favshows','explore'];
 const MOVIE_LIST_ROUTES=['movies','libmovies','favmovies','explore'];
 const LIST_ROUTES=['libshows','libmovies','favshows','favmovies'];
-// Profile lists open as overlays; only cheap data is read, poster images load once it has opened.
 const LIST_DEFS={
   libshows:{title:'Shows',kind:'show',items:()=>Object.values(Store.lib('show')).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0)),emptyMsg:'You are not tracking any shows yet.',emptyRoute:'explore',emptyLabel:'Explore shows'},
   favshows:{title:'Favorite shows',kind:'show',items:()=>Object.values(Store.fav('show')).sort((a,b)=>(b.favAt||0)-(a.favAt||0)),emptyMsg:"You haven't favorited any shows yet.",emptyRoute:'shows',emptyLabel:'Browse shows'},
@@ -2526,7 +2436,7 @@ const _borderCol=()=>getComputedStyle(document.documentElement).getPropertyValue
 const _geo=r=>({left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});
 const _shadow=(on)=>{
   const d=document.documentElement.dataset;
-  if(d.style==='glass')return '0 0 0 0 rgba(0,0,0,0)';   // the glass edge is the panel's ::after
+  if(d.style==='glass')return '0 0 0 0 rgba(0,0,0,0)';
   return `0 0 0 1px ${_borderCol()}, 0 ${on?12:0}px ${on?32:0}px rgba(0,0,0,${on?.5:0})`;
 };
 const _bgOf=el=>el?getComputedStyle(el).backgroundColor:'transparent';
@@ -2539,7 +2449,6 @@ function removeListOverlay(){
   _listOv.panel.remove();_listOv.backdrop.remove();
   _listOv=null;
 }
-// The overlay covers the app's page area (not the whole window) with a 20px margin on every side.
 function sizeListOverlay(panel){
   const m=20,main=document.getElementById('main').getBoundingClientRect();
   const nav=document.getElementById('bottomnav');
@@ -2611,7 +2520,6 @@ function openListOverlay(route){
     if(!sum)return;
     updatePosterProgress(f,{...progressFromSummary(sum),stopped:Store.isStopped('show',item.id)});
   };
-  // Shows list groups: Watching, Up to date, Completed, Stopped. Unstarted shows aren't listed.
   const placeCat=(f,item)=>{
     const sum=P[item.id];
     if(!sum){secs.pending.grid.appendChild(f);return}
@@ -2627,7 +2535,6 @@ function openListOverlay(route){
     insertByValue(secs[key].grid,f,sum.ra||0);
   };
   if(!items.length){
-    // empty list: nothing to show
   }else if(catMode){
     [{key:'watching',title:'WATCHING'},{key:'uptodate',title:'Up to date'},{key:'completed',title:'Completed'},{key:'stopped',title:'Stopped watching'},{key:'pending',title:'LOADING'}].forEach(c=>{
       const sec=document.createElement('div');
@@ -2662,7 +2569,6 @@ function openListOverlay(route){
   document.addEventListener('keydown',onKey);
   window.addEventListener('resize',onResize);
   const ov=_listOv={panel,backdrop,route,body,frames,onKey,onResize,io:null,loadTimer:0,ghost:null};
-  // After opening: load posters near the viewport and fill missing progress summaries a few at a time.
   const startLoading=()=>{
     if(_listOv!==ov||ov.io||!frames.length)return;
     ov.io=new IntersectionObserver(es=>es.forEach(e=>{
@@ -2677,7 +2583,6 @@ function openListOverlay(route){
     }),{root:body,rootMargin:'300px 0px'});
     frames.forEach(f=>ov.io.observe(f));
     if(!isShow)return;
-    // Only shows with no stored progress yet (or one an episode has since aired for) need their episodes loaded.
     const todo=items.filter(it=>!P[it.id]||progSummaryStale(P[it.id]));
     mapLimit(todo,3,async it=>{
       if(_listOv!==ov)return;
@@ -2696,12 +2601,10 @@ function openListOverlay(route){
   };
   const box=listBoxRect(route);
   const ease='cubic-bezier(.32,.72,0,1)',dur=560;
-  // The list box grows into the window (a copy swaps in invisibly); items then appear top to bottom.
   const D0=box?dur*.35:120;
   const revealItems=()=>{
     const STEP=100,DUR=400;
     const fade=(el,delay)=>el.animate([{opacity:0},{opacity:1}],{duration:DUR,delay,easing:'ease-out',fill:'backwards'});
-    // blocks, top to bottom: (Shows list) each group = pill + grid; (other lists) just the grid
     const blocks=[];
     if(catMode){
       ['watching','uptodate','completed','stopped','pending'].forEach(k=>{
@@ -2714,7 +2617,6 @@ function openListOverlay(route){
     }
     let t=D0;
     blocks.forEach(blk=>{
-      // rows from the real on-screen layout, left to right inside each row
       const cells=[...blk.grid.children].filter(f=>f.offsetParent).sort((p,q)=>(p.offsetTop-q.offsetTop)||(p.offsetLeft-q.offsetLeft));
       const rows=[];
       cells.forEach(f=>{
@@ -2724,7 +2626,6 @@ function openListOverlay(route){
       let rowStart=t;
       if(blk.pill){fade(blk.pill,t);rowStart=t+STEP}
       rows.forEach((row,r)=>row.forEach((f,c)=>fade(f,rowStart+r*STEP+c*STEP)));
-      // the next group's pill starts 0.1s after this group's last row has started
       t=rowStart+Math.max(0,rows.length-1)*STEP+STEP;
     });
   };
@@ -2737,11 +2638,16 @@ function openListOverlay(route){
     ghost.appendChild(boxEl.cloneNode(true));
     panel.appendChild(ghost);
     ov.ghost=ghost;
+    boxEl.style.visibility='hidden';
     const bgPanel=_bgOf(panel);
     panel.animate([
       {..._geo(box),borderRadius:box.radius,boxShadow:_shadow(false),backgroundColor:_bgOf(boxEl)},
       {..._geo(F),borderRadius:'18px',boxShadow:_shadow(true),backgroundColor:bgPanel}
     ],{duration:dur,easing:ease});
+    if(document.documentElement.dataset.style==='glass'){
+      const cs=getComputedStyle(document.documentElement);
+      try{panel.animate([{boxShadow:cs.getPropertyValue('--rim-soft')},{boxShadow:cs.getPropertyValue('--rim')}],{duration:dur,easing:ease,pseudoElement:'::after'})}catch{}
+    }
     ghost.animate([{opacity:1},{opacity:0,offset:.2},{opacity:0}],{duration:dur,easing:'linear',fill:'forwards'});
     inner.animate([{opacity:0},{opacity:1,offset:.2},{opacity:1}],{duration:dur,easing:"linear"});
     revealItems();
@@ -2749,7 +2655,6 @@ function openListOverlay(route){
     panel.animate?.([{opacity:0,transform:'scale(.96)'},{opacity:1,transform:'none'}],{duration:320,easing:ease});
     revealItems();
   }
-  // posters start loading halfway through the opening, and fade in with their frames
   ov.loadTimer=setTimeout(startLoading,box?dur*.5:200);
 }
 function closeListOverlay(){
@@ -2763,14 +2668,17 @@ function closeListOverlay(){
   const{panel,backdrop}=ov;
   panel.style.pointerEvents='none';backdrop.style.pointerEvents='none';
   const box=panel.animate?listBoxRect(ov.route):null;
-  const finish=()=>{panel.remove();backdrop.remove()};
+  const finish=()=>{
+    panel.remove();backdrop.remove();
+    const hb=document.querySelector(`#outlet .hscroll-section[data-route="${ov.route}"]`);
+    if(hb)hb.style.visibility='';
+  };
   if(!panel.animate){finish();return}
   const dur=440,ease='cubic-bezier(.4,0,.2,1)';
   backdrop.animate([{opacity:1,backdropFilter:'blur(2.5px)',webkitBackdropFilter:'blur(2.5px)'},{opacity:0,backdropFilter:'blur(0px)',webkitBackdropFilter:'blur(0px)'}],{duration:dur,easing:'ease-in-out',fill:'forwards'});
   if(box&&ov.ghost){
     const F=panel.getBoundingClientRect();
     const inner=panel.firstElementChild;
-    // items go first, the window shrinks back into the box, and the box copy fades back in over the last part
     inner.animate([{opacity:1},{opacity:0,offset:.45},{opacity:0}],{duration:dur,easing:'linear',fill:'forwards'});
     ov.ghost.getAnimations().forEach(a=>a.cancel());
     ov.ghost.animate([{opacity:0},{opacity:0,offset:.5},{opacity:1}],{duration:dur,easing:'linear',fill:'forwards'});
@@ -2778,6 +2686,10 @@ function closeListOverlay(){
       {..._geo(F),borderRadius:'18px',boxShadow:_shadow(true),backgroundColor:_bgOf(panel)},
       {..._geo(box),borderRadius:box.radius,boxShadow:_shadow(false),backgroundColor:_bgOf(document.querySelector(`#outlet .hscroll-section[data-route="${ov.route}"]`))}
     ],{duration:dur,easing:ease,fill:'forwards'});
+    if(document.documentElement.dataset.style==='glass'){
+      const cs=getComputedStyle(document.documentElement);
+      try{panel.animate([{boxShadow:cs.getPropertyValue('--rim')},{boxShadow:cs.getPropertyValue('--rim-soft')}],{duration:dur,easing:ease,fill:'forwards',pseudoElement:'::after'})}catch{}
+    }
     a.onfinish=finish;a.oncancel=finish;
   }else{
     const a=panel.animate([{opacity:1,transform:'none'},{opacity:0,transform:'scale(.96)'}],{duration:260,easing:ease,fill:'forwards'});
@@ -2792,13 +2704,11 @@ function updateNavPill(instant){
   pill.style.transform=`translateX(${act.offsetLeft}px)`;
   if(instant){pill.offsetWidth;requestAnimationFrame(()=>pill.classList.remove('no-anim'))}
 }
-// the nav bar animates its width when the style changes, so the pill re-measures every frame until it settles
 function followNavPill(ms=800){
   const t0=performance.now();
   cancelAnimationFrame(window._pillRaf);
   (function f(){updateNavPill(true);if(performance.now()-t0<ms)window._pillRaf=requestAnimationFrame(f)})();
 }
-// zoom stays at 100%: iOS ignores the viewport tag for pinch, so the gesture events are blocked as well
 ['gesturestart','gesturechange','gestureend'].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
 document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
 window.addEventListener('resize',()=>updateNavPill(true));
@@ -2821,7 +2731,7 @@ function nav(route,params={}){
     removeListOverlay();
   }
   if(LIST_ROUTES.includes(route)){
-    if(prevRoute!=='stats')nav('stats',{noAnim:true}); // the profile page sits underneath the overlay
+    if(prevRoute!=='stats')nav('stats',{noAnim:true});
     openListOverlay(route);
     setHash(route);
     currentRoute=route;
@@ -2856,7 +2766,6 @@ function hashRoute(){
 
 let exploreLastQuery=null;
 const explorePane=document.createElement('div');
-// The search bar is the top of the Explore tab (not a header outside the page): built once, kept (with its text) between visits, put back at the top of the page each time it opens.
 const searchBar=document.createElement('div');
 searchBar.className='explore-search';
 searchBar.innerHTML=`<div class="topbar-search"><input type="text" id="global-search" placeholder="Search for a show or movie…" autocomplete="off" /><button type="button" class="search-btn" id="global-search-btn" title="Search" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button></div>`;
@@ -2914,7 +2823,6 @@ async function doExploreSearch(q,el){
       const id=numericId(h);
       const row=searchResultRow({id,name:h.name,image:h.image_url,kind});
       list.appendChild(row);
-      // top to bottom: 0.4s fade, each result starting 0.1s after the previous one
       row.animate?.([{opacity:0},{opacity:1}],{duration:400,delay:i*100,easing:'ease-out',fill:'backwards'});
     });
   }catch(err){el.innerHTML=emptyState(esc(err.message))}
@@ -2936,20 +2844,27 @@ function ensureShowsTabLoaded(){
   if(showsTabState==='upcoming'&&!upcomingLoaded){upcomingLoaded=true;renderUpcomingTab(upcomingPane);}
 }
 function switchPane(from,to,dir,show,commit){
-  // from fades/slides out quickly, then to slides in
-  const D=dir||1;
-  const finishIn=()=>{
-    if(commit)commit();
+  const D=dir||1,host=from.parentElement;
+  if(commit)commit();
+  if(!from.animate||!to.animate||from.style.display==='none'){from.style.display='none';to.style.display=show;return}
+  host.style.position='relative';
+  to.style.display=show;
+  Object.assign(from.style,{position:'absolute',left:'0',top:'0',width:'100%'});
+  const T={duration:380,easing:'cubic-bezier(.32,.72,.2,1)'};
+  const out=from.animate([{transform:'none'},{transform:`translateX(${-D*100}%)`}],{...T,fill:'forwards'});
+  to.animate([{transform:`translateX(${D*100}%)`},{transform:'none'}],T);
+  let done=false;
+  const end=()=>{
+    if(done)return;done=true;
     from.style.display='none';
-    to.style.display=show;
-    to.animate?.([{opacity:0,transform:`translateX(${D*36}px)`},{opacity:1,transform:'none'}],{duration:280,easing:'cubic-bezier(.2,.8,.2,1)'});
+    Object.assign(from.style,{position:'',left:'',top:'',width:''});
+    host.style.position='';
+    out.cancel();
   };
-  if(!from.animate||from.style.display==='none'){finishIn();return}
-  const a=from.animate([{opacity:1,transform:'none'},{opacity:0,transform:`translateX(${-D*36}px)`}],{duration:140,easing:'ease-in'});
-  a.onfinish=finishIn;a.oncancel=finishIn;
+  out.onfinish=end;out.oncancel=end;
 }
 async function renderShows(o){
-  if(showsDirty){showsDirty=false;bumpShowsCache()}   // something changed since the lists were built: rebuild them now
+  if(showsDirty){showsDirty=false;bumpShowsCache()}
   o.classList.add('shows-route');
   o.classList.toggle('upcoming-route',showsTabState==='upcoming');
   o.innerHTML=`
@@ -2975,7 +2890,6 @@ async function renderShows(o){
     const toUp=showsTabState==='upcoming';
     o.querySelector('.shows-tabs').classList.toggle('tab-up',toUp);
     ensureShowsTabLoaded();
-    // layout changes (page padding, scroll position) are applied only once the old list has faded out, so nothing jumps while it leaves
     switchPane(toUp?watchlistPane:upcomingPane,toUp?upcomingPane:watchlistPane,toUp?1:-1,'flex',()=>{o.querySelector('.shows-tabs').classList.toggle('upcoming-active',toUp);o.classList.toggle('upcoming-route',toUp);document.getElementById('outlet').scrollTop=0});
   }));
   ensureShowsTabLoaded();
@@ -2991,7 +2905,6 @@ async function fetchShowWatchData(s){
 function classifyForWatchlist(s,data,now){
   if(!data)return null;
   const{progress,lastWatchedAt,mostRecentAiredAt}=data;
-  // A show that hasn't started airing (no regular episode has aired yet) isn't shown in the Shows tab at all.
   if(!progress.total)return null;
   if(progress.complete||progress.upToDate)return null;
   const key=progress.watched===0?'notstarted':(now-lastWatchedAt>=STALE_MS?'stale':'next');
@@ -3030,9 +2943,8 @@ async function renderWatchListTab(o){
     onEmpty:()=>o.insertAdjacentHTML('beforeend',emptyState('Nothing to show here yet.'))
   });
 }
-// Patch one show in the loaded Watchlist/Upcoming panes instead of wiping them.
 async function patchShowInWatchlistPane(showId,showItem){
-  if(!watchlistLoaded)return; // nothing rendered yet - it'll fetch fresh anyway
+  if(!watchlistLoaded)return;
   const pane=watchlistPane;
   const existing=pane.querySelector(`.poster[data-id="${showId}"]`);
   const oldSection=existing?existing.closest('.cat-section'):null;
@@ -3043,14 +2955,14 @@ async function patchShowInWatchlistPane(showId,showItem){
   }
   const stopped=Store.isStopped('show',showId);
   const inLib=Store.inLib('show',showId);
-  if(stopped||!inLib)return; // Watchlist never shows stopped or untracked shows
+  if(stopped||!inLib)return;
   let data=null;
   try{data=await fetchShowWatchData(showItem)}catch{data=null}
   const now=Date.now();
   const c=classifyForWatchlist(showItem,data,now);
-  if(!c)return; // now complete/up to date - Watchlist correctly drops it
+  if(!c)return;
   const section=pane.querySelector(`[data-cat="${c.key}"]`);
-  if(!section)return; // pane's category skeleton isn't there (shouldn't happen if watchlistLoaded)
+  if(!section)return;
   const grid=section.querySelector('.grid');
   const card=c.render();
   card.dataset.sortValue=c.sortValue||0;
@@ -3063,7 +2975,6 @@ function dropShowFromUpcomingPane(showId){
   if(!upcomingLoaded)return;
   upcomingPane.querySelectorAll(`[data-show-id="${showId}"]`).forEach(row=>row.remove());
 }
-// mayNowAppearInUpcoming (add/resume): the next Upcoming visit refetches; stop/remove just drop rows now.
 function refreshShowInPanes(showId,showItem,{mayNowAppearInUpcoming=false}={}){
   patchShowInWatchlistPane(showId,showItem);
   if(mayNowAppearInUpcoming){
@@ -3087,7 +2998,7 @@ async function renderUpcomingTab(o){
   o.innerHTML='<div class="upcoming-list" data-list></div>';
   o.insertAdjacentHTML('beforeend',loadingHtml('Loading…'));
   const listEl=o.querySelector('[data-list]');
-  const sorted=[]; // accumulated so far, kept sorted by air date
+  const sorted=[];
   function insertSorted(item){
     let i=sorted.length;
     while(i>0&&sorted[i-1].ts>item.ts)i--;
@@ -3105,7 +3016,6 @@ async function renderUpcomingTab(o){
   }
   const fetchOne=async s=>{
     const[eps,series]=await Promise.all([getEpisodes(s.id),Api.seriesExtended(s.id).catch(()=>null)]);
-    // Shows you haven't started watching never appear in Upcoming, and neither does a show that hasn't started airing.
     if(!eps.some(e=>Store.isWatched(e.id)))return[];
     if(!eps.some(e=>e.seasonNumber>0&&!isFuture(e.aired)))return[];
     const airtime=series?.airsTime||null;
@@ -3113,7 +3023,6 @@ async function renderUpcomingTab(o){
     const channel=series?.originalNetwork?.name||series?.latestNetwork?.name||null;
     const nowTs=Date.now();
     const todayKey=dateKeyInTz(nowTs,getUserTimeZone());
-    // Specials never appear here; timed episodes drop off once aired, date-only ones stay all local day.
     return eps.filter(e=>e.aired&&e.seasonNumber>0).map(e=>{
       const {ts,timed}=airInstant(e.aired,airtime,srcTz);
       return{ep:e,channel,ts,timed};
@@ -3125,7 +3034,6 @@ async function renderUpcomingTab(o){
   redraw();
   if(!sorted.length)listEl.appendChild(noUpcomingCard('No upcoming episodes at the moment'));
   o.querySelector('.loading-row')?.remove();
-  // top to bottom: 0.4s fade, each item starting 0.1s after the previous one
   [...listEl.children].forEach((c,i)=>c.animate?.([{opacity:0},{opacity:1}],{duration:400,delay:i*100,easing:'ease-out',fill:'backwards'}));
 }
 
@@ -3170,12 +3078,10 @@ async function renderMovies(o){
     const toUp=moviesTabState==='upcoming';
     o.querySelector('.shows-tabs').classList.toggle('tab-up',toUp);
     ensureMoviesTabLoaded();
-    // layout changes (page padding, scroll position) are applied only once the old list has faded out, so nothing jumps while it leaves
     switchPane(toUp?movieWatchlistPane:movieUpcomingPane,toUp?movieUpcomingPane:movieWatchlistPane,toUp?1:-1,'flex',()=>{o.querySelector('.shows-tabs').classList.toggle('upcoming-active',toUp);o.classList.toggle('upcoming-route',toUp);document.getElementById('outlet').scrollTop=0});
   }));
   ensureMoviesTabLoaded();
 }
-// Fades a grid's cards in from the top-left: 0.4s each, items 0.1s apart in a row, each row starting 0.1s after the previous
 async function waitVisible(el){for(let i=0;i<60&&!el.offsetParent;i++)await new Promise(r=>setTimeout(r,50))}
 function staggerFadeGrid(grid){
   if(!grid.animate)return;
@@ -3193,7 +3099,6 @@ async function renderMovieWatchlistTab(o){
   const gridHost=o.querySelector('[data-grid]');
   const reg=Store.reg('movie');
   const released=[];
-  // Known release dates need no request; the grid is drawn once all are known, newest first.
   const known=m=>(reg[m.id]&&reg[m.id].releaseDate)||m.releaseDate||null;
   const needFetch=[];
   stubs.forEach(m=>{
@@ -3205,19 +3110,17 @@ async function renderMovieWatchlistTab(o){
     const ext=await Api.movieExtended(m.id);
     const releaseDate=firstReleaseDate(ext);
     if(releaseDate)Store.upsertReg('movie',{id:m.id,releaseDate,year:ext.year});
-    // Unknown release date: keep the movie; hide only when it is known to be unreleased.
     return{released:!releaseDate||!isFuture(releaseDate),m:{...m,releaseDate,year:ext.year??m.year}};
   };
   await loadAllItems(needFetch,fetchOne,({stub:m,data})=>{
     if(data&&data.released)released.push(data.m);
-    else if(!data)released.push(m); // fetch failed - fall back to trusting the library entry
+    else if(!data)released.push(m);
   });
   o.querySelector('.loading-row')?.remove();
   if(!released.length){gridHost.innerHTML=emptyState('You are not tracking any released movies.','explore','Explore movies');return}
   const grid=document.createElement('div');
   grid.className='grid';
   gridHost.appendChild(grid);
-  // stable order: release date (newest first); ties and unknown dates keep the "recently added first" order
   const order=new Map(stubs.map((m,i)=>[m.id,i]));
   const sorted=[...released].sort((a,b)=>{
     const ka=movieReleaseKey(a),kb=movieReleaseKey(b);
@@ -3234,7 +3137,6 @@ async function renderMovieWatchlistTab(o){
   await waitVisible(grid);
   staggerFadeGrid(grid);
 }
-// Patch one movie's card in the loaded Movie Watchlist grid.
 async function patchMovieInWatchlistPane(movieId,movieItem){
   if(!movieWatchlistLoaded)return;
   const pane=movieWatchlistPane;
@@ -3243,7 +3145,7 @@ async function patchMovieInWatchlistPane(movieId,movieItem){
   if(existing)existing.remove();
   const watched=Store.isMovieWatched(movieId);
   const inLib=Store.inLib('movie',movieId);
-  if(watched||!inLib||!grid)return; // this tab only ever shows unwatched, tracked movies
+  if(watched||!inLib||!grid)return;
   let released=true,sortKey=movieReleaseKey(movieItem)||'';
   try{
     const ext=await Api.movieExtended(movieId);
@@ -3269,7 +3171,7 @@ async function renderMovieUpcomingTab(o){
   o.innerHTML='<div class="upcoming-list upcoming-movies" data-list></div>';
   o.insertAdjacentHTML('beforeend',loadingHtml('Loading…'));
   const listEl=o.querySelector('[data-list]');
-  const found=[]; // {movie,date}
+  const found=[];
   const fetchOne=async m=>{
     const ext=await Api.movieExtended(m.id);
     const releaseDate=userReleaseDate(ext);
@@ -3280,7 +3182,6 @@ async function renderMovieUpcomingTab(o){
   o.querySelector('.loading-row')?.remove();
   if(!found.length){listEl.appendChild(noUpcomingCard('No upcoming movies at the moment'));return}
   found.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
-  // within a month: one pill per release date; further out: a single "Later" group
   const todayKey=dateKeyInTz(Date.now(),getUserTimeZone());
   const groups=[];
   found.forEach(f=>{
@@ -3290,7 +3191,7 @@ async function renderMovieUpcomingTab(o){
     if(last&&last.key===key)last.items.push(f);else groups.push({key,items:[f]});
   });
   await waitVisible(listEl);
-  const anim=[]; // [element, delay]
+  const anim=[];
   let t=0;
   groups.forEach(g=>{
     let pill;
@@ -3330,7 +3231,6 @@ function upcomingMoviePoster(m,date){
   return el;
 }
 
-// Every watched movie, whether or not it's in the library list (watching one doesn't add it).
 function watchedMovieItems(){
   const reg=Store.reg('movie'),lib=Store.lib('movie');
   return Object.keys(Store.movieWatched()).map(id=>reg[id]||lib[id]).filter(Boolean);
@@ -3462,7 +3362,6 @@ function renderStats(o,opts){
   listsHost.appendChild(showsPair);
   listsHost.appendChild(moviesPair);
   if(revealProfile&&o.animate){
-    // stats then lists, top to bottom: 0.3s fade, one row at a time (everything in a row fades together, each row 0.1s after the one above)
     const items=[...o.querySelectorAll('.stat-card2'),...o.querySelectorAll('#profile-lists .hscroll-section')];
     const rows=[];
     items.map(el=>({el,top:el.getBoundingClientRect().top})).sort((p,q)=>p.top-q.top).forEach(it=>{
@@ -3511,7 +3410,6 @@ function renderStats(o,opts){
     }
     const v=o.querySelector('#i-omdb').value.trim();
     if(!v)return;
-    // Save first so ratings work even if the validation check fails.
     Store.setOmdb(v);
     ratingsCache.clear();
     syncOmdbToggle();
@@ -3532,7 +3430,6 @@ function renderStats(o,opts){
     Store.setProfile({name:v});
     nameDisplay.textContent=v||'Your name';
   });
-  // Any image, any size: decode it, shrink it to a sensible size and store a compressed copy, so it always fits in storage.
   async function imageToDataUrl(file,maxSide){
     let src;
     try{src=await createImageBitmap(file,{imageOrientation:'from-image'})}
@@ -3574,7 +3471,6 @@ function renderStats(o,opts){
       if(await saveProfileImage('banner',dataUrl))o.querySelector('#profile-banner').style.backgroundImage=`url('${dataUrl}')`;
     }catch{}
   });
-  // the sheet never moves sideways (also against focus/script scrolling)
   const sheetEl=o.querySelector('#profile-edit-overlay');
   sheetEl.addEventListener('scroll',()=>{if(sheetEl.scrollLeft)sheetEl.scrollLeft=0},{passive:true});
   o.querySelectorAll('#style-toggle button').forEach(btn=>btn.addEventListener('click',()=>{
@@ -3587,7 +3483,6 @@ function renderStats(o,opts){
   themeToggle.addEventListener('change',()=>{
     const t=themeToggle.checked?'light':'dark';
     Store.setProfile({theme:t});
-    // the switch starts moving right away; the (heavy) page-wide recolor happens a couple of frames later so it can't stall it
     requestAnimationFrame(()=>requestAnimationFrame(()=>{
       const root=document.documentElement;
       root.classList.add('theme-anim');
@@ -3609,7 +3504,6 @@ function renderStats(o,opts){
   const savedProfile=Store.profile();
   let initCountry=savedProfile.country||'',initTz=savedProfile.timezone||'';
   if(!initCountry){
-    // First visit: pre-select the country that matches this device's time zone (not saved until the user picks one).
     const guess=COUNTRIES.find(c=>c[2].includes(browserTimeZone()));
     if(guess){initCountry=guess[0];initTz=browserTimeZone()}
   }
@@ -3623,13 +3517,11 @@ function renderStats(o,opts){
   tzSel.addEventListener('change',()=>{Store.setProfile({timezone:tzSel.value});resetUpcomingPanes()});
   const editToggle=o.querySelector('#profile-edit-toggle');
   const editOverlay=o.querySelector('#profile-edit-overlay');
-  // Settings open/close: a copy of the button ("surface", bglass) grows into the sheet while its label travels to the title and the content fades in; closing mirrors this.
   const backdropEl=editOverlay.nextElementSibling;
   const OD=460,CD=420,STEP=40,EASE='cubic-bezier(.4,0,.2,1)';
   let sAnims=[],closing=false,surf=null,cached=null;
   const A=(el,k,opt)=>{const a=el.animate(k,opt);sAnims.push(a);return a};
   const stopAnims=()=>{sAnims.forEach(a=>a.cancel());sAnims=[]};
-  // while the surface stands in for the sheet, the sheet itself draws nothing of its own (no fill, border, blur or rim)
   const skin=on=>{
     const st=editOverlay.style;
     st.background=on?'transparent':'';st.borderColor=on?'transparent':'';st.boxShadow=on?'none':'';
@@ -3656,11 +3548,10 @@ function renderStats(o,opts){
     el.className='bglass sheet-surf';el.setAttribute('aria-hidden','true');
     el.style.cssText='position:fixed;margin:0;box-sizing:border-box;pointer-events:none;z-index:91;overflow:hidden;border:1px solid';
     setBox(el,boxKF(g.br,g.bRad,g.bBg,g.bBd));
-    editOverlay.parentNode.insertBefore(el,editOverlay);   // directly under the sheet in paint order
+    editOverlay.parentNode.insertBefore(el,editOverlay);
     editToggle.style.visibility='hidden';
     return {el,labs:null};
   }
-  // two labels inside the surface: the button's own text and the title; each travels, their opacities swap
   function addLabels(s,g,atSheet){
     const mk=(txt,f)=>{
       const e=document.createElement('span');e.textContent=txt;
@@ -3668,13 +3559,12 @@ function renderStats(o,opts){
       e.style.font=f.font;e.style.letterSpacing=f.ls;e.style.textTransform=f.tt;e.style.color=f.color;s.el.appendChild(e);return e;
     };
     const La=mk(g.bLabel,g.bFont),Lb=mk(g.tLabel,g.tFont);
-    const rect=s.el.getBoundingClientRect(),na=textRect(La),nb=textRect(Lb);   // where each label's text sits inside the box at transform:none
+    const rect=s.el.getBoundingClientRect(),na=textRect(La),nb=textRect(Lb);
     const tf=(nat,P,S,sc)=>`translate(${P.left-S.left-(nat.left-rect.left)}px,${P.top-S.top-(nat.top-rect.top)}px) scale(${sc})`;
     const wB=g.bt.width,wT=g.tt.width;
     s.labs={A:La,B:Lb,aBtn:tf(na,g.bt,g.br,1),aSheet:tf(na,g.tt,g.pr,wT/wB),bBtn:tf(nb,g.bt,g.br,wB/wT),bSheet:tf(nb,g.tt,g.pr,1)};
     if(atSheet){La.style.transform=s.labs.aSheet;La.style.opacity=0;Lb.style.transform=s.labs.bSheet}
   }
-  // everything in the sheet except the title, top to bottom (the Back button is in the header row)
   const sheetKids=()=>[...editOverlay.children].flatMap(c=>c.classList.contains('overlay-head')?[c.querySelector('.back')]:[c]).filter(Boolean);
   const bfKeys=v=>({backdropFilter:v,webkitBackdropFilter:v});
 
@@ -3700,12 +3590,11 @@ function renderStats(o,opts){
     A(editOverlay,[{opacity:0},{opacity:0,offset:.4},{opacity:1}],L);
     A(backdropEl,[{opacity:0,...bfKeys('blur(0px)')},{opacity:1,...bfKeys('blur(2.5px)')}],{duration:OD*.85,easing:'ease-out'});
     grow.onfinish=()=>{
-      if(surf===s){s.el.remove();surf=null;skin(false)}   // the real sheet takes over from the copy
+      if(surf===s){s.el.remove();surf=null;skin(false)}
       grow.cancel();
     };
   }
   function closeSettings(){
-    // one close at a time: extra clicks on Back / the empty area while it is closing do nothing
     if(closing||!editOverlay.classList.contains('open'))return;
     closing=true;
     const done=()=>{
@@ -3726,14 +3615,12 @@ function renderStats(o,opts){
     const sh=r=>({left:r.left+dx,top:r.top+dy,width:r.width,height:r.height});
     const g={...g0,br:sh(g0.br),bt:sh(g0.bt),pr:editOverlay.getBoundingClientRect(),tt:textRect(g0.title)};
     const s=makeSurface(g);surf=s;
-    setBox(s.el,boxKF(g.pr,g.oRad,g.oBg,g.oBd));          // starts exactly where the sheet is
+    setBox(s.el,boxKF(g.pr,g.oRad,g.oBg,g.oBd));
     addLabels(s,g,true);
     skin(true);
     editOverlay.style.pointerEvents='none';
-    // content leaves first (bottom to top), then the surface shrinks home: the opening, mirrored
     A(g.title,[{opacity:1},{opacity:0}],{duration:CD*.25,delay:CD*.12,easing:'linear',fill:'forwards'});
     const T={duration:CD*.82,delay:CD*.18,fill:'both'};
-    // the whole sheet (content included) is carried and squeezed into the button together with the surface, fading out on the way
     const sx=g.br.width/g.pr.width,sy=g.br.height/g.pr.height;
     const mx=(g.br.left+g.br.width/2)-(g.pr.left+g.pr.width/2),my=(g.br.top+g.br.height/2)-(g.pr.top+g.pr.height/2);
     A(editOverlay,[{transform:'translate(-50%,-50%) scale(1,1)'},{transform:`translate(calc(-50% + ${mx}px),calc(-50% + ${my}px)) scale(${sx},${sy})`}],{...T,easing:EASE});
@@ -3814,7 +3701,6 @@ function renderStats(o,opts){
   if(opts.msg){
     editOverlay.classList.add('morph','open');
   }
-  // Stat cards: shrink every stat's text together until each card fits on a single line.
   const statsGrid=o.querySelector('.stats-grid');
   function fitStats(){
     if(!statsGrid.isConnected||!statsGrid.getClientRects().length)return;
@@ -3836,7 +3722,6 @@ function renderStats(o,opts){
     while(overflows()&&sc>0.4){sc=Math.round((sc-0.03)*100)/100;statsGrid.style.setProperty('--sc',sc)}
   }
   fitStats();
-  // Count the numbers up from 0: fast at first, easing out to the real value over 1s.
   if(!opts.msg){
     o.querySelectorAll('.stat-part-num,.stat-single').forEach(el=>{
       const target=parseInt(el.textContent.replace(/[^\d]/g,''),10)||0;
@@ -3938,7 +3823,6 @@ function posterCard({id,name,image,sub,kind='series',showType=false}){
 }
 
 const LOAD_CONCURRENCY=6;
-// Fetches data for every item (a few at a time) and hands each result to onResult as it arrives.
 async function loadAllItems(stubs,fetchItemData,onResult){
   await mapLimit(stubs,LOAD_CONCURRENCY,async stub=>{
     let data=null;
@@ -3946,7 +3830,6 @@ async function loadAllItems(stubs,fetchItemData,onResult){
     onResult({stub,data});
   });
 }
-// Category-ordered feed for the Shows pages: every show is fetched, classified and dropped into its category as it arrives (newest-aired first).
 function runCategorizedShowFeed(container,stubs,{fetchItemData,classify,grids,sections,onEmpty}){
   const spinnerWrap=document.createElement('div');
   spinnerWrap.innerHTML=loadingHtml('Loading…');
@@ -3973,7 +3856,6 @@ function movieReleaseKey(item){
   if(item.year)return `${item.year}-01-01`;
   return null;
 }
-// Watched-movie lists sort by watched date, not release date.
 function sortMoviesByWatchedDate(items){
   const mw=Store.movieWatched();
   return [...items].sort((a,b)=>(mw[b.id]?.watchedAt||0)-(mw[a.id]?.watchedAt||0));
@@ -3992,7 +3874,7 @@ function hscrollSection({title,sub,heart,icon,items,kind,route,onHeaderClick}){
   head.innerHTML=`${heart?'<span class="hscroll-heart">♥</span>':(icon?`<span class="hscroll-icon">${icon}</span>`:'')}<span class="hscroll-titles"><span class="hscroll-title">${title}</span>${sub?`<span class="hscroll-sub">${sub}</span>`:''}</span><span class="hscroll-count">${items.length}</span>${chevron}`;
   head.addEventListener('click',onHeaderClick);
   wrap.appendChild(head);
-  if(!items.length)return wrap; // an empty list shows just its header
+  if(!items.length)return wrap;
   const track=document.createElement('div');
   track.className='hscroll-track';
   items.forEach(item=>{
@@ -4023,7 +3905,6 @@ let _upcomingSeq=0;
 const ALPHA3={"abw":"AW","afg":"AF","ago":"AO","aia":"AI","ala":"AX","alb":"AL","and":"AD","are":"AE","arg":"AR","arm":"AM","asm":"AS","ata":"AQ","atf":"TF","atg":"AG","aus":"AU","aut":"AT","aze":"AZ","bdi":"BI","bel":"BE","ben":"BJ","bes":"BQ","bfa":"BF","bgd":"BD","bgr":"BG","bhr":"BH","bhs":"BS","bih":"BA","blm":"BL","blr":"BY","blz":"BZ","bmu":"BM","bol":"BO","bra":"BR","brb":"BB","brn":"BN","btn":"BT","bvt":"BV","bwa":"BW","caf":"CF","can":"CA","cck":"CC","che":"CH","chl":"CL","chn":"CN","civ":"CI","cmr":"CM","cod":"CD","cog":"CG","cok":"CK","col":"CO","com":"KM","cpv":"CV","cri":"CR","cub":"CU","cuw":"CW","cxr":"CX","cym":"KY","cyp":"CY","cze":"CZ","deu":"DE","dji":"DJ","dma":"DM","dnk":"DK","dom":"DO","dza":"DZ","ecu":"EC","egy":"EG","eri":"ER","esh":"EH","esp":"ES","est":"EE","eth":"ET","fin":"FI","fji":"FJ","flk":"FK","fra":"FR","fro":"FO","fsm":"FM","gab":"GA","gbr":"GB","geo":"GE","ggy":"GG","gha":"GH","gib":"GI","gin":"GN","glp":"GP","gmb":"GM","gnb":"GW","gnq":"GQ","grc":"GR","grd":"GD","grl":"GL","gtm":"GT","guf":"GF","gum":"GU","guy":"GY","hkg":"HK","hmd":"HM","hnd":"HN","hrv":"HR","hti":"HT","hun":"HU","idn":"ID","imn":"IM","ind":"IN","iot":"IO","irl":"IE","irn":"IR","irq":"IQ","isl":"IS","isr":"IL","ita":"IT","jam":"JM","jey":"JE","jor":"JO","jpn":"JP","kaz":"KZ","ken":"KE","kgz":"KG","khm":"KH","kir":"KI","kna":"KN","kor":"KR","kwt":"KW","lao":"LA","lbn":"LB","lbr":"LR","lby":"LY","lca":"LC","lie":"LI","lka":"LK","lso":"LS","ltu":"LT","lux":"LU","lva":"LV","mac":"MO","maf":"MF","mar":"MA","mco":"MC","mda":"MD","mdg":"MG","mdv":"MV","mex":"MX","mhl":"MH","mkd":"MK","mli":"ML","mlt":"MT","mmr":"MM","mne":"ME","mng":"MN","mnp":"MP","moz":"MZ","mrt":"MR","msr":"MS","mtq":"MQ","mus":"MU","mwi":"MW","mys":"MY","myt":"YT","nam":"NA","ncl":"NC","ner":"NE","nfk":"NF","nga":"NG","nic":"NI","niu":"NU","nld":"NL","nor":"NO","npl":"NP","nru":"NR","nzl":"NZ","omn":"OM","pak":"PK","pan":"PA","pcn":"PN","per":"PE","phl":"PH","plw":"PW","png":"PG","pol":"PL","pri":"PR","prk":"KP","prt":"PT","pry":"PY","pse":"PS","pyf":"PF","qat":"QA","reu":"RE","rou":"RO","rus":"RU","rwa":"RW","sau":"SA","sdn":"SD","sen":"SN","sgp":"SG","sgs":"GS","shn":"SH","sjm":"SJ","slb":"SB","sle":"SL","slv":"SV","smr":"SM","som":"SO","spm":"PM","srb":"RS","ssd":"SS","stp":"ST","sur":"SR","svk":"SK","svn":"SI","swe":"SE","swz":"SZ","sxm":"SX","syc":"SC","syr":"SY","tca":"TC","tcd":"TD","tgo":"TG","tha":"TH","tjk":"TJ","tkl":"TK","tkm":"TM","tls":"TL","ton":"TO","tto":"TT","tun":"TN","tur":"TR","tuv":"TV","twn":"TW","tza":"TZ","uga":"UG","ukr":"UA","umi":"UM","ury":"UY","usa":"US","uzb":"UZ","vat":"VA","vct":"VC","ven":"VE","vgb":"VG","vir":"VI","vnm":"VN","vut":"VU","wlf":"WF","wsm":"WS","yem":"YE","zaf":"ZA","zmb":"ZM","zwe":"ZW"};
 const COUNTRY_BY_NAME={"aruba":"AW","afghanistan":"AF","islamic republic of afghanistan":"AF","angola":"AO","republic of angola":"AO","anguilla":"AI","åland islands":"AX","albania":"AL","republic of albania":"AL","andorra":"AD","principality of andorra":"AD","united arab emirates":"AE","argentina":"AR","argentine republic":"AR","armenia":"AM","republic of armenia":"AM","american samoa":"AS","antarctica":"AQ","french southern territories":"TF","antigua and barbuda":"AG","australia":"AU","austria":"AT","republic of austria":"AT","azerbaijan":"AZ","republic of azerbaijan":"AZ","burundi":"BI","republic of burundi":"BI","belgium":"BE","kingdom of belgium":"BE","benin":"BJ","republic of benin":"BJ","bonaire, sint eustatius and saba":"BQ","burkina faso":"BF","bangladesh":"BD","people's republic of bangladesh":"BD","bulgaria":"BG","republic of bulgaria":"BG","bahrain":"BH","kingdom of bahrain":"BH","bahamas":"BS","commonwealth of the bahamas":"BS","bosnia and herzegovina":"BA","republic of bosnia and herzegovina":"BA","saint barthélemy":"BL","belarus":"BY","republic of belarus":"BY","belize":"BZ","bermuda":"BM","bolivia, plurinational state of":"BO","bolivia":"BO","plurinational state of bolivia":"BO","brazil":"BR","federative republic of brazil":"BR","barbados":"BB","brunei darussalam":"BN","bhutan":"BT","kingdom of bhutan":"BT","bouvet island":"BV","botswana":"BW","republic of botswana":"BW","central african republic":"CF","canada":"CA","cocos (keeling) islands":"CC","switzerland":"CH","swiss confederation":"CH","chile":"CL","republic of chile":"CL","china":"CN","people's republic of china":"CN","côte d'ivoire":"CI","republic of côte d'ivoire":"CI","cameroon":"CM","republic of cameroon":"CM","congo, the democratic republic of the":"CD","congo":"CG","republic of the congo":"CG","cook islands":"CK","colombia":"CO","republic of colombia":"CO","comoros":"KM","union of the comoros":"KM","cabo verde":"CV","republic of cabo verde":"CV","costa rica":"CR","republic of costa rica":"CR","cuba":"CU","republic of cuba":"CU","curaçao":"CW","christmas island":"CX","cayman islands":"KY","cyprus":"CY","republic of cyprus":"CY","czechia":"CZ","czech republic":"CZ","germany":"DE","federal republic of germany":"DE","djibouti":"DJ","republic of djibouti":"DJ","dominica":"DM","commonwealth of dominica":"DM","denmark":"DK","kingdom of denmark":"DK","dominican republic":"DO","algeria":"DZ","people's democratic republic of algeria":"DZ","ecuador":"EC","republic of ecuador":"EC","egypt":"EG","arab republic of egypt":"EG","eritrea":"ER","the state of eritrea":"ER","western sahara":"EH","spain":"ES","kingdom of spain":"ES","estonia":"EE","republic of estonia":"EE","ethiopia":"ET","federal democratic republic of ethiopia":"ET","finland":"FI","republic of finland":"FI","fiji":"FJ","republic of fiji":"FJ","falkland islands (malvinas)":"FK","france":"FR","french republic":"FR","faroe islands":"FO","micronesia, federated states of":"FM","federated states of micronesia":"FM","gabon":"GA","gabonese republic":"GA","united kingdom":"GB","united kingdom of great britain and northern ireland":"GB","georgia":"GE","guernsey":"GG","ghana":"GH","republic of ghana":"GH","gibraltar":"GI","guinea":"GN","republic of guinea":"GN","guadeloupe":"GP","gambia":"GM","republic of the gambia":"GM","guinea-bissau":"GW","republic of guinea-bissau":"GW","equatorial guinea":"GQ","republic of equatorial guinea":"GQ","greece":"GR","hellenic republic":"GR","grenada":"GD","greenland":"GL","guatemala":"GT","republic of guatemala":"GT","french guiana":"GF","guam":"GU","guyana":"GY","republic of guyana":"GY","hong kong":"HK","hong kong special administrative region of china":"HK","heard island and mcdonald islands":"HM","honduras":"HN","republic of honduras":"HN","croatia":"HR","republic of croatia":"HR","haiti":"HT","republic of haiti":"HT","hungary":"HU","indonesia":"ID","republic of indonesia":"ID","isle of man":"IM","india":"IN","republic of india":"IN","british indian ocean territory":"IO","ireland":"IE","iran, islamic republic of":"IR","iran":"IR","islamic republic of iran":"IR","iraq":"IQ","republic of iraq":"IQ","iceland":"IS","republic of iceland":"IS","israel":"IL","state of israel":"IL","italy":"IT","italian republic":"IT","jamaica":"JM","jersey":"JE","jordan":"JO","hashemite kingdom of jordan":"JO","japan":"JP","kazakhstan":"KZ","republic of kazakhstan":"KZ","kenya":"KE","republic of kenya":"KE","kyrgyzstan":"KG","kyrgyz republic":"KG","cambodia":"KH","kingdom of cambodia":"KH","kiribati":"KI","republic of kiribati":"KI","saint kitts and nevis":"KN","korea, republic of":"KR","south korea":"KR","kuwait":"KW","state of kuwait":"KW","lao people's democratic republic":"LA","laos":"LA","lebanon":"LB","lebanese republic":"LB","liberia":"LR","republic of liberia":"LR","libya":"LY","saint lucia":"LC","liechtenstein":"LI","principality of liechtenstein":"LI","sri lanka":"LK","democratic socialist republic of sri lanka":"LK","lesotho":"LS","kingdom of lesotho":"LS","lithuania":"LT","republic of lithuania":"LT","luxembourg":"LU","grand duchy of luxembourg":"LU","latvia":"LV","republic of latvia":"LV","macao":"MO","macao special administrative region of china":"MO","saint martin (french part)":"MF","morocco":"MA","kingdom of morocco":"MA","monaco":"MC","principality of monaco":"MC","moldova, republic of":"MD","moldova":"MD","republic of moldova":"MD","madagascar":"MG","republic of madagascar":"MG","maldives":"MV","republic of maldives":"MV","mexico":"MX","united mexican states":"MX","marshall islands":"MH","republic of the marshall islands":"MH","north macedonia":"MK","republic of north macedonia":"MK","mali":"ML","republic of mali":"ML","malta":"MT","republic of malta":"MT","myanmar":"MM","republic of myanmar":"MM","montenegro":"ME","mongolia":"MN","northern mariana islands":"MP","commonwealth of the northern mariana islands":"MP","mozambique":"MZ","republic of mozambique":"MZ","mauritania":"MR","islamic republic of mauritania":"MR","montserrat":"MS","martinique":"MQ","mauritius":"MU","republic of mauritius":"MU","malawi":"MW","republic of malawi":"MW","malaysia":"MY","mayotte":"YT","namibia":"NA","republic of namibia":"NA","new caledonia":"NC","niger":"NE","republic of the niger":"NE","norfolk island":"NF","nigeria":"NG","federal republic of nigeria":"NG","nicaragua":"NI","republic of nicaragua":"NI","niue":"NU","netherlands":"NL","kingdom of the netherlands":"NL","norway":"NO","kingdom of norway":"NO","nepal":"NP","federal democratic republic of nepal":"NP","nauru":"NR","republic of nauru":"NR","new zealand":"NZ","oman":"OM","sultanate of oman":"OM","pakistan":"PK","islamic republic of pakistan":"PK","panama":"PA","republic of panama":"PA","pitcairn":"PN","peru":"PE","republic of peru":"PE","philippines":"PH","republic of the philippines":"PH","palau":"PW","republic of palau":"PW","papua new guinea":"PG","independent state of papua new guinea":"PG","poland":"PL","republic of poland":"PL","puerto rico":"PR","korea, democratic people's republic of":"KP","north korea":"KP","democratic people's republic of korea":"KP","portugal":"PT","portuguese republic":"PT","paraguay":"PY","republic of paraguay":"PY","palestine, state of":"PS","the state of palestine":"PS","french polynesia":"PF","qatar":"QA","state of qatar":"QA","réunion":"RE","romania":"RO","russian federation":"RU","rwanda":"RW","rwandese republic":"RW","saudi arabia":"SA","kingdom of saudi arabia":"SA","sudan":"SD","republic of the sudan":"SD","senegal":"SN","republic of senegal":"SN","singapore":"SG","republic of singapore":"SG","south georgia and the south sandwich islands":"GS","saint helena, ascension and tristan da cunha":"SH","svalbard and jan mayen":"SJ","solomon islands":"SB","sierra leone":"SL","republic of sierra leone":"SL","el salvador":"SV","republic of el salvador":"SV","san marino":"SM","republic of san marino":"SM","somalia":"SO","federal republic of somalia":"SO","saint pierre and miquelon":"PM","serbia":"RS","republic of serbia":"RS","south sudan":"SS","republic of south sudan":"SS","sao tome and principe":"ST","democratic republic of sao tome and principe":"ST","suriname":"SR","republic of suriname":"SR","slovakia":"SK","slovak republic":"SK","slovenia":"SI","republic of slovenia":"SI","sweden":"SE","kingdom of sweden":"SE","eswatini":"SZ","kingdom of eswatini":"SZ","sint maarten (dutch part)":"SX","seychelles":"SC","republic of seychelles":"SC","syrian arab republic":"SY","syria":"SY","turks and caicos islands":"TC","chad":"TD","republic of chad":"TD","togo":"TG","togolese republic":"TG","thailand":"TH","kingdom of thailand":"TH","tajikistan":"TJ","republic of tajikistan":"TJ","tokelau":"TK","turkmenistan":"TM","timor-leste":"TL","democratic republic of timor-leste":"TL","tonga":"TO","kingdom of tonga":"TO","trinidad and tobago":"TT","republic of trinidad and tobago":"TT","tunisia":"TN","republic of tunisia":"TN","türkiye":"TR","republic of türkiye":"TR","tuvalu":"TV","taiwan, province of china":"TW","taiwan":"TW","tanzania, united republic of":"TZ","tanzania":"TZ","united republic of tanzania":"TZ","uganda":"UG","republic of uganda":"UG","ukraine":"UA","united states minor outlying islands":"UM","uruguay":"UY","eastern republic of uruguay":"UY","united states":"US","united states of america":"US","uzbekistan":"UZ","republic of uzbekistan":"UZ","holy see (vatican city state)":"VA","saint vincent and the grenadines":"VC","venezuela, bolivarian republic of":"VE","venezuela":"VE","bolivarian republic of venezuela":"VE","virgin islands, british":"VG","british virgin islands":"VG","virgin islands, u.s.":"VI","virgin islands of the united states":"VI","viet nam":"VN","vietnam":"VN","socialist republic of viet nam":"VN","vanuatu":"VU","republic of vanuatu":"VU","wallis and futuna":"WF","samoa":"WS","independent state of samoa":"WS","yemen":"YE","republic of yemen":"YE","south africa":"ZA","republic of south africa":"ZA","zambia":"ZM","republic of zambia":"ZM","zimbabwe":"ZW","republic of zimbabwe":"ZW","usa":"US","u.s.":"US","uk":"GB","england":"GB","scotland":"GB","korea":"KR","russia":"RU","turkey":"TR"};
 
-// A country given by TheTVDB can be an alpha-3 code ("usa"), an alpha-2 code, or a name - normalise to alpha-2.
 function countryCodeFrom(v){
   if(!v)return '';
   const t=String(v).trim().toLowerCase();
@@ -4032,7 +3913,6 @@ function countryCodeFrom(v){
   if(t.length===2&&COUNTRIES.some(c=>c[0].toLowerCase()===t))return t.toUpperCase();
   return COUNTRY_BY_NAME[t]||'';
 }
-// Time zone a country's TV schedule is usually quoted in (multi-zone countries use their main broadcast zone).
 const PRIMARY_TZ={US:'America/New_York',CA:'America/Toronto',AU:'Australia/Sydney',BR:'America/Sao_Paulo',RU:'Europe/Moscow',MX:'America/Mexico_City',CN:'Asia/Shanghai',ID:'Asia/Jakarta',KZ:'Asia/Almaty',AR:'America/Argentina/Buenos_Aires',CL:'America/Santiago',DE:'Europe/Berlin',ES:'Europe/Madrid',PT:'Europe/Lisbon',NZ:'Pacific/Auckland',UA:'Europe/Kyiv',MN:'Asia/Ulaanbaatar',EC:'America/Guayaquil',MY:'Asia/Kuala_Lumpur',CD:'Africa/Kinshasa',PG:'Pacific/Port_Moresby',GL:'America/Nuuk',FM:'Pacific/Pohnpei',KI:'Pacific/Tarawa',PF:'Pacific/Tahiti',UM:'Pacific/Wake',SJ:'Arctic/Longyearbyen',AQ:'Antarctica/McMurdo'};
 function sourceTzForCountry(code){
   if(!code)return '';
@@ -4045,7 +3925,6 @@ function tzOffsetMs(ts,tz){
   const g=t=>+parts.find(p=>p.type===t).value;
   return Date.UTC(g('year'),g('month')-1,g('day'),g('hour'),g('minute'),g('second'))-Math.floor(ts/1000)*1000;
 }
-// Wall-clock date + time in `tz` -> the real UTC instant (handles DST).
 function zonedToUtc(dateStr,h,m,tz){
   const [y,mo,d]=dateStr.split('-').map(Number);
   const guess=Date.UTC(y,mo-1,d,h,m,0);
@@ -4064,7 +3943,7 @@ function dateKeyInTz(ts,tz){
     return `${g('year')}-${g('month')}-${g('day')}`;
   }catch{return new Date(ts).toISOString().slice(0,10)}
 }
-function dayDiffKeys(a,b){ // whole calendar days from key b to key a
+function dayDiffKeys(a,b){
   const t=k=>{const [y,m,d]=k.split('-').map(Number);return Date.UTC(y,m-1,d)};
   return Math.round((t(a)-t(b))/86400000);
 }
@@ -4080,14 +3959,12 @@ function seriesSourceTz(series){
   const code=countryCodeFrom(series?.originalNetwork?.country)||countryCodeFrom(series?.latestNetwork?.country)||countryCodeFrom(series?.originalCountry);
   return sourceTzForCountry(code);
 }
-// When does this episode reach the user? `timed:false` means TheTVDB only knows the date, so it counts from 00:00 that day in the user's time zone.
 function airInstant(dateStr,airsTime,srcTz){
   const userTz=getUserTimeZone();
   const t=parseAirsTime(airsTime);
   if(t)return{ts:zonedToUtc(dateStr,t.h,t.m,srcTz||userTz),timed:true};
   return{ts:zonedToUtc(dateStr,0,0,userTz),timed:false};
 }
-// Movie release date as it applies to the user: their own country's release if TheTVDB lists one, otherwise the earliest release.
 function userReleaseDate(ext){
   const mine=getUserCountry();
   const list=(ext?.releases||[]).filter(r=>r.date);
@@ -4110,7 +3987,6 @@ function countdownLabel(ts,timed){
 function fmtLocalTime(ts){
   try{return new Intl.DateTimeFormat('en-US',{timeZone:getUserTimeZone(),hour:'numeric',minute:'2-digit'}).format(new Date(ts))}catch{return null}
 }
-// Keep the countdowns on screen ticking without re-rendering the lists.
 setInterval(()=>{
   document.querySelectorAll('[data-cd-ts]').forEach(el=>{
     el.textContent=countdownLabel(+el.dataset.cdTs,el.dataset.cdTimed==='1');
@@ -4244,7 +4120,6 @@ async function renderShow(o,{id}){
       h.textContent='Continue Watching';
       continueWrap.appendChild(h);
       const seq=eps.filter(e=>e.seasonNumber>0&&!isFuture(e.aired)).sort((a,b)=>a.seasonNumber-b.seasonNumber||a.number-b.number);
-      // Resume after the LAST watched episode, not the first gap.
       let lastWatchedIdx=-1;
       for(let k=seq.length-1;k>=0;k--){
         if(Store.isWatched(seq[k].id)){lastWatchedIdx=k;break}
@@ -4308,7 +4183,6 @@ function seasonEpisodesSection(eps,showId,onProgressChange,seriesImdbId,showItem
   accordion.className='season-accordion';
   seasons.forEach((sn,i)=>{
     const seasonEps=bySeason.get(sn).sort((a,b)=>a.number-b.number);
-    // Only aired episodes count toward a season's watched X/Y and complete state.
     const airedEps=seasonEps.filter(e=>!isFuture(e.aired));
     const watched=airedEps.filter(e=>Store.isWatched(e.id)).length;
     const seasonRwKey=`${showId}:${sn}`;
@@ -4353,7 +4227,6 @@ function seasonEpisodesSection(eps,showId,onProgressChange,seriesImdbId,showItem
         group.classList.toggle('hidden',!Store.isWatched(ep.id));
       });
     }
-    // Season rewatch = minimum rewatch count across its aired episodes (only once all are watched); recomputed on every change.
     function syncSeasonRewatchFromEpisodes(){
       if(!seasonEps.length)return;
       const aired=seasonEps.filter(ep=>!isFuture(ep.aired));
@@ -4472,7 +4345,6 @@ async function renderMovie(o,{id}){
   const content=o.querySelector('#content');
   try{
     const movie=await Api.movieExtended(id);
-    // Movie overview isn't always on the main endpoint: fall back to the translations endpoint.
     let movieOverview=movie.overview;
     if(!movieOverview){
       try{
@@ -4553,7 +4425,6 @@ async function renderMovie(o,{id}){
       cast.forEach(c=>{
         const item=document.createElement('div');
         item.className='cast-item';
-        // Crew has no character name: show the job title instead.
         const role=c.name||c.peopleType||'';
         item.innerHTML=`
           <img class="cast-photo" loading="lazy" src="${imgUrl(c.image||c.personImgURL,{thumb:true})}" alt="${esc(c.personName)}" />
@@ -4581,7 +4452,6 @@ async function renderMovie(o,{id}){
       body.appendChild(trailerH);
       const vid=youtubeVideoId(trailer.url);
       if(vid){
-        // youtube-nocookie + origin avoids some embed failures (owner-disabled embedding can't be worked around).
         const originParam=(location.origin&&location.origin!=='null')?`&origin=${encodeURIComponent(location.origin)}`:'';
         const wrap=document.createElement('div');
         wrap.className='trailer-embed-wrap';
@@ -4611,8 +4481,8 @@ document.querySelectorAll('.nav-item[data-route]').forEach(b=>b.addEventListener
   outlet.addEventListener('scroll',()=>{
     const top=outlet.scrollTop,dy=top-lastTop;
     if(top<=24)scrolled=false;
-    else if(dy>6)scrolled=true;      // scrolling down: small
-    else if(dy<-6)scrolled=false;    // scrolling up: big again
+    else if(dy>6)scrolled=true;
+    else if(dy<-6)scrolled=false;
     if(Math.abs(dy)>6||top<=24)lastTop=top;
     apply();
   },{passive:true});
@@ -4624,7 +4494,6 @@ document.querySelectorAll('.nav-item[data-route]').forEach(b=>b.addEventListener
   },{passive:true});
   bar.addEventListener('pointerdown',()=>{tapHot=true;apply();clearTimeout(tapT);tapT=setTimeout(()=>{tapHot=false;apply()},2500)});
 })();
-// opening Explore rebuilds the page, which would drop the cursor out of the field: put it back when it was there
 const runSearch=()=>{
   if(!searchInput.value.trim())return;
   const had=document.activeElement===searchInput;
@@ -4634,11 +4503,7 @@ const runSearch=()=>{
 searchInput.addEventListener('keydown',e=>{if(e.key==='Enter')runSearch()});
 searchBtn.addEventListener('click',runSearch);
 
-/* ---- Missing poster / alt title repair ----
-   Importing (or a flaky connection) can leave shows/movies without a poster. Every few seconds this looks for
-   library / favorite / registry entries with no image, fetches their details from TheTVDB (a few at a time, and not
-   the same one more than once a minute) and fills the poster in, here and on screen. */
-const _posterTry={};let _posterBusy=false;   // key -> {n: attempts, next: earliest retry}
+const _posterTry={};let _posterBusy=false;
 function applyRepairedItem(kind,id,d){
   [Store._libKey(kind),Store._favKey(kind),Store._regKey(kind)].forEach(key=>{
     const m=lget(key,{});
@@ -4677,7 +4542,6 @@ async function repairMissingPosters(){
     ['show','movie'].forEach(kind=>{
       const seen=new Set();
       [lpeek(Store._libKey(kind),{}),lpeek(Store._favKey(kind),{}),lpeek(Store._regKey(kind),{})].forEach(map=>Object.values(map).forEach(it=>{
-        // missing poster, or fewer than 2 alternative titles that haven't been looked up yet
         if(!it||it.id==null||seen.has(String(it.id)))return;
         if(it.image&&(it.aliasChecked>=2||aliasNames(it).length>=2))return;
         seen.add(String(it.id));
@@ -4687,13 +4551,12 @@ async function repairMissingPosters(){
         pending.push({kind,id:it.id,key});
       }));
     });
-    for(const q of pending.slice(0,15)){
+    for(const q of pending.slice(0,50)){
       const pt=_posterTry[q.key]||(_posterTry[q.key]={n:0});
       pt.n++;pt.next=Date.now()+Math.min(3600e3,30e3*2**pt.n);
       try{
         const d=q.kind==='movie'?await Api.movieExtended(q.id):await Api.seriesExtended(q.id);
         if(d){
-          // TVDB often lists fewer than 2 aliases: fall back to the title in the original language
           const have=(d.aliases||[]).map(a=>a&&a.name).filter(n=>n&&n!==d.name);
           if(have.length<2&&d.originalLanguage&&d.originalLanguage!=='eng'){
             try{
