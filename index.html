@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" data-style="glass">
+<html lang="en" data-style="flat">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>TV Plus</title>
 <meta name="theme-color" content="#000000">
-<script>try{var _p=JSON.parse(localStorage.getItem('nx.profile')||'{}'),_r=document.documentElement;if(_p.theme==='light')_r.dataset.theme='light';if(_p.style==='flat')_r.dataset.style='flat';}catch(e){}</script>
+<script>try{var _p=JSON.parse(localStorage.getItem('nx.profile')||'{}'),_r=document.documentElement;if(_p.theme==='light')_r.dataset.theme='light';if(_p.style==='glass')_r.dataset.style='glass';}catch(e){}</script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -175,6 +175,12 @@ code{background:var(--bg-elev);padding:1px 6px;border-radius:4px;font-family:'Je
 .profile-edit-overlay input[type=text]{width:100%}
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
 .modal-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:22px;max-width:360px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+html[data-style="glass"] .modal-backdrop{background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px)}
+html[data-style="glass"] .modal-card{background:rgba(12,14,20,.64);border-color:transparent;-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);box-shadow:var(--rim)}
+html[data-style="glass"][data-theme="light"] .modal-card{background:rgba(206,213,227,.66)}
+html[data-style="glass"] .modal-card :is(.btn){-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-theme="light"] .modal-backdrop{background:rgba(20,28,45,.4)}
+html[data-theme="light"] .modal-card{background:#fafbfd}
 .modal-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:17px;color:#fff;margin-bottom:8px}
 .modal-message{font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:18px}
 .modal-actions{display:flex;justify-content:flex-end;gap:10px}
@@ -233,6 +239,7 @@ html,body,body *{touch-action:pan-x pan-y}
 .season-episodes .rewatch-inc{height:30px;padding:0 9px;font-size:12px}
 .season-episodes .rewatch-dec{width:30px;height:30px;font-size:18px}
 .season-episodes .check,.continue-watching-list .check{margin-right:4px}
+body .empty{margin-left:50px;margin-right:50px}
 }
 .stat-part-num{font-family:'JetBrains Mono',monospace;font-size:calc(22px*var(--sc));font-weight:700;color:var(--text);line-height:1}
 .stat-part-label{font-size:calc(9px*var(--sc));font-weight:700;letter-spacing:.05em;color:var(--text-dim);margin-top:5px}
@@ -337,6 +344,7 @@ html,body{transition:background-color .35s ease}
 .hscroll-section{margin:0 0 26px}
 .hscroll-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;cursor:pointer;background:none;border:none;padding:0;width:100%;text-align:left;color:inherit}
 .hscroll-head:hover .hscroll-title{color:var(--accent)}
+.tab-shows .fav-badge{display:none}
 .hscroll-heart{color:var(--red);font-size:21px;line-height:1;flex-shrink:0}
 .hscroll-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:22px;color:#fff;flex:1;min-width:0}
 .hscroll-chevron{width:18px;height:18px;color:var(--text-dim);flex-shrink:0}
@@ -397,6 +405,9 @@ html,body{transition:background-color .35s ease}
 .profile-edit-overlay .btn{padding:8px 12px;font-size:12px}
 .profile-edit-overlay .data-row{display:flex;flex-wrap:wrap;gap:8px}
 .profile-edit-overlay .field.fs-field{margin-bottom:7px}
+.profile-edit-overlay .data-row-io{display:flex;align-items:center;gap:8px;width:100%;flex:0 0 100%}
+.profile-edit-overlay .data-row-io .btn{flex:1 1 0;min-width:0;padding-left:8px;padding-right:8px;white-space:nowrap}
+.profile-edit-overlay .data-row-io .btn.btn-icon{flex:0 0 44px}
 .profile-edit-overlay .data-row .btn svg{width:17px;height:17px;flex-shrink:0;margin-right:8px}
 .profile-edit-overlay .data-row .btn.btn-icon{flex:0 0 44px;width:44px;height:44px;min-height:44px;min-width:44px;padding:0;border-radius:50%}
 .profile-edit-overlay .data-row .btn.btn-icon svg{margin:0}
@@ -446,6 +457,9 @@ html,body{transition:background-color .35s ease}
 .seg-toggle button{white-space:nowrap}
 .profile-route .seg-toggle button{transition:transform .15s cubic-bezier(.3,.7,.4,1),background-color .25s ease,color .25s ease,box-shadow .25s ease}
 .profile-route .seg-toggle button:active{transform:scale(.94)}
+.profile-route .stat-card2{transition:transform .25s cubic-bezier(.3,.9,.4,1),box-shadow .25s ease,border-color .25s ease}
+.profile-route .stat-card2:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,255,255,.07);border-color:var(--text-dim)}
+html[data-theme="light"] .profile-route .stat-card2:hover{box-shadow:0 10px 28px rgba(30,40,60,.18)}
 .profile-route .hscroll-item:active{transform:scale(.95)}
 .profile-route .hscroll-head:active{transform:scale(.985)}
 
@@ -546,7 +560,9 @@ html[data-style="glass"][data-theme="light"] .btn-accent,html[data-style="glass"
 html[data-style="glass"] .bglass{background:rgba(130,130,136,.16);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);box-shadow:0 6px 18px rgba(0,0,0,.22)}
 html[data-style="glass"]{--rim:inset 1px 1px 0 rgba(255,255,255,.42),inset -1px -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.05);--rim-soft:inset 1px 1px 0 rgba(255,255,255,.2),inset -1px -1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(255,255,255,.03)}
 html[data-style="glass"][data-theme="light"]{--rim:inset 1px 1px 0 rgba(255,255,255,.9),inset -1px -1px 0 rgba(255,255,255,.7);--rim-soft:inset 1px 1px 0 rgba(255,255,255,.55),inset -1px -1px 0 rgba(255,255,255,.4)}
-html[data-style="glass"] #outlet :is(.stat-card2,.profile-list-pair .hscroll-section)::after{box-shadow:var(--rim-soft)}
+html[data-style="glass"] #outlet :is(.stat-card2,.profile-list-pair .hscroll-section)::after{box-shadow:var(--rim-soft);transition:box-shadow .25s ease}
+html[data-style="glass"] #outlet .stat-card2:hover::after{box-shadow:var(--rim)}
+html[data-style="glass"] #outlet .stat-card2:hover{box-shadow:0 8px 28px rgba(255,255,255,.08)}
 html[data-style="glass"] .profile-edit-overlay :is(.btn,.back,.profile-edit-btn,label.field-btn,.seg-toggle,.seg-toggle button,.thumb,.slider,select,input),html[data-style="glass"] .list-overlay :is(.btn,.back){-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 html[data-style="glass"] .profile-edit-overlay.bglass,html[data-style="glass"] .sheet-surf.bglass{border-color:transparent;box-shadow:var(--rim)}
 html[data-style="glass"] .list-overlay.bglass,html[data-style="glass"] #bottomnav.bglass{border-color:transparent;box-shadow:none}
@@ -555,7 +571,9 @@ html[data-style="glass"] :is(#bottomnav,.stat-card2,.profile-list-pair .hscroll-
 html[data-style="glass"] #bottomnav.bglass{background:rgba(130,130,136,.16)}
 html[data-style="glass"] .stat-card2{transform:translateZ(0);will-change:transform}
 html[data-style="glass"] .stat-card2,html[data-style="glass"] .profile-list-pair .hscroll-section{background:rgba(130,130,136,.16);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);border-color:transparent;box-shadow:none}
-html[data-style="glass"][data-theme="light"] .stat-card2,html[data-style="glass"][data-theme="light"] .profile-list-pair .hscroll-section{background:rgba(255,255,255,.45);box-shadow:none}
+html[data-style="glass"][data-theme="light"] .stat-card2,html[data-style="glass"][data-theme="light"] .profile-list-pair .hscroll-section{background:rgba(255,255,255,.7);box-shadow:0 10px 28px rgba(30,40,60,.16),0 2px 6px rgba(30,40,60,.14),0 0 0 1px rgba(30,40,60,.09)}
+html[data-style="glass"][data-theme="light"] #bottomnav.bglass{box-shadow:0 10px 28px rgba(30,40,60,.2),0 2px 6px rgba(30,40,60,.14),0 0 0 1px rgba(30,40,60,.1)}
+html[data-style="glass"][data-theme="light"] #bottomnav.bglass{background:rgba(255,255,255,.72)}
 html[data-style="glass"] .check{background:rgba(255,255,255,.08);border:none;-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:inset 1px 1px 0 rgba(255,255,255,.42),inset -1px -1px 0 rgba(255,255,255,.3),0 3px 10px rgba(0,0,0,.18)}
 html[data-style="glass"] .check.on{background:color-mix(in srgb,var(--green) 66%,transparent);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--green) 85%,transparent),0 3px 10px rgba(0,0,0,.2)}
 html[data-style="glass"][data-theme="light"] .check{background:rgba(255,255,255,.5);box-shadow:inset 1px 1px 0 rgba(255,255,255,.9),inset -1px -1px 0 rgba(255,255,255,.7),0 3px 10px rgba(30,40,60,.12)}
@@ -657,8 +675,8 @@ html[data-theme="light"] .btn-disconnect{color:var(--red)}
 
 :root{--accent-text:var(--accent)}
 html[data-theme="light"],html[data-theme="light"] .profile-edit-overlay{
-  --bg:#f6f8fb; --bg-card:#fafbfd; --bg-elev:#eff1f5; --border:#dde1e8;
-  --text:#161b27; --text-dim:#5a6477; --heading:#343c4e;
+  --bg:#f6f8fb; --bg-card:#fafbfd; --bg-elev:#eff1f5; --border:#b9c0cd;
+  --text:#0e131e; --text-dim:#434c5e; --heading:#232a3a;
   --accent-text:#8a6a00; --accent-dark:#f0dc8a;
   --amber:#b86e00; --amber-dark:#ffe9bd; --imdb:#a8820a; --btn-gray:#e8ebf0; --cat-color:#2a3142;
 }
@@ -707,7 +725,6 @@ html[data-theme="light"] .poster-overlay .name,
 html[data-theme="light"] .poster-type{color:#ffffff}
 html[data-theme="light"] .poster-rating{color:#f5c518}
 html[data-theme="light"] .lib-popup,
-html[data-theme="light"] .modal-card,
 html[data-theme="light"] .rating-chip.imdb,
 html[data-theme="light"] .rating-chip.rt{background:#3d3d3d}
 html[data-theme="light"] .stat-card2,
@@ -891,10 +908,10 @@ function downloadBackup(){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-const APP_VERSION='124';
+const APP_VERSION='125';
 function applyStyle(st){
   const r=document.documentElement;
-  r.dataset.style=st==='flat'?'flat':'glass';
+  r.dataset.style=st==='glass'?'glass':'flat';
 }
 function snapNav(bar){
   const cs=getComputedStyle(bar);
@@ -932,6 +949,7 @@ function switchStyle(st){
   const root=document.documentElement,bar=document.getElementById('bottomnav');
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const snap=reduce?null:snapNav(bar);
+  bar.classList.add('nav-morph');
   if(!reduce){
     root.classList.add('style-anim');
     clearTimeout(window._styleAnimT);
@@ -939,7 +957,11 @@ function switchStyle(st){
   }
   Store.setProfile({style:st});
   applyStyle(st);
-  if(snap)morphNav(bar,snap);else updateNavPill(true);
+  if(snap)morphNav(bar,snap);
+  else{
+    updateNavPill(true);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{bar.classList.remove('nav-morph');updateNavPill(true)}));
+  }
 }
 function applyTheme(t){
   const light=t==='light';
@@ -1330,6 +1352,8 @@ function exportProfileSection(){
     `  Username: ${username}`,
     `  Country: ${exportCountryLabel()}`,
     `  Time zone: ${effectiveCountryTz().tz}`,
+    `  Style: ${Store.profile().style==='glass'?'glass':'flat'}`,
+    `  Theme: ${Store.profile().theme==='light'?'light':'dark'}`,
     `  TVDB API Key: ${apikey}`,
     `  OMDB API Key: ${omdbkey}`,
     `  TV time: ${formatDurationFull(showMins)}`,
@@ -1532,7 +1556,7 @@ async function importDataText(text){
     return m?{name:m[1].trim(),id:m[2],count:+m[3]}:null;
   }
 
-  let importedUsername=null,importedApiKey=null,importedOmdbKey=null,importedCountry='',importedTz='';
+  let importedUsername=null,importedApiKey=null,importedOmdbKey=null,importedCountry='',importedTz='',importedStyle='',importedTheme='';
   const showBlocks=[];
   const movieWatchedRows=[];
   const watchlistRows=[];
@@ -1556,6 +1580,10 @@ async function importDataText(text){
         if(co)importedCountry=co[1].trim();
         const tzm=/^\s*Time zone:\s?(.*)$/.exec(lines[i]);
         if(tzm)importedTz=tzm[1].trim();
+        const stm=/^\s*Style:\s?(.*)$/.exec(lines[i]);
+        if(stm)importedStyle=stm[1].trim().toLowerCase();
+        const thm=/^\s*Theme:\s?(.*)$/.exec(lines[i]);
+        if(thm)importedTheme=thm[1].trim().toLowerCase();
         const k=/^\s*TVDB API Key:\s?(.*)$/.exec(lines[i]);
         if(k)importedApiKey=k[1].trim();
         const o=/^\s*OMDB API Key:\s?(.*)$/.exec(lines[i]);
@@ -1739,6 +1767,8 @@ async function importDataText(text){
   const rw=Store.rewatch();
   rw.movie=maxInto(rw.movie||{},newMovieRewatch);
   lset(K.rewatch,rw);
+  if(importedStyle==='flat'||importedStyle==='glass'){Store.setProfile({style:importedStyle});applyStyle(importedStyle)}
+  if(importedTheme==='light'||importedTheme==='dark'){Store.setProfile({theme:importedTheme});applyTheme(importedTheme)}
   if(importedUsername!=null&&!Store.profile().name)Store.setProfile({name:importedUsername});
   if(importedCountry){
     const codeM=/\(([A-Za-z]{2})\)\s*$/.exec(importedCountry);
@@ -2164,10 +2194,25 @@ function showConfirmDialog({title,message,confirmLabel='Confirm',cancelLabel='Ca
       </div>
     </div>`;
   document.body.appendChild(backdrop);
-  function close(){backdrop.remove();onCancel?.()}
-  backdrop.addEventListener('click',e=>{if(e.target===backdrop)close()});
-  backdrop.querySelector('#modal-cancel').addEventListener('click',close);
-  backdrop.querySelector('#modal-confirm').addEventListener('click',()=>{backdrop.remove();onConfirm()});
+  const card=backdrop.firstElementChild;
+  const EASE='cubic-bezier(.32,.72,.2,1)';
+  if(backdrop.animate){
+    backdrop.animate([{opacity:0},{opacity:1}],{duration:220,easing:'ease'});
+    card.animate([{opacity:0,transform:'translateY(14px) scale(.96)'},{opacity:1,transform:'none'}],{duration:300,easing:EASE});
+  }
+  let closing=false;
+  function leave(after){
+    if(closing)return;
+    closing=true;
+    if(!backdrop.animate){backdrop.remove();after?.();return}
+    backdrop.animate([{opacity:1},{opacity:0}],{duration:200,easing:'ease',fill:'forwards'});
+    const a=card.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(10px) scale(.97)'}],{duration:200,easing:'ease',fill:'forwards'});
+    a.onfinish=()=>backdrop.remove();
+    after?.();
+  }
+  backdrop.addEventListener('click',e=>{if(e.target===backdrop)leave(onCancel)});
+  backdrop.querySelector('#modal-cancel').addEventListener('click',()=>leave(onCancel));
+  backdrop.querySelector('#modal-confirm').addEventListener('click',()=>leave(onConfirm));
 }
 function backButton(route){
   const back=document.createElement('button');
@@ -2757,6 +2802,7 @@ function followNavPill(ms=800){
 ['gesturestart','gesturechange','gestureend'].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
 document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
 window.addEventListener('resize',()=>updateNavPill(true));
+if(window.ResizeObserver)new ResizeObserver(()=>updateNavPill(true)).observe(document.getElementById('bottomnav'));
 document.addEventListener('keydown',e=>{
   const t=e.target;
   if((e.key==='Enter'||e.key===' ')&&t.matches?.('[role="button"][tabindex]')&&t.tagName!=='BUTTON'){e.preventDefault();t.click()}
@@ -2909,6 +2955,7 @@ function switchPane(from,to,dir,show,commit){
   out.onfinish=end;out.oncancel=end;
 }
 async function renderShows(o){
+  o.classList.add('tab-shows');
   if(showsDirty){showsDirty=false;bumpShowsCache()}
   o.classList.add('shows-route');
   o.classList.toggle('upcoming-route',showsTabState==='upcoming');
@@ -3104,6 +3151,7 @@ function ensureMoviesTabLoaded(){
   if(moviesTabState==='upcoming'&&!movieUpcomingLoaded){movieUpcomingLoaded=true;renderMovieUpcomingTab(movieUpcomingPane);}
 }
 async function renderMovies(o){
+  o.classList.remove('tab-shows');
   if(moviesDirty){moviesDirty=false;bumpMoviesCache()}
   o.classList.add('shows-route');
   o.classList.toggle('upcoming-route',moviesTabState==='upcoming');
@@ -3336,7 +3384,7 @@ function renderStats(o,opts){
           </div>
         </div>
         <div class="setting-row">
-          <div class="seg-toggle" id="style-toggle" role="group" aria-label="Interface style"><button type="button" data-style="flat" class="${profile.style==='flat'?'active':''}">Flat</button><button type="button" data-style="glass" class="${profile.style==='flat'?'':'active'}">Glass</button></div>
+          <div class="seg-toggle" id="style-toggle" role="group" aria-label="Interface style"><button type="button" data-style="flat" class="${profile.style==='glass'?'':'active'}">Flat</button><button type="button" data-style="glass" class="${profile.style==='glass'?'active':''}">Glass</button></div>
         </div>
         <div class="setting-row">
           <label class="switch" title="Switch between dark and light mode"><input type="checkbox" id="theme-toggle" ${profile.theme==='light'?'checked':''} /><span class="slider"><span class="thumb"><svg class="ico-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span></span></label>
@@ -3355,9 +3403,11 @@ function renderStats(o,opts){
       <div class="field fs-field"><span id="fs-status">${FileSync.supported?'No data file connected yet. Choose or create a .txt file to keep your data auto-saved on this device.':'You can export/import a backup .txt file below.'}</span></div>
       <div class="data-row">
         ${FileSync.supported?`<button type="button" id="fs-choose" class="btn btn-accent">Choose / Create Data File</button><button type="button" id="fs-load" class="btn btn-ghost">Load From File</button><button type="button" id="fs-bak" class="btn btn-ghost">Restore Auto-Backup</button>`:''}
+        <div class="data-row-io">
         <button type="button" id="fs-download" class="btn"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>Export Backup</button>
         <button type="button" id="fs-import" class="btn btn-ghost"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>Import Backup</button>
         <button type="button" id="fs-delete" class="btn btn-disconnect btn-icon" title="Delete data" aria-label="Delete data"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+        </div>
       </div>
       <input type="file" id="fs-import-input" accept=".txt" hidden />
     </div>
@@ -3527,7 +3577,7 @@ function renderStats(o,opts){
   sheetEl.addEventListener('scroll',()=>{if(sheetEl.scrollLeft)sheetEl.scrollLeft=0},{passive:true});
   o.querySelectorAll('#style-toggle button').forEach(btn=>btn.addEventListener('click',()=>{
     const st=btn.dataset.style;
-    if(st===(Store.profile().style==='flat'?'flat':'glass'))return;
+    if(st===(Store.profile().style==='glass'?'glass':'flat'))return;
     o.querySelectorAll('#style-toggle button').forEach(b=>b.classList.toggle('active',b===btn));
     switchStyle(st);
   }));
@@ -3692,6 +3742,7 @@ function renderStats(o,opts){
   });
   document.addEventListener('click',function onDoc(ev){
     if(!o.isConnected){document.removeEventListener('click',onDoc);return}
+    if(!ev.isTrusted||ev.target.closest?.('.modal-backdrop'))return;
     if(!editOverlay.contains(ev.target)&&ev.target!==editToggle)closeSettings();
   });
 
@@ -3729,7 +3780,10 @@ function renderStats(o,opts){
     if(!file)return;
     try{
       const text=await file.text();
-      if(await importDataText(text))renderStats(o,{msg:'Data imported from backup.'});
+      if(await importDataText(text)){
+        closeSettings();
+        setTimeout(()=>{if(o.isConnected)renderStats(o,{noAnim:true})},560);
+      }
     }catch(err){}
     importInput.value='';
   });
@@ -3746,7 +3800,8 @@ function renderStats(o,opts){
         bumpShowsCache();
         bumpMoviesCache();
         applyTheme('dark');applyStyle();
-        renderStats(o,{msg:'Data deleted.'});
+        closeSettings();
+        setTimeout(()=>{if(o.isConnected)renderStats(o,{noAnim:true})},560);
       }
     });
   });
@@ -4413,7 +4468,6 @@ async function renderMovie(o,{id}){
     const hero=document.createElement('div');
     hero.className='hero';
     hero.innerHTML=`
-      <img src="${imgUrl(movie.image)}" alt="${esc(movie.name)}" />
       <div class="hero-info">
         <div class="hero-title-row">
           <h2 id="title-text-movie">${esc(movie.name)}</h2>
