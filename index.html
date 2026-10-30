@@ -483,7 +483,7 @@ html[data-theme="light"] .profile-route .stat-card2:hover{box-shadow:0 10px 28px
 .switch{position:relative;display:block;width:100%;height:40px;cursor:pointer}
 .switch input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:2}
 .switch .slider{position:absolute;inset:0;border-radius:999px;background:var(--bg-elev);border:1px solid var(--border);transition:background-color .4s ease,border-color .4s ease}
-.switch .thumb{will-change:transform;position:absolute;top:3px;left:3px;width:26%;height:32px;border-radius:999px;background:#8b93a3;color:#14171c;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(var(--shc),.3);transition:transform .55s cubic-bezier(.34,1.35,.5,1),background-color .4s ease,color .4s ease}
+.switch .thumb{will-change:transform;position:absolute;top:0;bottom:0;margin:auto 0;left:3px;width:26%;height:32px;border-radius:999px;background:#8b93a3;color:#14171c;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(var(--shc),.3);transition:transform .55s cubic-bezier(.34,1.35,.5,1),background-color .4s ease,color .4s ease}
 .switch .thumb svg{position:absolute;width:18px;height:18px;transition:opacity .3s ease,transform .6s cubic-bezier(.34,1.45,.5,1)}
 .switch .ico-moon{opacity:1;transform:rotate(0) scale(1)}
 .switch .ico-sun{opacity:0;transform:rotate(-90deg) scale(.4)}
@@ -643,11 +643,11 @@ html[data-style="glass"][data-theme="light"] .switch input:checked + .slider{bac
 .profile-edit-overlay .seg-toggle{display:flex;width:100%;height:40px;padding:3px}
 .profile-edit-overlay .seg-toggle button{flex:1;padding:0}
 .settings-version{text-align:center;font-size:11px;color:var(--text-dim);padding:6px 0 2px}
-html.style-anim *:not(.switch):not(.switch *):not(#bottomnav):not(#bottomnav *),html.style-anim *::before,html.style-anim *::after{transition:background-color .8s ease,color .8s ease,border-color .8s ease,box-shadow .8s ease,backdrop-filter .8s ease,-webkit-backdrop-filter .8s ease,border-radius .8s ease,padding .8s ease,margin .8s ease,width .8s ease,max-width .8s ease,height .8s ease}
+html.style-anim *:not(.switch):not(.switch *):not(.slide):not(.slide *):not(#bottomnav):not(#bottomnav *),html.style-anim *::before,html.style-anim *::after{transition:background-color .8s ease,color .8s ease,border-color .8s ease,box-shadow .8s ease,backdrop-filter .8s ease,-webkit-backdrop-filter .8s ease,border-radius .8s ease,padding .8s ease,margin .8s ease,width .8s ease,max-width .8s ease,height .8s ease}
 #bottomnav.nav-morph,#bottomnav.nav-morph *{transition:none!important}
 html.style-anim :is(.stat-card2,.profile-list-pair .hscroll-section,.list-overlay)::after{animation:rimFade .9s ease}
 @keyframes rimFade{from{opacity:0}to{opacity:1}}
-html.theme-anim *:not(.switch):not(.switch *),html.theme-anim *::before,html.theme-anim *::after{transition:background-color .5s ease,color .5s ease,border-color .5s ease,box-shadow .5s ease,fill .5s ease,stroke .5s ease}
+html.theme-anim *:not(.switch):not(.switch *):not(.slide):not(.slide *),html.theme-anim *::before,html.theme-anim *::after{transition:background-color .5s ease,color .5s ease,border-color .5s ease,box-shadow .5s ease,fill .5s ease,stroke .5s ease}
 .profile-route .back{transition:transform .15s cubic-bezier(.3,.7,.4,1),background-color .2s ease,border-color .2s ease,color .2s ease}
 .profile-route .back:active{transform:scale(.94)}
 
@@ -752,6 +752,26 @@ html[data-theme="light"] .hscroll-count{background:var(--bg-elev)}
 .hscroll-track,.profile-list-pair .hscroll-track{padding-bottom:14px;margin-bottom:-10px}
 .hscroll-track .hscroll-item img{box-shadow:0 4px 10px -3px rgba(var(--shc),.5)}
 html[data-theme="light"] .hscroll-track .hscroll-item img{box-shadow:0 4px 10px -3px rgba(var(--shc),.3)}
+
+/* style slider */
+.seg-toggle.slide{position:relative}
+.seg-toggle.slide .seg-thumb{position:absolute;top:0;bottom:0;margin:auto 0;left:3px;width:calc(50% - 4px);height:32px;border-radius:999px;background:var(--accent);pointer-events:none;z-index:0;will-change:transform;box-shadow:0 1px 4px rgba(var(--shc),.3);transition:transform .45s cubic-bezier(.34,1.35,.5,1),background-color .4s ease}
+.seg-toggle.slide[data-pos="1"] .seg-thumb{transform:translateX(calc(100% + 2px))}
+.seg-toggle.slide button,.seg-toggle.slide button.active{position:relative;z-index:1;background:none!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;transition:color .3s ease}
+.seg-toggle.slide button.active{color:#2b1200}
+html[data-style="glass"] .seg-toggle.slide .seg-thumb{background:rgba(255,255,255,.22);box-shadow:inset 1px 1px 0 rgba(255,255,255,.42),inset -1px -1px 0 rgba(255,255,255,.3),0 2px 6px rgba(var(--shc),.2)}
+html[data-style="glass"] .seg-toggle.slide button.active{color:#fff}
+html[data-style="glass"][data-theme="light"] .seg-toggle.slide .seg-thumb{background:rgba(255,255,255,.75);box-shadow:inset 1px 1px 0 rgba(255,255,255,.9),inset -1px -1px 0 rgba(255,255,255,.7),0 2px 6px rgba(var(--shc),.15)}
+html[data-style="glass"][data-theme="light"] .seg-toggle.slide button.active{color:#161b27}
+/* lock page scrolling while settings is open */
+html:has(.profile-edit-overlay.open),html:has(.profile-edit-overlay.open) body,html:has(.profile-edit-overlay.open) #outlet{overflow:hidden!important;overscroll-behavior:none}
+.settings-backdrop{touch-action:none}
+.profile-edit-overlay{overscroll-behavior-y:contain}
+/* profile: no gray edge tint above the banner on phones */
+@media(max-width:600px){html,body{background:var(--bg)}}
+.profile-route::before{content:'';position:fixed;top:0;left:0;right:0;height:1px;pointer-events:none;z-index:1;background:rgba(0,0,0,.01)}
+/* upcoming: mark-watched button replaces "Aired" */
+.upcoming-check{margin:0}
 </style>
 </head>
 <body>
@@ -933,7 +953,7 @@ function downloadBackup(){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-const APP_VERSION='135';
+const APP_VERSION='136';
 function applyStyle(st){
   const r=document.documentElement;
   r.dataset.style=st==='glass'?'glass':'flat';
@@ -3212,7 +3232,7 @@ function renderStats(o,opts){
           </div>
         </div>
         <div class="setting-row">
-          <div class="seg-toggle" id="style-toggle" role="group" aria-label="Interface style"><button type="button" data-style="flat" class="${profile.style==='glass'?'':'active'}">Flat</button><button type="button" data-style="glass" class="${profile.style==='glass'?'active':''}">Glass</button></div>
+          <div class="seg-toggle slide" id="style-toggle" data-pos="${profile.style==='glass'?1:0}" role="group" aria-label="Interface style"><span class="seg-thumb" aria-hidden="true"></span><button type="button" data-style="flat" class="${profile.style==='glass'?'':'active'}">Flat</button><button type="button" data-style="glass" class="${profile.style==='glass'?'active':''}">Glass</button></div>
         </div>
         <div class="setting-row">
           <label class="switch" title="Switch between dark and light mode"><input type="checkbox" id="theme-toggle" ${profile.theme==='light'?'checked':''} /><span class="slider"><span class="thumb"><svg class="ico-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span></span></label>
@@ -3346,6 +3366,7 @@ function renderStats(o,opts){
     const st=btn.dataset.style;
     if(st===(Store.profile().style==='glass'?'glass':'flat'))return;
     o.querySelectorAll('#style-toggle button').forEach(b=>b.classList.toggle('active',b===btn));
+    o.querySelector('#style-toggle').dataset.pos=st==='glass'?1:0;
     switchStyle(st);
   }));
   const themeToggle=o.querySelector('#theme-toggle');
@@ -3855,7 +3876,10 @@ function fmtLocalTime(ts){
 }
 setInterval(()=>{
   document.querySelectorAll('[data-cd-ts]').forEach(el=>{
-    el.textContent=countdownLabel(+el.dataset.cdTs,el.dataset.cdTimed==='1');
+    const lbl=countdownLabel(+el.dataset.cdTs,el.dataset.cdTimed==='1');
+    const row=el.closest('.upcoming-feed-item');
+    if(lbl==='Aired'&&row&&row._swapCheck){row._swapCheck(el);return}
+    el.textContent=lbl;
   });
 },60000);
 function resetUpcomingShows(){
@@ -3912,6 +3936,26 @@ function upcomingRow(s,ep,meta={}){
         <span class="upcoming-days-left" data-cd-ts="${meta.ts}" data-cd-timed="${meta.timed?1:0}">${daysLabel}</span>
       </div>
     </div>`;
+  const mkCheck=()=>{
+    const b=document.createElement('button');
+    const on=Store.isWatched(ep.id);
+    b.type='button';b.className='check upcoming-check'+(on?' on':'');
+    b.title='Mark watched';b.setAttribute('aria-label','Mark watched');b.setAttribute('aria-pressed',on);
+    b.textContent='✓';
+    b.addEventListener('click',e=>{
+      e.stopPropagation();
+      const v=!Store.isWatched(ep.id);
+      Store.setWatched(ep.id,v,{season:ep.seasonNumber,episode:ep.number,runtime:ep.runtime,showId:s.id,show:s});
+      b.classList.toggle('on',v);b.setAttribute('aria-pressed',v);
+      Promise.all([getEpisodes(s.id),Api.seriesExtended(s.id).catch(()=>null)]).then(([eps,series])=>{
+        saveShowProgress(s.id,eps,isEndedStatus(series));
+        patchShowInWatchlistPane(s.id,s);
+      }).catch(()=>{});
+    });
+    return b;
+  };
+  el._swapCheck=dl=>dl.replaceWith(mkCheck());
+  if(daysLabel==='Aired')el._swapCheck(el.querySelector('.upcoming-days-left'));
   const pill=el.querySelector('.upcoming-show-pill');
   pill.dataset.full=s.name||'';
   setUpcomingPillText(pill);
