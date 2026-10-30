@@ -26,7 +26,7 @@ const appIcon=px=>new Promise(res=>{const im=new Image();im.onload=()=>{const c=
   --complete:#a855f7;
   --progress:var(--accent);
   --amber:#ffc247; --amber-dark:#4a3512;
-  --imdb:#f5c518; --rt:#fa320a;
+  --rt:#fa320a;
   --green:#66cc00; --red:#ff3f3f;
   --rw-inc:var(--green); --rw-dec:var(--red);
   --radius:16px;
@@ -76,15 +76,11 @@ input[type=text]:focus,input[type=text]:focus-visible{outline:none}
 .card h3{margin-top:0;font-family:'Poppins',sans-serif;font-size:15px}
 .field{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-dim);margin-bottom:14px}
 .row{display:flex;gap:10px}
-.conn-row input{flex:1}
-.conn-row .btn{flex-shrink:0}
 .btn{border:1px solid var(--border);background:var(--bg-elev);border-radius:999px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;color:var(--text)}
 .btn:hover{border-color:var(--text-dim)}
 .btn-accent{background:var(--accent);border-color:var(--accent);color:#2b1200}
 .btn-stopped{background:var(--red);border-color:var(--red);color:#2a0500}
 .btn-ghost{background:transparent}
-.btn-connect{background:var(--accent);border-color:var(--accent);color:#2b1200;font-weight:800}
-.btn-connect:hover{filter:brightness(1.05)}
 .btn-disconnect{background:transparent;border-color:var(--red);color:var(--red);font-weight:800}
 .btn-disconnect:hover{background:rgba(255,63,63,.12)}
 .btn-sm{padding:8px 15px;font-size:14px}
@@ -96,14 +92,13 @@ input[type=text]:focus,input[type=text]:focus-visible{outline:none}
 code{background:var(--bg-elev);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:4px}
 :root{--thin-cols:3}
-@media(max-width:600px){.grid{grid-template-columns:repeat(var(--thin-cols),minmax(0,1fr))}.poster-overlay{padding:20px 6px 6px}.poster-overlay .name{font-size:11px}.poster-type{top:5px;left:5px;font-size:8px;padding:3px 6px}.poster-rating{top:5px;right:5px;font-size:9px;padding:3px 6px}}
+@media(max-width:600px){.grid{grid-template-columns:repeat(var(--thin-cols),minmax(0,1fr))}.poster-overlay{padding:20px 6px 6px}.poster-overlay .name{font-size:11px}.poster-type{top:5px;left:5px;font-size:8px;padding:3px 6px}}
 .poster{background:var(--bg-card);border:1px solid var(--border);border-radius:4px;overflow:hidden;cursor:pointer}
 .poster-img-wrap{position:relative;aspect-ratio:2/3;background:var(--bg-elev)}
 .poster-img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
 .poster-overlay{position:absolute;inset:auto 0 0 0;padding:26px 10px 8px;background:linear-gradient(to top,rgba(0,0,0,.98),transparent)}
 .poster-overlay .name{font-size:13px;font-weight:700;line-height:1.25}
 .poster-type{position:absolute;top:8px;left:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:4px 8px;border-radius:999px;background:rgba(0,0,0,.72);color:var(--text);z-index:2}
-.poster-rating{position:absolute;top:8px;right:8px;font-size:11px;font-weight:800;padding:4px 8px;border-radius:999px;background:rgba(0,0,0,.72);color:var(--imdb);z-index:2;display:flex;align-items:center;gap:3px}
 .poster-progress{height:6px;background:var(--border)}
 .poster-progress-fill{height:100%;background:var(--progress);transform-origin:left center;animation:nx-bar-grow .9s cubic-bezier(.22,1,.36,1) .12s both;transition:width .7s cubic-bezier(.22,1,.36,1),background-color .4s ease}
 .poster-progress-fill.complete{background:var(--complete)}
@@ -116,8 +111,6 @@ code{background:var(--bg-elev);padding:1px 6px;border-radius:4px;font-family:'Je
 .fav-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--bg-elev);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:var(--text-dim);font-size:15px;line-height:1}
 .fav-btn:hover{border-color:var(--amber)}
 .fav-btn.on{color:var(--amber);border-color:var(--amber-dark);background:var(--amber-dark)}
-.rating-chip{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;border:1px solid var(--border)}
-.rating-chip.imdb{color:#fff;background:color-mix(in srgb,#F5C518 58%,#1c1c1c);border:1px solid color-mix(in srgb,#F5C518 80%,transparent);padding:8px 18px;font-size:13px;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 .feed-item{display:flex;align-items:stretch;background:#000;border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden;height:93px}
 .feed-thumb{width:188px;height:100%;align-self:stretch;object-fit:cover;background:var(--bg-elev);flex-shrink:0;border-radius:0 8px 8px 0}
 .feed-content{display:flex;align-items:center;gap:14px;flex:1;min-width:0;padding:10px 12px}
@@ -130,7 +123,6 @@ code{background:var(--bg-elev);padding:1px 6px;border-radius:4px;font-family:'Je
 .ep-special-badge{font-size:11px;font-weight:700;letter-spacing:.03em;color:#6a6a6a;background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:2px 7px;text-transform:uppercase}
 .pill{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);border:1px solid var(--accent-dark);border-radius:6px;padding:3px 7px;display:inline-block}
 .pill.future{color:var(--amber);border-color:var(--amber-dark)}
-.rating-chip.sm{padding:3px 8px;font-size:10px}
 .section-h{font-family:'Poppins',sans-serif;font-weight:600;font-size:18px;color:var(--heading);margin:22px 0 12px}
 .section-h.profile-title{color:#fff;font-size:22px}
 .section-h.profile-title.sub-page-title{font-size:23px}
@@ -206,9 +198,6 @@ html,body,body *{touch-action:pan-x pan-y}
 .overview-text{color:var(--text)!important;margin:0 0 14px}
 .see-more-btn{display:inline-block;margin:0 0 0 6px;background:#164563;color:#fff;border:none;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:800;letter-spacing:.07em;cursor:pointer}
 .see-more-btn:hover{background:#1d5a82}
-.hero-ratings{display:flex;flex-wrap:wrap;gap:10px;margin:0}
-.rating-chip.rt{color:#fff;background:color-mix(in srgb,#FA320A 62%,#1c1c1c);border:1px solid color-mix(in srgb,#FA320A 80%,transparent);padding:8px 18px;font-size:13px;text-shadow:0 1px 2px rgba(0,0,0,.4)}
-.rating-chip.pop{color:#fff;background:color-mix(in srgb,#FFC83D 56%,#1c1c1c);border:1px solid color-mix(in srgb,#FFC83D 80%,transparent);padding:8px 18px;font-size:13px;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px}
 .stat-card{background:var(--bg-elev);border:1px solid var(--border);border-radius:12px;padding:14px}
 .stat-num{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--accent)}
@@ -384,7 +373,6 @@ html,body{transition:background-color .35s ease}
 .search-row-body{flex:1;min-width:0}
 .search-row-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .search-row-meta{display:flex;align-items:center;gap:10px;margin-top:6px;font-size:12px;color:var(--text-dim)}
-.search-row-rating{display:flex;align-items:center;gap:3px;color:var(--imdb);font-weight:700}
 .search-row-type{display:flex;align-items:center;gap:5px}
 .search-row-type svg{width:14px;height:14px;stroke:currentColor;flex-shrink:0}
 .search-add-btn{width:30px;height:30px;border-radius:6px;border:1px solid var(--accent);background:transparent;color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:700;line-height:1;cursor:pointer;flex-shrink:0}
@@ -458,11 +446,6 @@ html,body{transition:background-color .35s ease}
 .profile-edit-overlay label.fb-left{border-radius:999px 0 0 999px}
 .profile-edit-overlay label.fb-right{border-radius:0 999px 999px 0}
 .profile-edit-overlay select{border-radius:14px;padding:11px 12px;font-size:13px}
-.profile-edit-overlay .conn-row .btn{min-width:128px}
-.help-tip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;margin-left:6px;border-radius:50%;border:1px solid currentColor;font:700 10px/1 'Inter',sans-serif;color:var(--text-dim);cursor:help;vertical-align:middle;transition:color .15s ease}
-.help-tip:hover,.help-tip:focus-visible{color:var(--accent-text);outline:none}
-.help-tip::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translate(-50%,4px);width:max-content;max-width:230px;padding:8px 10px;border-radius:10px;background:#262b36;color:#eef0f3;border:1px solid #3a3f4c;font:500 11px/1.45 'Inter',sans-serif;text-align:left;white-space:normal;box-shadow:0 8px 24px rgba(var(--shc),.35);opacity:0;visibility:hidden;pointer-events:none;z-index:5;transition:opacity .16s ease,transform .18s ease,visibility 0s linear .18s}
-.help-tip:hover::after,.help-tip:focus-visible::after{opacity:1;visibility:visible;transform:translate(-50%,0);transition-delay:0s}
 .profile-list-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px}
 .profile-list-pair .hscroll-section{margin:0;min-width:0;background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:14px 14px 12px}
 .profile-list-pair .hscroll-head{margin-bottom:12px}
@@ -514,7 +497,6 @@ html[data-theme="light"] .profile-route .stat-card2:hover{box-shadow:0 10px 28px
 .btn:not(.btn-accent):not(.btn-connect):not(.btn-disconnect):not(.btn-stopped):not(.rewatch-inc):not(.rewatch-dec):hover,
 .profile-edit-overlay label.field-btn:hover,
 .profile-edit-btn:hover{background:rgba(255,212,0,.14);border-color:var(--accent);color:var(--accent-text)}
-html[data-theme="light"] .help-tip::after{background:#fffffe;color:#161b27;border-color:#dde1e8;box-shadow:0 8px 24px rgba(var(--shc),.16)}
 .hscroll-icon{display:flex;color:var(--accent-text);font-size:21px;flex-shrink:0}
 .hscroll-icon svg{width:1em;height:1em}
 .profile-list-pair .hscroll-icon{font-size:17px}
@@ -567,7 +549,7 @@ html[data-style="glass"] .btn,html[data-style="glass"] .profile-edit-btn,html[da
   -webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);
   box-shadow:0 3px 10px rgba(var(--shc),.18)!important}
 html[data-style="glass"] .btn:hover,html[data-style="glass"] .profile-edit-btn:hover,html[data-style="glass"] label.field-btn:hover,html[data-style="glass"] .back:hover{background:rgba(255,255,255,.13)!important;color:#fff}
-html[data-style="glass"] .btn-accent,html[data-style="glass"] .btn-connect,html[data-style="glass"] .btn-accent:hover,html[data-style="glass"] .btn-connect:hover{color:#fff!important;background:color-mix(in srgb,var(--accent) 66%,transparent)!important;box-shadow:0 3px 10px rgba(var(--shc),.2),inset 0 0 0 1px color-mix(in srgb,var(--accent) 85%,transparent)!important;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+html[data-style="glass"] .btn-accent,html[data-style="glass"] .btn-accent:hover{color:#fff!important;background:color-mix(in srgb,var(--accent) 66%,transparent)!important;box-shadow:0 3px 10px rgba(var(--shc),.2),inset 0 0 0 1px color-mix(in srgb,var(--accent) 85%,transparent)!important;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 html[data-style="glass"] .btn-disconnect,html[data-style="glass"] .btn-disconnect:hover{color:#fff!important;background:rgba(255,69,58,.34)!important;box-shadow:0 3px 10px rgba(var(--shc),.18)!important}
 html[data-style="glass"] .btn:active,html[data-style="glass"] .profile-edit-btn:active{filter:brightness(.95)}
 html[data-style="glass"][data-theme="light"] .bglass{background:rgba(255,255,255,.45);box-shadow:0 6px 18px rgba(var(--shc),.14)}
@@ -584,7 +566,7 @@ html[data-style="glass"] .rewatch-inc,html[data-style="glass"] .rewatch-inc:hove
 html[data-style="glass"] .rewatch-dec,html[data-style="glass"] .rewatch-dec:hover{color:#fff!important;background:color-mix(in srgb,var(--rw-dec) 66%,transparent)!important;box-shadow:0 3px 10px rgba(var(--shc),.2),inset 0 0 0 1px color-mix(in srgb,var(--rw-dec) 85%,transparent)!important;text-shadow:0 1px 2px rgba(0,0,0,.4)}
 html[data-style="glass"][data-theme="light"] .rewatch-inc,html[data-style="glass"][data-theme="light"] .rewatch-inc:hover{color:#0b2a00!important;background:color-mix(in srgb,var(--rw-inc) 80%,rgba(255,255,255,.3))!important;text-shadow:none}
 html[data-style="glass"] .btn-stopped,html[data-style="glass"] .btn-stopped:hover{color:#fff!important;background:rgba(255,69,58,.66)!important;box-shadow:0 3px 10px rgba(var(--shc),.2),inset 0 0 0 1px rgba(255,69,58,.85)!important;text-shadow:0 1px 2px rgba(0,0,0,.4)}
-html[data-style="glass"][data-theme="light"] .btn-accent,html[data-style="glass"][data-theme="light"] .btn-connect,html[data-style="glass"][data-theme="light"] .btn-accent:hover,html[data-style="glass"][data-theme="light"] .btn-connect:hover{color:#3d2e00!important;background:color-mix(in srgb,var(--accent) 80%,rgba(255,255,255,.3))!important;text-shadow:none}
+html[data-style="glass"][data-theme="light"] .btn-accent,html[data-style="glass"][data-theme="light"] .btn-accent:hover{color:#3d2e00!important;background:color-mix(in srgb,var(--accent) 80%,rgba(255,255,255,.3))!important;text-shadow:none}
 html[data-style="glass"] .bglass{background:rgba(130,130,136,.16);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);box-shadow:0 6px 18px rgba(var(--shc),.22)}
 html[data-style="glass"]{--rim:inset 1px 1px 0 rgba(255,255,255,.42),inset -1px -1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.05);--rim-soft:inset 1px 1px 0 rgba(255,255,255,.2),inset -1px -1px 0 rgba(255,255,255,.12),inset 0 0 0 1px rgba(255,255,255,.03)}
 html[data-style="glass"][data-theme="light"]{--rim:inset 1px 1px 0 rgba(255,255,255,.9),inset -1px -1px 0 rgba(255,255,255,.7);--rim-soft:inset 1px 1px 0 rgba(255,255,255,.55),inset -1px -1px 0 rgba(255,255,255,.4)}
@@ -612,10 +594,6 @@ html[data-style="glass"] button.search-add-btn{position:relative;isolation:isola
 html[data-style="glass"] button.search-add-btn.on{background:color-mix(in srgb,var(--accent) 66%,transparent);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);box-shadow:0 3px 10px rgba(var(--shc),.2),inset 0 0 0 1px color-mix(in srgb,var(--accent) 85%,transparent)}
 html[data-style="glass"][data-theme="light"] button.search-add-btn{color:#161b27;background:rgba(255,255,255,.5);box-shadow:0 3px 10px rgba(var(--shc),.12),inset 1px 1px 0 rgba(255,255,255,.9),inset -1px -1px 0 rgba(255,255,255,.7)}
 html[data-style="glass"][data-theme="light"] button.search-add-btn.on{color:#3d2e00;background:color-mix(in srgb,var(--accent) 80%,rgba(255,255,255,.3));text-shadow:none}
-html[data-style="glass"] .rating-chip.imdb,html[data-style="glass"] .rating-chip.rt,html[data-style="glass"] .rating-chip.pop{color:#fff;border:none;text-shadow:0 1px 2px rgba(0,0,0,.4);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6)}
-html[data-style="glass"] .rating-chip.imdb{background:color-mix(in srgb,#F5C518 42%,transparent);box-shadow:0 3px 10px rgba(var(--shc),.18),inset 0 0 0 1px color-mix(in srgb,#F5C518 80%,transparent),inset 1px 1px 0 rgba(255,255,255,.35)}
-html[data-style="glass"] .rating-chip.pop{background:color-mix(in srgb,#FFC83D 44%,transparent);box-shadow:0 3px 10px rgba(var(--shc),.18),inset 0 0 0 1px color-mix(in srgb,#FFC83D 80%,transparent),inset 1px 1px 0 rgba(255,255,255,.35)}
-html[data-style="glass"] .rating-chip.rt{background:color-mix(in srgb,#FA320A 46%,transparent);box-shadow:0 3px 10px rgba(var(--shc),.18),inset 0 0 0 1px color-mix(in srgb,#FA320A 80%,transparent),inset 1px 1px 0 rgba(255,255,255,.35)}
 html[data-style="glass"] .see-more-btn{display:inline-block;padding:2px 12px;margin:0 0 0 6px;border-radius:999px;color:#fff;font-size:11px;font-weight:800;letter-spacing:.07em;text-decoration:none;background:color-mix(in srgb,#164563 72%,transparent)!important}
 html[data-style="glass"] .see-more-btn:hover{background:color-mix(in srgb,#164563 88%,transparent)!important;text-decoration:none}
 html[data-style="glass"] .list-ov-sep{background:rgba(255,255,255,.45)}
@@ -679,7 +657,7 @@ html[data-theme="light"] .search-btn:hover,
 html[data-theme="light"] .back:hover,
 html[data-theme="light"] .profile-edit-overlay label.field-btn:hover,
 html[data-theme="light"] .btn:not(.btn-accent):not(.btn-connect):not(.btn-disconnect):not(.btn-stopped):hover{color:var(--accent-text)}
-html[data-theme="light"] .btn-accent,html[data-theme="light"] .btn-connect{color:#2b1200}
+html[data-theme="light"] .btn-accent{color:#2b1200}
 html[data-theme="light"] .btn-disconnect{color:var(--red)}
 
 .list-backdrop{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px)}
@@ -718,14 +696,14 @@ html[data-theme="light"],html[data-theme="light"] .profile-edit-overlay{
   --bg:#f6f8fb; --bg-card:#fafbfd; --bg-elev:#eff1f5; --border:#8b94a5;
   --text:#05070c; --text-dim:#2c3444; --heading:#141a28;
   --accent-text:#8a6a00; --accent-dark:#f0dc8a;
-  --amber:#b86e00; --amber-dark:#ffe9bd; --imdb:#a8820a; --btn-gray:#e8ebf0; --cat-color:#2a3142;
+  --amber:#b86e00; --amber-dark:#ffe9bd; --btn-gray:#e8ebf0; --cat-color:#2a3142;
 }
 html[data-theme="light"]{color-scheme:light}
 html[data-theme="light"] .detail-hero-wrap{
   --bg:#000000; --bg-card:#111111; --bg-elev:#1a1a1a; --border:#3a3a3a;
   --text:#eef0f3; --text-dim:#8b93a3; --heading:#c7cddb;
   --accent-text:#ffd400; --accent-dark:#4a3d00;
-  --amber:#ffc247; --amber-dark:#4a3512; --imdb:#f5c518;
+  --amber:#ffc247; --amber-dark:#4a3512;
 }
 html[data-theme="light"] .detail-hero-wrap{background:#1a1a1a}
 html[data-theme="light"] .detail-hero-wrap{color:#eef0f3}
@@ -762,7 +740,6 @@ html[data-theme="light"] .back{background:#fffffe;border-color:var(--border);col
 html[data-theme="light"] .detail-hero-wrap .back{background:#3d3d3d;border-color:rgba(255,255,255,.4);color:#eef0f3}
 html[data-theme="light"] .poster-overlay .name,
 html[data-theme="light"] .poster-type{color:#ffffff}
-html[data-theme="light"] .poster-rating{color:#f5c518}
 html[data-theme="light"] .lib-popup,
 html[data-theme="light"] .stat-card2,
 html[data-theme="light"] .profile-list-pair .hscroll-section,
@@ -806,7 +783,7 @@ html[data-theme="light"] .hscroll-track .hscroll-item img{box-shadow:0 4px 10px 
   </nav>
 </div>
 <script>
-const K={prog:'nx.prog',apikey:'nx.apikey',omdb:'nx.omdb',token:'nx.token',exp:'nx.exp',lib:'nx.lib',movieLib:'nx.movieLib',watched:'nx.watched',movieWatched:'nx.movieWatched',favShows:'nx.favShows',favMovies:'nx.favMovies',rewatch:'nx.rewatch',epRewatch:'nx.epRewatch',seasonRewatch:'nx.seasonRewatch',profile:'nx.profile',stopped:'nx.stopped',showReg:'nx.showReg',movieReg:'nx.movieReg',tr:'nx.tr'};
+const K={prog:'nx.prog',token:'nx.token',exp:'nx.exp',lib:'nx.lib',movieLib:'nx.movieLib',watched:'nx.watched',movieWatched:'nx.movieWatched',favShows:'nx.favShows',favMovies:'nx.favMovies',rewatch:'nx.rewatch',epRewatch:'nx.epRewatch',seasonRewatch:'nx.seasonRewatch',profile:'nx.profile',stopped:'nx.stopped',showReg:'nx.showReg',movieReg:'nx.movieReg',tr:'nx.tr'};
 let _progCache=null,_todayK='',_todayAt=0,showsDirty=false,moviesDirty=false;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function lget(k,f){const r=localStorage.getItem(k);if(r===null)return f;try{return JSON.parse(r)}catch{return f}}
@@ -822,49 +799,16 @@ function lset(k,v){
 }
 window.addEventListener('storage',()=>{_pk.clear();_progCache=null});
 
-let DevCache={};
-function getDeviceId(){
-  let id=localStorage.getItem('nx.deviceId');
-  if(!id){id=Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);try{localStorage.setItem('nx.deviceId',id)}catch{}}
-  return id;
-}
-function deviceLabel(){
-  const ua=navigator.userAgent;
-  const os=/Windows/.test(ua)?'Windows':/Android/.test(ua)?'Android':/iPhone|iPad/.test(ua)?'iOS':/Mac/.test(ua)?'Mac':/Linux/.test(ua)?'Linux':'Device';
-  const br=/Edg\//.test(ua)?'Edge':/Firefox|FxiOS/.test(ua)?'Firefox':/Chrome|CriOS/.test(ua)?'Chrome':/Safari/.test(ua)?'Safari':'Browser';
-  return os+' '+br;
-}
 const IMG_OK=/^data:image\/(png|jpe?g|webp);base64,[A-Za-z0-9+\/=]+$/;
-function deviceEntries(){
-  const all={...DevCache},id=getDeviceId();
-  if(ProfileImg.avatar||ProfileImg.banner)all[id]={id,label:deviceLabel(),at:Date.now(),avatar:ProfileImg.avatar,banner:ProfileImg.banner};
-  return Object.values(all).sort((a,b)=>b.at-a.at).slice(0,4);
-}
-function exportImagesSection(){
-  const list=deviceEntries();
-  if(!list.length)return[];
-  const out=[SEP,'PROFILE IMAGES',SEP];
-  list.forEach(d=>out.push(`  Device: ${d.id} | ${d.label} | ${d.at}`,`  Avatar: ${d.avatar||''}`,`  Banner: ${d.banner||''}`));
+function exportImageLines(){
+  const out=[];
+  if(ProfileImg.avatar)out.push(`  Avatar: ${ProfileImg.avatar}`);
+  if(ProfileImg.banner)out.push(`  Banner: ${ProfileImg.banner}`);
   return out;
 }
-async function applyImportedDevices(list){
-  if(!list.length)return;
-  list.forEach(d=>{
-    if(!IMG_OK.test(d.avatar))d.avatar='';
-    if(!IMG_OK.test(d.banner))d.banner='';
-    if(!d.avatar&&!d.banner)return;
-    const cur=DevCache[d.id];
-    if(!cur||d.at>cur.at)DevCache[d.id]=d;
-  });
-  const keep=Object.values(DevCache).sort((a,b)=>b.at-a.at).slice(0,4);
-  DevCache={};
-  keep.forEach(d=>{DevCache[d.id]=d});
-  await idbSet('devices',JSON.stringify(DevCache));
-  const pick=DevCache[getDeviceId()]||keep[0];
-  if(pick){
-    if(!ProfileImg.avatar&&pick.avatar)await saveProfileImage('avatar',pick.avatar);
-    if(!ProfileImg.banner&&pick.banner)await saveProfileImage('banner',pick.banner);
-  }
+async function applyImportedImages(avatar,banner){
+  if(avatar&&IMG_OK.test(avatar)&&!ProfileImg.avatar)await saveProfileImage('avatar',avatar);
+  if(banner&&IMG_OK.test(banner)&&!ProfileImg.banner)await saveProfileImage('banner',banner);
 }
 let _idbP=null;
 function idbOpen(){
@@ -989,7 +933,7 @@ function downloadBackup(){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-const APP_VERSION='tv_plus_131';
+const APP_VERSION='135';
 function applyStyle(st){
   const r=document.documentElement;
   r.dataset.style=st==='glass'?'glass':'flat';
@@ -1066,7 +1010,7 @@ function getUserCountry(){return lpeek(K.profile,{}).country||''}
 const ProfileImg={avatar:'',banner:''};
 async function loadProfileImages(){
   const p=lget(K.profile,{});
-  try{DevCache=JSON.parse((await idbGet('devices'))||'{}')}catch{DevCache={}}
+  idbDel('devices');
   ProfileImg.avatar=p.avatar||'';ProfileImg.banner=p.banner||'';
   if(p.avatar||p.banner){
     const ok=(!p.avatar||await idbSet('profile.avatar',p.avatar))&&(!p.banner||await idbSet('profile.banner',p.banner));
@@ -1082,12 +1026,9 @@ async function saveProfileImage(key,dataUrl){
 }
 
 const Store={
-  apikey:()=>lget(K.apikey,''), setApikey:v=>lset(K.apikey,v),
-  omdb:()=>lget(K.omdb,''), setOmdb:v=>lset(K.omdb,v),
   token:()=>lget(K.token,''), exp:()=>lget(K.exp,0),
   setSession:(t,ttl)=>{lset(K.token,t);lset(K.exp,Date.now()+ttl)},
   clearSession:()=>{localStorage.removeItem(K.token);localStorage.removeItem(K.exp);_pk.clear()},
-  clearAll:()=>{[K.apikey,K.token,K.exp].forEach(k=>localStorage.removeItem(k));_pk.clear()},
   valid:()=>Boolean(lget(K.token,''))&&Date.now()<lget(K.exp,0),
 
   _libKey:kind=>kind==='movie'?K.movieLib:K.lib,
@@ -1165,8 +1106,6 @@ const Store={
   setStopped:(kind,id,v)=>{const m=Store.stoppedMap();const key=`${kind}:${id}`;if(v)m[key]=true;else delete m[key];lset(K.stopped,m)},
 };
 
-const SEP='—'.repeat(35);
-
 function fmtYMD(ts){
   if(!ts)return '';
   const d=new Date(ts);
@@ -1189,19 +1128,6 @@ function aliasNames(item){
   return out;
 }
 function firstAlias(item){return aliasNames(item)[0]||''}
-function secondAlias(item){return aliasNames(item)[1]||''}
-function formatWatchedDuration(totalMinutes){
-  const mins=Math.max(0,Math.round(totalMinutes||0));
-  const d=Math.floor(mins/1440);
-  const h=Math.floor((mins%1440)/60);
-  const m=mins%60;
-  const parts=[];
-  if(d)parts.push(`${d}d`);
-  if(h)parts.push(`${h}h`);
-  if(m||!parts.length)parts.push(`${m}m`);
-  return parts.join(' ');
-}
-
 function buildShowExportRows(){
   const watched=Store.watched();
   const reg=Store.reg('show');
@@ -1217,12 +1143,7 @@ function buildShowExportRows(){
     const show=reg[showId]||lib[showId];
     if(!show)return;
     episodes.sort((a,b)=>(a.s===0?1:0)-(b.s===0?1:0)||(a.s-b.s)||(a.e-b.e));
-    const totalMin=episodes.reduce((sum,ep)=>{
-      const runtime=ep.r||show.averageRuntime||42;
-      const rw=Store.getEpRewatch(ep.epId);
-      return sum+runtime*(1+rw);
-    },0);
-    rows.push({show,episodes,totalMin});
+    rows.push({show,episodes});
   });
   rows.sort((a,b)=>b.episodes.length-a.episodes.length||a.show.name.localeCompare(b.show.name));
   return rows;
@@ -1234,27 +1155,28 @@ function exportShowsSection(){
   let following=0,stopped=0;
   Object.keys(lib).forEach(id=>{if(Store.isStopped('show',id))stopped++;else following++});
   const favorites=Object.keys(Store.fav('show')).length;
-  const lines=[SEP,'SHOWS',SEP,
+  const lines=['SHOWS',
     `  Shows with episodes watched: ${rows.length}`,
     `  Following: ${following}`,
     `  Stopped watching: ${stopped}`,
     `  Favorites: ${favorites}`,
-    SEP];
-  rows.forEach((row,i)=>{
-    const {show,episodes,totalMin}=row;
+    ''];
+  const withEps=new Set(rows.map(r=>String(r.show.id)));
+  const favOnly=Object.values(Store.fav('show')).filter(x=>x&&x.name&&!withEps.has(String(x.id))).sort((a,b)=>a.name.localeCompare(b.name));
+  const all=[...rows,...favOnly.map(show=>({show,episodes:[]}))];
+  all.forEach((row,i)=>{
+    const {show,episodes}=row;
     const parts=[`${numLabel(i+1)} ${show.name}${altTag(show,'show')}`];
-    parts.push(`[TVDB ID: ${show.id}]`);
+    parts.push(`[ID: ${show.id}]`);
     if(Store.inLib('show',show.id))parts.push(Store.isStopped('show',show.id)?'[stopped watching]':'[following]');
-    parts.push(`[favorite:${Store.isFav('show',show.id)?1:0}]`);
+    if(Store.isFav('show',show.id))parts.push('[favorite:1]');
     const ps=Store.prog()[show.id];
-    if(ps)parts.push(`[progress:${ps.w}/${ps.t},${ps.x},${ps.lw},${ps.ra},${ps.nx||''}]`);
-    parts.push(`[${episodes.length} eps watched]`);
-    parts.push(`[${formatWatchedDuration(totalMin)} watched]`);
+    if(ps&&ps.t>0)parts.push(`[progress:${Math.round(ps.w/ps.t*100)}%]`);
     lines.push(parts.join(' '));
     episodes.forEach(ep=>{
       const s=String(ep.s??0).padStart(2,'0'),e=String(ep.e??0).padStart(2,'0');
-      const runtime=ep.r||show.averageRuntime||42;
-      lines.push(`     S${s}E${e}  [TVDB ID: ${ep.epId}] [${runtime}min] [${fmtYMD(ep.at)}]`);
+      const rw=Store.getEpRewatch(ep.epId);
+      lines.push(`     S${s}E${e}  [ID: ${ep.epId}] [${fmtYMD(ep.at)}]${rw>0?` [rewatch:${rw}]`:''}`);
     });
     lines.push('');
   });
@@ -1274,92 +1196,40 @@ function buildMovieWatchedRows(){
   return rows;
 }
 
-function altNames2(item,kind){
-  const names=aliasNames(item);
-  if(names.length<2&&item){[Store.reg(kind)[item.id],Store.lib(kind)[item.id]].forEach(src=>aliasNames(src).forEach(n=>{if(names.length<2&&!names.includes(n)&&n!==item.name)names.push(n)}))}
-  return[names[0]||'',names[1]||''];
-}
 function altTag(item,kind){
-  return altNames2(item,kind).filter(Boolean).map(n=>` [alt: ${n}]`).join('');
-}
-function exportFavoritesSections(){
-  const mk=(title,kind)=>{
-    const rows=Object.values(Store.fav(kind)).filter(x=>x&&x.name).sort((a,b)=>a.name.localeCompare(b.name));
-    const lines=[SEP,`${title} (${rows.length})`,SEP];
-    rows.forEach((x,i)=>{lines.push(`${numLabel(i+1)} ${x.name}${altTag(x,kind)}  [TVDB ID: ${x.id}]`);lines.push('')});
-    return lines;
-  };
-  return [...mk('FAVORITE SHOWS','show'),...mk('FAVORITE MOVIES','movie')];
+  if(!item)return '';
+  for(const src of [item,Store.reg(kind)[item.id],Store.lib(kind)[item.id]]){
+    const n=aliasNames(src).find(x=>x!==item.name);
+    if(n)return ` [alt: ${n}]`;
+  }
+  return '';
 }
 function exportMoviesSections(){
   const rows=buildMovieWatchedRows();
   const libMovies=Store.lib('movie');
   const watchlist=Object.values(libMovies).filter(m=>!Store.isMovieWatched(m.id));
   const favorites=Object.keys(Store.fav('movie')).length;
-  const lines=[SEP,'MOVIES WATCHED',SEP,
+  const lines=['MOVIES WATCHED',
     `  Movies watched: ${rows.length}`,
     `  Following (watchlist): ${watchlist.length}`,
     `  Favorites: ${favorites}`,
-    SEP];
+    ''];
   rows.forEach((row,i)=>{
     const parts=[`${numLabel(i+1)} ${row.movie.name}${altTag(row.movie,'movie')}`];
-    parts.push(`[TVDB ID: ${row.movie.id}]`);
-    parts.push(`[${row.runtime}min]`);
+    parts.push(`[ID: ${row.movie.id}]`);
     parts.push(`[${fmtYMD(row.watchedAt)}]`);
-    parts.push(`[favorite:${Store.isFav('movie',row.movie.id)?1:0}]`);
+    if(Store.isFav('movie',row.movie.id))parts.push('[favorite:1]');
+    const rw=Store.getRewatch('movie',row.movie.id);
+    if(rw>0)parts.push(`[rewatch:${rw}]`);
     lines.push(parts.join(' '));
     lines.push('');
   });
-  const sortedWatchlist=[...watchlist].sort((a,b)=>a.name.localeCompare(b.name));
-  lines.push(SEP,`MOVIE WATCHLIST (${sortedWatchlist.length})`,SEP);
+  const wl=new Map(watchlist.map(m=>[String(m.id),m]));
+  Object.values(Store.fav('movie')).forEach(m=>{if(m&&m.name&&!Store.isMovieWatched(m.id)&&!wl.has(String(m.id)))wl.set(String(m.id),m)});
+  const sortedWatchlist=[...wl.values()].sort((a,b)=>a.name.localeCompare(b.name));
+  lines.push('MOVIE WATCHLIST');
   sortedWatchlist.forEach((m,i)=>{
-    lines.push(`${numLabel(i+1)} ${m.name}${altTag(m,'movie')}  [TVDB ID: ${m.id}]`);
-    lines.push('');
-  });
-  return lines;
-}
-
-function exportRewatchedEpisodesSection(){
-  const epRw=Store.epRewatch();
-  const watched=Store.watched();
-  const reg=Store.reg('show');
-  const lib=Store.lib('show');
-  const byShow=new Map();
-  Object.entries(epRw).forEach(([epId,count])=>{
-    if(!count)return;
-    const rec=watched[epId];
-    if(!rec||typeof rec!=='object'||rec.showId==null)return;
-    const show=reg[rec.showId]||lib[rec.showId];
-    if(!show)return;
-    if(!byShow.has(show.id))byShow.set(show.id,{show,eps:[]});
-    byShow.get(show.id).eps.push({epId,s:rec.s,e:rec.e,count});
-  });
-  const groups=[...byShow.values()].sort((a,b)=>a.show.name.localeCompare(b.show.name));
-  const lines=[SEP,`REWATCHED EPISODES (${groups.reduce((n,g)=>n+g.eps.length,0)})`,SEP];
-  groups.forEach(g=>{
-    lines.push(`  ${g.show.name}${altTag(g.show,'show')}  [TVDB ID: ${g.show.id}]`);
-    g.eps.sort((a,b)=>(a.s===0?1:0)-(b.s===0?1:0)||(a.s-b.s)||(a.e-b.e));
-    g.eps.forEach(ep=>{
-      const s=String(ep.s??0).padStart(2,'0'),e=String(ep.e??0).padStart(2,'0');
-      lines.push(`    S${s}E${e}  [TVDB ID: ${ep.epId}] [${ep.count}]`);
-    });
-    lines.push('');
-  });
-  return lines;
-}
-
-function exportRewatchedMoviesSection(){
-  const rw=Store.rewatch().movie||{};
-  const reg=Store.reg('movie');
-  const lib=Store.lib('movie');
-  const rows=Object.entries(rw).filter(([,c])=>c>0).map(([id,count])=>{
-    const movie=reg[id]||lib[id];
-    return movie?{movie,count}:null;
-  }).filter(Boolean);
-  rows.sort((a,b)=>b.count-a.count||a.movie.name.localeCompare(b.movie.name));
-  const lines=[SEP,`REWATCHED MOVIES (${rows.length})`,SEP];
-  rows.forEach((row,i)=>{
-    lines.push(`${numLabel(i+1)} ${row.movie.name}${altTag(row.movie,'movie')}  [TVDB ID: ${row.movie.id}] [${row.count}]`);
+    lines.push(`${numLabel(i+1)} ${m.name}${altTag(m,'movie')} [ID: ${m.id}]${Store.isFav('movie',m.id)?' [favorite:1]':''}`);
     lines.push('');
   });
   return lines;
@@ -1406,14 +1276,12 @@ function showMinutesTotal(){
 function movieMinutesTotal(){
   return Object.entries(Store.movieWatched()).reduce((sum,[id,m])=>sum+(m.runtime||100)*(1+Store.getRewatch('movie',id)),0);
 }
-function rewatchedMovieCount(){return Object.values(Store.rewatch().movie||{}).filter(n=>n>0).length}
 function exportCountryLabel(){
   const c=effectiveCountryTz().country;
   return c?`${c[1]} (${c[0]})`:'';
 }
 function validEpRewatch(){const w=Store.watched();return Object.entries(Store.epRewatch()).filter(([id,n])=>n>0&&w[id])}
 function epRewatchTotalCount(){return validEpRewatch().reduce((a,[,n])=>a+n,0)}
-function rewatchedEpisodeCount(){return validEpRewatch().length}
 function pruneEpRewatch(){
   const w=Store.watched(),r=Store.epRewatch();let ch=false;
   Object.keys(r).forEach(id=>{if(!w[id]||!(r[id]>0)){delete r[id];ch=true}});
@@ -1421,8 +1289,6 @@ function pruneEpRewatch(){
 }
 function exportProfileSection(){
   const username=Store.profile().name||'';
-  const apikey=Store.apikey()||'';
-  const omdbkey=Store.omdb()||'';
   const baseWatchedEpCount=Object.keys(Store.watched()).length;
   const epRewatchTotal=epRewatchTotalCount();
   const watchedEpCount=baseWatchedEpCount+epRewatchTotal;
@@ -1430,33 +1296,24 @@ function exportProfileSection(){
   const moviesWatchedCount=movieWatchedEntries.length;
   const showMins=showMinutesTotal();
   const movieMins=movieMinutesTotal();
-  return [SEP,'PROFILE',SEP,
+  const pr=Store.profile(),ct=effectiveCountryTz();
+  const country=exportCountryLabel();
+  return ['PROFILE',
     `  Username: ${username}`,
-    `  Country: ${exportCountryLabel()}`,
-    `  Time zone: ${effectiveCountryTz().tz}`,
-    `  Style: ${Store.profile().style==='glass'?'glass':'flat'}`,
-    `  Theme: ${Store.profile().theme==='light'?'light':'dark'}`,
-    `  TVDB API Key: ${apikey}`,
-    `  OMDB API Key: ${omdbkey}`,
+    `  Location: ${country?country+', ':''}${ct.tz}`,
+    `  Appearance: ${pr.style==='glass'?'glass':'flat'}, ${pr.theme==='light'?'light':'dark'}`,
     `  TV time: ${formatDurationFull(showMins)}`,
     `  Episodes watched: ${watchedEpCount}`,
-    `  Rewatched episodes: ${rewatchedEpisodeCount()}`,
     `  Movie time: ${formatDurationFull(movieMins)}`,
     `  Movies watched: ${moviesWatchedCount}`,
-    `  Rewatched movies: ${rewatchedMovieCount()}`,
-    `  Favorite shows: ${Object.keys(Store.fav('show')).length}`,
-    `  Favorite movies: ${Object.keys(Store.fav('movie')).length}`,
+    ...exportImageLines(),
     ''];
 }
 function exportDataText(){
   return [
     ...exportProfileSection(),
-    ...exportImagesSection(),
     ...exportShowsSection(),
-    ...exportMoviesSections(),
-    ...exportFavoritesSections(),
-    ...exportRewatchedEpisodesSection(),
-    ...exportRewatchedMoviesSection()
+    ...exportMoviesSections()
   ].join('\n')+'\n';
 }
 
@@ -1576,7 +1433,7 @@ async function importDataText(text){
     return flag(rest,'favorite');
   }
   function nameBeforeBrackets(rest){
-    const m=/\s\[(?:alt|tvdb|TVDB ID):/i.exec(rest);
+    const m=/\s\[(?:alt|tvdb|TVDB ID|ID):/i.exec(rest);
     return (m?rest.slice(0,m.index):rest).trim();
   }
 
@@ -1598,9 +1455,9 @@ async function importDataText(text){
     };
   }
   function parseEpisodeLine(line){
-    const m=/^\s*S(\d+)E(\d+)\s+\[(?:TVDB ID|id):\s*(\d+)\]\s+\[(\d+)min\]\s+\[([^\]]*)\]\s*$/i.exec(line);
+    const m=/^\s*S(\d+)E(\d+)\s+\[(?:TVDB ID|id):\s*(\d+)\]\s+(?:\[(\d+)(?:min|m)\]\s+)?\[([^\]]*)\](?:\s+\[rewatch:\s*(\d+)\])?\s*$/i.exec(line);
     if(!m)return null;
-    return{s:+m[1],e:+m[2],epId:m[3],runtime:+m[4],date:m[5]};
+    return{s:+m[1],e:+m[2],epId:m[3],runtime:m[4]?+m[4]:null,date:m[5],rewatch:+(m[6]||0)};
   }
   function parseMovieHeader(line){
     const m=/^\s*\d+\.\s+(.*)$/.exec(line);
@@ -1608,7 +1465,7 @@ async function importDataText(text){
     const rest=m[1];
     const id=idOf(rest);
     if(id==null)return null;
-    const runtimeM=/\[(\d+)min\]/.exec(rest);
+    const runtimeM=/\[(\d+)(?:min|m)\]/.exec(rest);
     const dateM=/\[(\d{4}-\d{2}-\d{2})\]/.exec(rest);
     return{
       id,
@@ -1617,13 +1474,17 @@ async function importDataText(text){
       alts:allAlts(rest),
       runtime:runtimeM?+runtimeM[1]:null,
       date:dateM?dateM[1]:null,
-      hasFavInfo:bracket(rest,'favorite')!=null,
-      favorite:parseFavoriteFlag(rest)
+      favorite:parseFavoriteFlag(rest),
+      rewatch:+(bracket(rest,'rewatch')||0)
     };
   }
   function parseWatchlistLine(line){
-    const m=/^\s*\d+\.\s+(.*?)((?:\s\[alt2?:[^\]]*\]){0,2})\s\s\[(?:TVDB ID|tvdb):\s*(\d+)\]\s*$/i.exec(line);
-    const alts=m?allAlts(m[2]):[];return m?{name:m[1].trim(),alt:alts[0]||null,alts,id:m[3]}:null;
+    const m=/^\s*\d+\.\s+(.*)$/.exec(line);
+    if(!m)return null;
+    const id=idOf(m[1]);
+    if(id==null)return null;
+    const alts=allAlts(m[1]);
+    return{name:nameBeforeBrackets(m[1]),alt:alts[0]||null,alts,id,favorite:parseFavoriteFlag(m[1])};
   }
   function parseRewatchGroupHeader(line){
     if(/^\s*\d+\./.test(line))return null;
@@ -1639,102 +1500,75 @@ async function importDataText(text){
     return m?{name:m[1].trim(),id:m[2],count:+m[3]}:null;
   }
 
-  let importedUsername=null,importedApiKey=null,importedOmdbKey=null,importedCountry='',importedTz='',importedStyle='',importedTheme='';
-  const importedDevices=[];
+  let importedUsername=null,importedCountry='',importedTz='',importedStyle='',importedTheme='',importedAvatar='',importedBanner='';
   const showBlocks=[];
   const movieWatchedRows=[];
   const watchlistRows=[];
   const rewatchGroups=[];
   const rewatchMovieRows=[];
   const favShowRows=[],favMovieRows=[];
-  let favMovieSection=false,favShowSection=false;
 
-  let i=0;
-  while(i<lines.length){
-    if(!isSep(lines[i])){i++;continue}
-    const title=(lines[i+1]||'').trim();
-    if(!isSep(lines[i+2])){i++;continue}
-    i+=3;
-
-    if(title==='PROFILE'){
-      while(i<lines.length&&!isSep(lines[i])){
-        const u=/^\s*Username:\s?(.*)$/.exec(lines[i]);
-        if(u)importedUsername=u[1].trim();
-        const co=/^\s*Country:\s?(.*)$/.exec(lines[i]);
-        if(co)importedCountry=co[1].trim();
-        const tzm=/^\s*Time zone:\s?(.*)$/.exec(lines[i]);
-        if(tzm)importedTz=tzm[1].trim();
-        const stm=/^\s*Style:\s?(.*)$/.exec(lines[i]);
-        if(stm)importedStyle=stm[1].trim().toLowerCase();
-        const thm=/^\s*Theme:\s?(.*)$/.exec(lines[i]);
-        if(thm)importedTheme=thm[1].trim().toLowerCase();
-        const k=/^\s*TVDB API Key:\s?(.*)$/.exec(lines[i]);
-        if(k)importedApiKey=k[1].trim();
-        const o=/^\s*OMDB API Key:\s?(.*)$/.exec(lines[i]);
-        if(o)importedOmdbKey=o[1].trim();
-        i++;
-      }
-    }else if(title==='PROFILE IMAGES'){
-      let cur=null;
-      while(i<lines.length&&!isSep(lines[i])){
-        const dm=/^\s*Device:\s*([^|]+?)\s*\|\s*([^|]*?)\s*\|\s*(\d+)\s*$/.exec(lines[i]);
-        if(dm){cur={id:dm[1],label:dm[2],at:+dm[3],avatar:'',banner:''};importedDevices.push(cur)}
-        else if(cur){
-          const a=/^\s*Avatar:\s?(.*)$/.exec(lines[i]);if(a)cur.avatar=a[1].trim();
-          const bn=/^\s*Banner:\s?(.*)$/.exec(lines[i]);if(bn)cur.banner=bn[1].trim();
+  let section='',curShow=null,curGroup=null;
+  const TITLE=/^(PROFILE IMAGES|PROFILE|SHOWS|MOVIES WATCHED|MOVIE WATCHLIST|FAVORITE SHOWS|FAVORITE MOVIES|REWATCHED EPISODES|REWATCHED MOVIES)\b/;
+  for(const line of lines){
+    if(isSep(line))continue;
+    const tm=TITLE.exec(line);
+    if(tm){section=tm[1];curShow=null;curGroup=null;continue}
+    if(!line.trim())continue;
+    if(section==='PROFILE'){
+      const u=/^\s*Username:\s?(.*)$/.exec(line);
+      if(u)importedUsername=u[1].trim();
+      const loc=/^\s*Location:\s?(.*)$/.exec(line);
+      if(loc){
+        const v=loc[1].trim(),cut=v.lastIndexOf(', ');
+        if(cut>=0){importedCountry=v.slice(0,cut).trim();importedTz=v.slice(cut+2).trim()}
+        else{
+          let isTz=false;
+          try{new Intl.DateTimeFormat('en',{timeZone:v});isTz=true}catch{}
+          if(isTz)importedTz=v;else importedCountry=v;
         }
-        i++;
       }
-    }else if(title==='SHOWS'||title==='MOVIES WATCHED'){
-      while(i<lines.length&&!isSep(lines[i]))i++;
-      i++;
-      let curShow=null;
-      while(i<lines.length&&!isSep(lines[i])){
-        const line=lines[i];
-        if(title==='SHOWS'){
-          const ep=parseEpisodeLine(line);
-          if(ep&&curShow)curShow.episodes.push(ep);
-          else{
-            const h=parseShowHeader(line);
-            if(h){curShow={...h,episodes:[]};showBlocks.push(curShow)}
-          }
-        }else{
-          const h=parseMovieHeader(line);
-          if(h)movieWatchedRows.push(h);
-        }
-        i++;
+      const ap=/^\s*Appearance:\s?(.*)$/.exec(line);
+      if(ap){const[a,b]=ap[1].split(',').map(x=>x.trim().toLowerCase());importedStyle=a||'';importedTheme=b||''}
+      const av=/^\s*Avatar:\s?(.*)$/.exec(line);
+      if(av)importedAvatar=av[1].trim();
+      const bn=/^\s*Banner:\s?(.*)$/.exec(line);
+      if(bn)importedBanner=bn[1].trim();
+      const co=/^\s*Country:\s?(.*)$/.exec(line);
+      if(co)importedCountry=co[1].trim();
+      const tzm=/^\s*Time zone:\s?(.*)$/.exec(line);
+      if(tzm)importedTz=tzm[1].trim();
+      const stm=/^\s*Style:\s?(.*)$/.exec(line);
+      if(stm)importedStyle=stm[1].trim().toLowerCase();
+      const thm=/^\s*Theme:\s?(.*)$/.exec(line);
+      if(thm)importedTheme=thm[1].trim().toLowerCase();
+    }else if(section==='PROFILE IMAGES'){
+      const a=/^\s*Avatar:\s?(.*)$/.exec(line);if(a&&!importedAvatar)importedAvatar=a[1].trim();
+      const bn=/^\s*Banner:\s?(.*)$/.exec(line);if(bn&&!importedBanner)importedBanner=bn[1].trim();
+    }else if(section==='SHOWS'){
+      const ep=parseEpisodeLine(line);
+      if(ep&&curShow)curShow.episodes.push(ep);
+      else{
+        const h=parseShowHeader(line);
+        if(h){curShow={...h,episodes:[]};showBlocks.push(curShow)}
       }
-    }else if(/^FAVORITE (SHOWS|MOVIES)/.test(title)){
-      const isMovieFav=/^FAVORITE MOVIES/.test(title);
-      if(isMovieFav)favMovieSection=true;else favShowSection=true;
-      while(i<lines.length&&!isSep(lines[i])){
-        const w=parseWatchlistLine(lines[i]);
-        if(w)(isMovieFav?favMovieRows:favShowRows).push(w);
-        i++;
-      }
-    }else if(/^MOVIE WATCHLIST/.test(title)){
-      while(i<lines.length&&!isSep(lines[i])){
-        const w=parseWatchlistLine(lines[i]);
-        if(w)watchlistRows.push(w);
-        i++;
-      }
-    }else if(/^REWATCHED EPISODES/.test(title)){
-      let curGroup=null;
-      while(i<lines.length&&!isSep(lines[i])){
-        const line=lines[i];
-        if(line.trim()===''){i++;continue}
-        const grp=parseRewatchGroupHeader(line);
-        if(grp){curGroup={...grp,episodes:[]};rewatchGroups.push(curGroup);i++;continue}
-        const ep=parseRewatchEpisodeLine(line);
-        if(ep&&curGroup)curGroup.episodes.push(ep);
-        i++;
-      }
-    }else if(/^REWATCHED MOVIES/.test(title)){
-      while(i<lines.length&&!isSep(lines[i])){
-        const m=parseRewatchMovieLine(lines[i]);
-        if(m)rewatchMovieRows.push(m);
-        i++;
-      }
+    }else if(section==='MOVIES WATCHED'){
+      const h=parseMovieHeader(line);
+      if(h)movieWatchedRows.push(h);
+    }else if(section==='FAVORITE SHOWS'||section==='FAVORITE MOVIES'){
+      const w=parseWatchlistLine(line);
+      if(w)(section==='FAVORITE MOVIES'?favMovieRows:favShowRows).push(w);
+    }else if(section==='MOVIE WATCHLIST'){
+      const w=parseWatchlistLine(line);
+      if(w)watchlistRows.push(w);
+    }else if(section==='REWATCHED EPISODES'){
+      const grp=parseRewatchGroupHeader(line);
+      if(grp){curGroup={...grp,episodes:[]};rewatchGroups.push(curGroup);continue}
+      const ep=parseRewatchEpisodeLine(line);
+      if(ep&&curGroup)curGroup.episodes.push(ep);
+    }else if(section==='REWATCHED MOVIES'){
+      const m=parseRewatchMovieLine(line);
+      if(m)rewatchMovieRows.push(m);
     }
   }
 
@@ -1776,24 +1610,25 @@ async function importDataText(text){
     const pm=b.progress&&/^(\d+)\/(\d+),(\d),(\d+),(\d+),(.*)$/.exec(b.progress);
     if(pm)newProg[r.id]={w:+pm[1],t:+pm[2],x:+pm[3],lw:+pm[4],ra:+pm[5],nx:pm[6].trim()};
     b.episodes.forEach(ep=>{
-      newWatched[ep.epId]={at:parseYMD(ep.date)||Date.now(),s:ep.s,e:ep.e,r:ep.runtime,showId:r.id};
+      newWatched[ep.epId]={at:parseYMD(ep.date)||Date.now(),s:ep.s,e:ep.e,r:ep.runtime||null,showId:r.id};
+      if(ep.rewatch>0)newEpRewatch[ep.epId]=ep.rewatch;
     });
   });
 
-  let movieFavInfo=false;
   resolvedMovieWatched.forEach(({m,r})=>{
     const item=regItem(r,m.alts);
     newMovieReg[r.id]={...newMovieReg[r.id],...item};
     newMovieLib[r.id]={...item,addedAt:Date.now()};
     newMovieWatched[r.id]={runtime:m.runtime||r.runtime||100,watchedAt:parseYMD(m.date)||Date.now()};
-    if(m.hasFavInfo)movieFavInfo=true;
     if(m.favorite)newFavMovies[r.id]={...item,favAt:Date.now()};
+    if(m.rewatch>0)newMovieRewatch[r.id]=m.rewatch;
   });
 
   resolvedWatchlist.forEach(({m,r})=>{
     const item=regItem(r,m.alts);
     newMovieReg[r.id]={...newMovieReg[r.id],...item};
     if(!newMovieLib[r.id])newMovieLib[r.id]={...item,addedAt:Date.now()};
+    if(m.favorite)newFavMovies[r.id]={...item,favAt:Date.now()};
   });
 
   resolvedFavShows.forEach(({m,r})=>{
@@ -1806,7 +1641,6 @@ async function importDataText(text){
     newMovieReg[r.id]={...newMovieReg[r.id],...item};
     newFavMovies[r.id]={...item,favAt:Date.now()};
   });
-  if(favMovieSection)movieFavInfo=true;
 
   resolvedRewatchGroups.forEach(({g,r})=>{
     const item=regItem(r,null);
@@ -1862,7 +1696,7 @@ async function importDataText(text){
   const rw=Store.rewatch();
   rw.movie=maxInto(rw.movie||{},newMovieRewatch);
   lset(K.rewatch,rw);
-  await applyImportedDevices(importedDevices);
+  await applyImportedImages(importedAvatar,importedBanner);
   if(importedStyle==='flat'||importedStyle==='glass'){Store.setProfile({style:importedStyle});applyStyle(importedStyle)}
   if(importedTheme==='light'||importedTheme==='dark'){Store.setProfile({theme:importedTheme});applyTheme(importedTheme)}
   if(importedUsername!=null&&!Store.profile().name)Store.setProfile({name:importedUsername});
@@ -1878,11 +1712,6 @@ async function importDataText(text){
   }
   bumpShowsCache();
   bumpMoviesCache();
-  if(importedOmdbKey)Store.setOmdb(importedOmdbKey);
-  if(importedApiKey){
-    Store.setApikey(importedApiKey);
-    try{await Api.login(importedApiKey)}catch(_e){ }
-  }
   pruneEpRewatch();
   if(restoreWatchedShows())bumpShowsCache();
   Object.keys(_posterTry).forEach(k=>delete _posterTry[k]);
@@ -1896,10 +1725,16 @@ function cachedApiCall(map,key,fetcher){
   return fetcher().then(d=>{map.set(key,d);return d});
 }
 const _seriesExtCache=new Map(),_movieExtCache=new Map(),_seriesArtCache=new Map(),_movieArtCache=new Map(),_movieTrCache=new Map();
+const TVDB_API_KEY='eea21de5-c991-4c1a-a3d0-9628921717fe';
 const Api={
   base:'https://api4.thetvdb.com/v4',
-  async login(apikey){
-    const body={apikey};
+  _loginP:null,
+  login(){
+    if(!this._loginP)this._loginP=this._doLogin().finally(()=>{this._loginP=null});
+    return this._loginP;
+  },
+  async _doLogin(){
+    const body={apikey:TVDB_API_KEY};
     let res;
     try{res=await fetch(`${this.base}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})}
     catch{throw new ApiErr('Could not reach TheTVDB. Check your connection or an ad-blocker.',0)}
@@ -1913,14 +1748,13 @@ const Api={
     return j.data;
   },
   async _getRaw(path,retried){
-    let t=Store.token();
-    if(!t&&!retried&&Store.apikey()){try{t=await this.login(Store.apikey())}catch{}}
-    if(!t)throw new ApiErr('Not connected. Add your API key in your Profile.',401);
+    let t=Store.valid()?Store.token():'';
+    if(!t)t=await this.login();
     const res=await fetch(`${this.base}${path}`,{headers:{Authorization:`Bearer ${t}`}});
     if(res.status===401){
       Store.clearSession();
-      if(!retried&&Store.apikey()){try{await this.login(Store.apikey());return await this._getRaw(path,true)}catch(e){if(e instanceof ApiErr&&e.status!==401)throw e}}
-      throw new ApiErr('Session expired. Reconnect in your Profile.',401);
+      if(!retried)return await this._getRaw(path,true);
+      throw new ApiErr('Could not authenticate with TheTVDB. Please try again later.',401);
     }
     const j=await res.json().catch(()=>({}));
     if(!res.ok||j.status==='failure')throw new ApiErr(j.message||`Request failed (${res.status})`,res.status);
@@ -1934,102 +1768,7 @@ const Api={
   movieArtworks(id,type){return cachedApiCall(_movieArtCache,`${id}:${type??''}`,()=>this._get(`/movies/${id}/artworks${type!=null?`?type=${type}`:''}`))},
   seriesEpisodes(id,page=0){return this._get(`/series/${id}/episodes/default?page=${page}`)},
 };
-const ratingsCache=new Map();
-let _omdbActive=0;
-const _omdbQueue=[];
-const OMDB_MAX_CONCURRENT=4;
-function _omdbPump(){
-  while(_omdbActive<OMDB_MAX_CONCURRENT&&_omdbQueue.length){
-    const job=_omdbQueue.shift();
-    _omdbActive++;
-    job().finally(()=>{_omdbActive--;_omdbPump();});
-  }
-}
-function omdbEnqueue(fn){
-  return new Promise((resolve,reject)=>{
-    _omdbQueue.push(()=>fn().then(resolve,reject));
-    _omdbPump();
-  });
-}
-let _omdbFatalWarned=false;
-async function omdbFetch(params){
-  const key=(Store.omdb()||'').trim();
-  if(!key)return null;
-  return omdbEnqueue(async()=>{
-    const qs=new URLSearchParams({...params,apikey:key});
-    const res=await fetch(`https://www.omdbapi.com/?${qs.toString()}`,{method:'GET'});
-    if(!res.ok){
-      console.error('[tv plus] OMDb request failed',res.status,res.statusText);
-      const err=new Error(`OMDb HTTP ${res.status}`);
-      err.status=res.status;
-      throw err;
-    }
-    const j=await res.json();
-    if(j.Response==='False'){
-      const msg=j.Error||'';
-      const err=new Error(msg||'OMDb error');
-      err.omdbError=msg;
-      err.quotaExceeded=/limit reached/i.test(msg);
-      err.badKey=/invalid api key/i.test(msg);
-      if((err.quotaExceeded||err.badKey)&&!_omdbFatalWarned){
-        _omdbFatalWarned=true;
-        console.error(`[tv plus] OMDb ratings disabled for this session: ${msg}`+(err.quotaExceeded?' (free-tier daily limit - ratings will resume once it resets)':' (check the key in Profile settings)'));
-      }else if(!err.quotaExceeded&&!err.badKey){
-        console.warn('[tv plus] OMDb error:',msg);
-      }
-      throw err;
-    }
-    return j;
-  });
-}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
-async function withOneRetry(fn){
-  try{
-    return await fn();
-  }catch(err){
-    if(err.status===401||err.quotaExceeded||err.badKey)throw err;
-    await sleep(700);
-    return await fn();
-  }
-}
-async function fetchRatings(imdbId){
-  if(!imdbId||!Store.omdb())return null;
-  if(ratingsCache.has(imdbId))return ratingsCache.get(imdbId);
-  try{
-    const j=await withOneRetry(()=>omdbFetch({i:imdbId,tomatoes:'true'}));
-    const rtEntry=(j.Ratings||[]).find(r=>r.Source==='Rotten Tomatoes');
-    const out={
-      imdb:j.imdbRating&&j.imdbRating!=='N/A'?j.imdbRating:null,
-      rt:rtEntry&&rtEntry.Value&&rtEntry.Value!=='N/A'?rtEntry.Value:(j.tomatoMeter&&j.tomatoMeter!=='N/A'?j.tomatoMeter+'%':null),
-      pop:j.tomatoUserMeter&&j.tomatoUserMeter!=='N/A'?j.tomatoUserMeter+'%':null
-    };
-    ratingsCache.set(imdbId,out);
-    return out;
-  }catch(err){
-    return null;
-  }
-}
-async function validateOmdbKey(key){
-  const res=await fetch(`https://www.omdbapi.com/?i=tt0944947&apikey=${encodeURIComponent((key||'').trim())}`);
-  if(!res.ok)throw new Error(`OMDb HTTP ${res.status}`);
-  const j=await res.json();
-  if(j.Response==='False')throw new Error(j.Error||'Invalid OMDb API key.');
-  return true;
-}
-function getImdbId(item){
-  const list=item.remoteIds||item.remote_ids||[];
-  const hit=list.find(r=>(r.sourceName||r.sourcename||'').toUpperCase().includes('IMDB'));
-  return hit?hit.id:null;
-}
-function attachRatings(container,item){
-  const imdbId=getImdbId(item);
-  if(!imdbId||!Store.omdb())return;
-  fetchRatings(imdbId).then(r=>{
-    if(!r)return;
-    const box=container.querySelector('#ratings');
-    if(box&&Store.omdb())box.innerHTML=`<span class="rating-chip imdb">IMDb ${r.imdb||'—'}</span>${r.rt?`<span class="rating-chip rt">🍅 ${r.rt}</span>`:''}${r.pop?`<span class="rating-chip pop">🍿 ${r.pop}</span>`:''}`;
-  });
-}
 
 function imgUrl(p,opts={}){
   if(!p)return placeholder();
@@ -2968,7 +2707,6 @@ function renderExplore(o){
 }
 async function doExploreSearch(q,el){
   if(!q)return;
-  if(!Store.valid()&&!Store.apikey()){el.innerHTML=emptyState('Connect your TVDB API key in your Profile first.','stats');return}
   el.innerHTML=loadingHtml('Searching…');
   try{
     const rs=await Promise.allSettled([Api.search(q,'series'),Api.search(q,'movie')]);
@@ -3479,15 +3217,6 @@ function renderStats(o,opts){
         <div class="setting-row">
           <label class="switch" title="Switch between dark and light mode"><input type="checkbox" id="theme-toggle" ${profile.theme==='light'?'checked':''} /><span class="slider"><span class="thumb"><svg class="ico-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span></span></label>
         </div>
-        <div class="setting-cat">Connections</div>
-    <form id="f">
-      <div class="field"><span>TVDB API Key — <a href="https://thetvdb.com/api-information" target="_blank">get one</a><span class="help-tip" tabindex="0" role="img" aria-label="What is TVDB?" data-tip="TheTVDB is the database behind this app. It provides show and movie details, posters, episode lists, air dates and cast. A free key is required.">?</span></span>
-        <div class="row conn-row"><input type="text" id="i-key" placeholder="e.g. 0a1b2c3d-..." /><button type="submit" id="tvdb-toggle" class="btn btn-accent">Connect</button></div>
-      </div>
-        <div class="field" style="margin-top:2px"><span>OMDb API Key — <a href="https://www.omdbapi.com/apikey.aspx" target="_blank">get one</a><span class="help-tip" tabindex="0" role="img" aria-label="What is OMDb?" data-tip="OMDb provides the IMDb and Rotten Tomatoes ratings shown on show and movie pages. This key is optional; without it, ratings are hidden.">?</span></span>
-        <div class="row conn-row"><input type="text" id="i-omdb" placeholder="OMDb API key" /><button type="button" id="omdb-toggle" class="btn btn-accent">Connect</button></div>
-      </div>
-          </form>
         <div class="setting-cat">Local Data</div>
     <div>
       <div class="field fs-field"><span id="fs-status">${FileSync.supported?'No data file connected yet. Choose or create a .txt file to keep your data auto-saved on this device.':'You can export/import a backup .txt file below.'}</span></div>
@@ -3562,58 +3291,6 @@ function renderStats(o,opts){
     });
     rows.forEach((row,r)=>row.forEach(it=>it.el.animate([{opacity:0},{opacity:1}],{duration:300,delay:r*100,easing:'ease-out',fill:'backwards'})));
   }
-  o.querySelector('#i-key').value=Store.apikey();
-  o.querySelector('#i-omdb').value=Store.omdb();
-  const tvdbToggle=o.querySelector('#tvdb-toggle');
-  const omdbToggle=o.querySelector('#omdb-toggle');
-  function syncTvdbToggle(){
-    const connected=Store.valid();
-    tvdbToggle.textContent=connected?'Disconnect':'Connect';
-    tvdbToggle.classList.toggle('btn-connect',!connected);
-    tvdbToggle.classList.toggle('btn-disconnect',connected);
-  }
-  function syncOmdbToggle(){
-    const connected=Boolean(Store.omdb());
-    omdbToggle.textContent=connected?'Disconnect':'Connect';
-    omdbToggle.classList.toggle('btn-connect',!connected);
-    omdbToggle.classList.toggle('btn-disconnect',connected);
-  }
-  syncTvdbToggle();
-  syncOmdbToggle();
-  o.querySelector('#f').addEventListener('submit',async e=>{
-    e.preventDefault();
-    if(Store.valid()){
-      Store.clearAll();o.querySelector('#i-key').value='';
-      syncTvdbToggle();
-      return;
-    }
-    const key=o.querySelector('#i-key').value.trim();
-    if(!key)return;
-    try{await Api.login(key);Store.setApikey(key);syncTvdbToggle()}
-    catch(err){syncTvdbToggle()}
-  });
-  omdbToggle.addEventListener('click',async()=>{
-    if(Store.omdb()){
-      Store.setOmdb('');
-      o.querySelector('#i-omdb').value='';
-      ratingsCache.clear();
-      syncOmdbToggle();
-      return;
-    }
-    const v=o.querySelector('#i-omdb').value.trim();
-    if(!v)return;
-    Store.setOmdb(v);
-    ratingsCache.clear();
-    syncOmdbToggle();
-    omdbToggle.disabled=true;
-    try{
-      await validateOmdbKey(v);
-    }catch(err){
-      
-    }finally{
-      omdbToggle.disabled=false;
-    }
-  });
 
   const nameInput=o.querySelector('#profile-name');
   const nameDisplay=o.querySelector('#profile-name-display');
@@ -3880,13 +3557,13 @@ function renderStats(o,opts){
   o.querySelector('#fs-delete').addEventListener('click',()=>{
     showConfirmDialog({
       title:'Delete local data?',
-      message:'This clears your library, watched history, favorites, and ratings on this device. This cannot be undone.',
+      message:'This clears your library, watched history, and favorites on this device. This cannot be undone.',
       confirmLabel:'Delete',
       danger:true,
       onConfirm:()=>{
         Object.values(K).forEach(k=>localStorage.removeItem(k));
         _pk.clear();_progCache=null;
-        idbDel('profile.avatar');idbDel('profile.banner');idbDel('devices');DevCache={};ProfileImg.avatar=ProfileImg.banner='';
+        idbDel('profile.avatar');idbDel('profile.banner');ProfileImg.avatar=ProfileImg.banner='';
         bumpShowsCache();
         bumpMoviesCache();
         applyTheme('dark');applyStyle();
@@ -3943,14 +3620,6 @@ function renderStats(o,opts){
 }
 
 let _posterNameSeq=0;
-function attachPosterRating(card,imdbId){
-  if(!imdbId||!Store.omdb())return;
-  fetchRatings(imdbId).then(r=>{
-    if(!r||!r.imdb)return;
-    const chip=card.querySelector('.poster-rating');
-    if(chip){chip.textContent=`★ ${r.imdb}`;chip.style.display='flex'}
-  });
-}
 function searchResultRow({id,name,image,kind}){
   const el=document.createElement('div');
   el.className='search-row';
@@ -4009,7 +3678,7 @@ function posterCard({id,name,image,sub,kind='series',showType=false}){
   el.innerHTML=`
     <div class="poster-img-wrap">
       <img src="${imgUrl(image)}" alt="${esc(name)}" />
-      ${Store.isFav(skind,id)?favBadgeHtml():''}${showType?`<span class="poster-type">${isMovie?'Movie':'Show'}</span>`:''}<span class="poster-rating" style="display:none"></span>
+      ${Store.isFav(skind,id)?favBadgeHtml():''}${showType?`<span class="poster-type">${isMovie?'Movie':'Show'}</span>`:''}
       <div class="poster-overlay"><div class="name" id="${nameId}">${esc(name)||'Untitled'}</div></div>
     </div>
     ${showProgress?`<div class="poster-progress"><div class="poster-progress-fill" style="width:0%"></div></div>`:''}`;
@@ -4258,7 +3927,7 @@ function upcomingRow(s,ep,meta={}){
   el.addEventListener('click',()=>nav('show',{id:s.id}));
   return el;
 }
-function episodeRow(ep,onToggle,seriesImdbId,showItem,onRewatchChange){
+function episodeRow(ep,onToggle,showItem,onRewatchChange){
   const el=document.createElement('div');
   el.className='feed-item';
   el.dataset.epId=ep.id;
@@ -4372,14 +4041,14 @@ async function renderShow(o,{id}){
           }
           seasonRefreshers.get(epSeasonMap.get(ep.id))?.();
           renderContinueWatching();
-        },getImdbId(series),showItem);
+        },showItem);
         list.appendChild(row);
       });
       continueWrap.appendChild(list);
     }
     renderContinueWatching();
     body.appendChild(continueWrap);
-    body.appendChild(seasonEpisodesSection(eps,series.id,()=>{applyShowProgress(progressEl,series.id,eps,ended);renderContinueWatching();},getImdbId(series),showItem,seasonRefreshers));
+    body.appendChild(seasonEpisodesSection(eps,series.id,()=>{applyShowProgress(progressEl,series.id,eps,ended);renderContinueWatching();},showItem,seasonRefreshers));
     content.appendChild(body);
   }catch(err){
     o.className='';
@@ -4389,7 +4058,7 @@ async function renderShow(o,{id}){
     content.insertAdjacentHTML('beforeend',emptyState(err.message));
   }
 }
-function seasonEpisodesSection(eps,showId,onProgressChange,seriesImdbId,showItem,seasonRefreshers){
+function seasonEpisodesSection(eps,showId,onProgressChange,showItem,seasonRefreshers){
   const wrap=document.createElement('div');
   const bySeason=new Map();
   eps.forEach(e=>{if(!bySeason.has(e.seasonNumber))bySeason.set(e.seasonNumber,[]);bySeason.get(e.seasonNumber).push(e)});
@@ -4471,7 +4140,7 @@ function seasonEpisodesSection(eps,showId,onProgressChange,seriesImdbId,showItem
       markBtn.classList.toggle('on',allWatched);markBtn.setAttribute('aria-pressed',allWatched);
       seasonRwGroup?.classList.toggle('hidden',!allWatched);
     }
-    seasonEps.forEach(e=>list.appendChild(episodeRow(e,()=>{onProgressChange?.();refreshSeasonMeta();syncSeasonRewatchFromEpisodes()},seriesImdbId,showItem,syncSeasonRewatchFromEpisodes)));
+    seasonEps.forEach(e=>list.appendChild(episodeRow(e,()=>{onProgressChange?.();refreshSeasonMeta();syncSeasonRewatchFromEpisodes()},showItem,syncSeasonRewatchFromEpisodes)));
     seasonRefreshers?.set(sn,refreshSeasonMeta);
     syncSeasonRewatchFromEpisodes();
     wireRewatchGroup(seasonRwGroup,{
@@ -4531,7 +4200,6 @@ function showHero(series,progress){
     <div class="hero-info">
       <div class="hero-title-row">
         <h2 id="title-text-show">${esc(series.name)}</h2>
-      ${Store.omdb()?'<div class="hero-ratings" id="ratings"><span class="rating-chip imdb">IMDb —</span></div>':''}
       </div>
       <p class="meta-line"><strong>${status}</strong>${series.firstAired?` · since ${fmtDate(series.firstAired)}`:''}${runtime?` · ~${runtime} min/episode`:''}</p>
       ${overviewHtml(series.overview,'overview-text-show')}
@@ -4543,7 +4211,6 @@ function showHero(series,progress){
   wireTrackFav(wrap,'show',{id:series.id,name:series.name,image:series.image,aliases:series.aliases,averageRuntime:series.averageRuntime});
   wireOverview(wrap,'overview-text-show',series.overview||'No overview available.');
   wireTitleTranslate(wrap,'title-text-show',series.name);
-  attachRatings(wrap,series);
   return wrap;
 }
 
@@ -4584,7 +4251,6 @@ async function renderMovie(o,{id}){
       <div class="hero-info">
         <div class="hero-title-row">
           <h2 id="title-text-movie">${esc(movie.name)}</h2>
-        ${Store.omdb()?'<div class="hero-ratings" id="ratings"><span class="rating-chip imdb">IMDb —</span></div>':''}
         </div>
         <p class="meta-line">${movie.year?`<strong>${movie.year}</strong>`:''}${movie.runtime?` · ${movie.runtime} min`:''}</p>
         ${overviewHtml(movieOverview,'overview-text-movie')}
@@ -4620,7 +4286,6 @@ async function renderMovie(o,{id}){
       inc:()=>Store.bumpRewatch('movie',movie.id),
       dec:()=>Store.decRewatch('movie',movie.id)
     });
-    attachRatings(hero,movie);
     const body=document.createElement('div');
     body.className='detail-body';
     const cast=(movie.characters||[]).filter(c=>c.personName||c.name);
@@ -4788,7 +4453,7 @@ async function repairDomPosters(){
         delete img.dataset.retries;delete img.dataset.origSrc;
         img.src=url+(url.includes('?')?'&':'?')+'_p='+now;
       });
-    }else if(Store.valid()){
+    }else{
       try{
         const d=kind==='movie'?await Api.movieExtended(id):await Api.seriesExtended(id);
         if(d&&d.image)applyRepairedItem(kind,id,d);
@@ -4801,7 +4466,6 @@ async function repairMissingPosters(){
   _posterBusy=true;
   try{
     await repairDomPosters();
-    if(!Store.valid())return;
     const pending=[];
     ['show','movie'].forEach(kind=>{
       const seen=new Set();
@@ -4857,8 +4521,8 @@ async function offerRestore(){
   await loadProfileImages();
   pruneEpRewatch();
   restoreWatchedShows();
-  const key=Store.apikey();
-  if(key&&!Store.valid()){try{await Api.login(key)}catch{}}
+  ['nx.apikey','nx.omdb'].forEach(k=>{try{localStorage.removeItem(k)}catch{}});
+  if(!Store.valid()){try{await Api.login()}catch{}}
   const{route,id}=hashRoute();
   nav(route,{id});
   offerRestore().catch(()=>{});
