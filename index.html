@@ -11,6 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="TV Plus">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' rx='34' fill='%23F7CD3A'/%3E%3Cpath fill='%23262626' d='M60 60h180v60H180v120H120V120H60z'/%3E%3C/svg%3E">
+<script src="supabase-config.js"></script>
 <script>
 const APP_ICON="data:image/png;base64,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";
 const appIcon=px=>new Promise(res=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=px;c.getContext('2d').drawImage(im,0,0,px,px);res(c.toDataURL('image/png'))};im.onerror=()=>res(APP_ICON);im.src=APP_ICON});
@@ -772,6 +773,32 @@ html:has(.profile-edit-overlay.open),html:has(.profile-edit-overlay.open) body,h
 .profile-route::before{content:'';position:fixed;top:0;left:0;right:0;height:1px;pointer-events:none;z-index:1;background:rgba(0,0,0,.01)}
 /* upcoming: mark-watched button replaces "Aired" */
 .upcoming-check{margin:0}
+
+/* cloud sync */
+input[type=email],input[type=password]{width:100%;box-sizing:border-box;background:var(--bg-elev);border:1px solid var(--border);border-radius:999px;padding:10px 16px;font-size:14px}
+input[type=email]:focus,input[type=password]:focus{border-color:var(--accent);outline:none}
+.profile-btn-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cloud-chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;white-space:nowrap}
+.cloud-chip[hidden]{display:none}
+.cl-dot{width:8px;height:8px;border-radius:50%;background:#8b93a3;flex-shrink:0}
+[data-k="synced"] .cl-dot{background:#3ddc84}
+[data-k="syncing"] .cl-dot{background:var(--accent);animation:cl-pulse 1s ease-in-out infinite}
+[data-k="offline"] .cl-dot,[data-k="held"] .cl-dot{background:#f5a623}
+[data-k="failed"] .cl-dot{background:#ff4d4f}
+@keyframes cl-pulse{50%{opacity:.35}}
+.cl-box{display:flex;flex-direction:column;gap:8px}
+.cl-line{font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:8px;flex-wrap:wrap;overflow-wrap:anywhere}
+.cl-line b{color:var(--text);font-weight:700}
+.cl-status{font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.cl-err{font-size:12px;color:#ff6b6b;min-height:0}
+.cl-ok{font-size:12px;color:#3ddc84}
+.cl-choices{flex-direction:column;align-items:stretch}
+.cl-choices .btn{width:100%;text-align:center}
+.cl-backups{display:flex;flex-direction:column;gap:6px;margin-top:2px}
+.cl-backup{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--text-dim)}
+.cl-backup .btn{padding:5px 12px;font-size:11px}
+html[data-theme="light"] .profile-edit-overlay input[type=email],html[data-theme="light"] .profile-edit-overlay input[type=password]{background:var(--bg-elev);border-color:var(--border)}
+html[data-theme="light"] .cloud-chip{color:var(--text);background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.18)}
 </style>
 </head>
 <body>
@@ -808,6 +835,7 @@ let _progCache=null,_todayK='',_todayAt=0,showsDirty=false,moviesDirty=false;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function lget(k,f){const r=localStorage.getItem(k);if(r===null)return f;try{return JSON.parse(r)}catch{return f}}
 const _pk=new Map();
+let _cloudHook=null;   // set by the cloud-sync module; called after every localStorage write made through lset()
 function lpeek(k,f){if(_pk.has(k))return _pk.get(k);const v=lget(k,f);_pk.set(k,v);return v}
 function lset(k,v){
   try{localStorage.setItem(k,JSON.stringify(v))}
@@ -815,7 +843,9 @@ function lset(k,v){
   _pk.delete(k);
   if(k===K.lib||k===K.watched||k===K.stopped||k===K.prog||k===K.profile)showsDirty=true;
   if(k===K.movieLib||k===K.movieWatched||k===K.profile)moviesDirty=true;
-  scheduleSync();return true;
+  scheduleSync();
+  if(_cloudHook)_cloudHook(k);
+  return true;
 }
 window.addEventListener('storage',()=>{_pk.clear();_progCache=null});
 
@@ -826,9 +856,24 @@ function exportImageLines(){
   if(ProfileImg.banner)out.push(`  Banner: ${ProfileImg.banner}`);
   return out;
 }
+function dataUrlToFile(uri){
+  const i=uri.indexOf(','),mime=uri.slice(5,uri.indexOf(';'));
+  const bin=atob(uri.slice(i+1)),bytes=new Uint8Array(bin.length);
+  for(let k=0;k<bin.length;k++)bytes[k]=bin.charCodeAt(k);
+  return new File([bytes],'imported-image',{type:mime});
+}
+/* Imported images pass through optimizeImage() exactly like manual uploads. An image already saved on this
+   device is not overwritten. A bad image is skipped without interrupting the rest of the import. */
 async function applyImportedImages(avatar,banner){
-  if(avatar&&IMG_OK.test(avatar)&&!ProfileImg.avatar)await saveProfileImage('avatar',avatar);
-  if(banner&&IMG_OK.test(banner)&&!ProfileImg.banner)await saveProfileImage('banner',banner);
+  for(const [kind,uri] of [['avatar',avatar],['banner',banner]]){
+    if(!uri||ProfileImg[kind]||!IMG_OK.test(uri))continue;
+    try{
+      const {dataUrl}=await optimizeImage(dataUrlToFile(uri),kind);
+      await saveProfileImage(kind,dataUrl);
+    }catch(err){
+      try{console.warn('[tv plus] imported '+kind+' skipped:',err&&err.message)}catch{}
+    }
+  }
 }
 let _idbP=null;
 function idbOpen(){
@@ -953,7 +998,7 @@ function downloadBackup(){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-const APP_VERSION='136';
+const APP_VERSION='140';
 function applyStyle(st){
   const r=document.documentElement;
   r.dataset.style=st==='glass'?'glass':'flat';
@@ -1041,8 +1086,147 @@ async function loadProfileImages(){
 }
 async function saveProfileImage(key,dataUrl){
   const ok=await idbSet('profile.'+key,dataUrl);
-  if(ok)ProfileImg[key]=dataUrl;
+  if(ok){ProfileImg[key]=dataUrl;if(_cloudHook)_cloudHook('img')}
   return ok;
+}
+
+/* ---- image optimization (runs in the browser, before Base64 encoding) ---- */
+const IMG_Q_START=0.85,IMG_Q_FLOOR=0.70;            // lossy quality range; never go below the floor
+/* Per-category settings. `bytes` is a target for the encoded image (not for the Base64 text).
+   `viewRatio` (banner only): the width/height range the profile banner can ever be displayed at
+   (cover + centre, 223px tall under 700px wide / 324px tall above, 320px..1200px wide). Image content
+   outside that range is hidden in every layout, so it is cropped away; nothing inside the range is cropped. */
+const IMG_LIMITS={
+  avatar:{w:512,h:512,bytes:300*1024},
+  banner:{w:1600,h:600,bytes:250*1024,viewRatio:{min:1.25,max:3.75}}
+};
+const IMG_KEEP_TYPES=['image/jpeg','image/png','image/webp'];   // stored untouched when already small enough
+const IMG_ALPHA_TYPES=/^image\/(png|webp|gif|avif|svg\+xml)$/;
+let _webpOk=null;
+const canvasBlob=(c,type,q)=>new Promise(res=>{try{c.toBlob(b=>res(b),type,q)}catch{res(null)}});
+const blobToDataUrl=b=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error||new Error('read failed'));r.readAsDataURL(b)});
+async function webpSupported(){
+  if(_webpOk===null){
+    const c=document.createElement('canvas');c.width=c.height=2;
+    const b=await canvasBlob(c,'image/webp',.8);
+    _webpOk=!!b&&b.type==='image/webp';
+  }
+  return _webpOk;
+}
+async function decodeImage(file){
+  try{return await createImageBitmap(file,{imageOrientation:'from-image'})}
+  catch{
+    return await new Promise((res,rej)=>{
+      const u=URL.createObjectURL(file),im=new Image();
+      im.onload=()=>{URL.revokeObjectURL(u);res(im)};
+      im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('This file could not be read as an image.'))};
+      im.src=u;
+    });
+  }
+}
+function canvasHasAlpha(ctx,w,h){
+  const d=ctx.getImageData(0,0,w,h).data;
+  for(let i=3;i<d.length;i+=4)if(d[i]<255)return true;
+  return false;
+}
+/* Draw the region (sx,sy,sw,sh) of src into ctx at w x h, downscaling in steps of at most 2x
+   so large photos keep their detail (avoids aliasing from one huge jump). */
+function drawScaled(src,sx,sy,sw,sh,ctx,w,h){
+  let cur=src,rx=sx,ry=sy,rw=sw,rh=sh;
+  while(rw/2>=w&&rh/2>=h){
+    const nw=Math.max(w,Math.round(rw/2)),nh=Math.max(h,Math.round(rh/2));
+    const c=document.createElement('canvas');c.width=nw;c.height=nh;
+    const x=c.getContext('2d');x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';
+    x.drawImage(cur,rx,ry,rw,rh,0,0,nw,nh);
+    cur=c;rx=0;ry=0;rw=nw;rh=nh;
+  }
+  ctx.drawImage(cur,rx,ry,rw,rh,0,0,w,h);
+}
+/* Returns {dataUrl,report}. report holds the diagnostics for the upload. */
+async function optimizeImage(file,kind){
+  const lim=IMG_LIMITS[kind]||IMG_LIMITS.avatar;
+  if(!file||!(file.type||'').startsWith('image/'))throw new Error('Please choose an image file.');
+  const src=await decodeImage(file);
+  try{
+    const w0=src.width||src.naturalWidth,h0=src.height||src.naturalHeight;
+    if(!w0||!h0)throw new Error('This file could not be read as an image.');
+    // Crop only what can never be displayed (see IMG_LIMITS.banner.viewRatio); centred, like the CSS.
+    let sx=0,sy=0,sw=w0,sh=h0;
+    const vr=lim.viewRatio;
+    if(vr){
+      const R=w0/h0;
+      if(R<vr.min){sh=Math.max(1,Math.round(w0/vr.min));sy=Math.round((h0-sh)/2)}
+      else if(R>vr.max){sw=Math.max(1,Math.round(h0*vr.max));sx=Math.round((w0-sw)/2)}
+    }
+    const cropped=sw!==w0||sh!==h0;
+    const fit=Math.min(1,lim.w/sw,lim.h/sh);
+    const w=Math.max(1,Math.round(sw*fit)),h=Math.max(1,Math.round(sh*fit));
+    const MAXB=lim.bytes;
+    const mayAlpha=IMG_ALPHA_TYPES.test(file.type);
+    const report={category:kind,originalWidth:w0,originalHeight:h0,originalBytes:file.size,originalFormat:file.type,
+      transparencyDetected:false,finalWidth:w0,finalHeight:h0,finalFormat:file.type,finalBytes:file.size,
+      base64Length:0,quality:null,resized:fit<1,cropped,flattened:false,targetBytes:MAXB,targetReached:true};
+    const done=async(blobOrFile,dataUrl)=>{
+      if(!IMG_OK.test(dataUrl))throw new Error('This image format is not supported.');
+      report.finalFormat=blobOrFile.type;report.finalBytes=blobOrFile.size;
+      report.base64Length=dataUrl.length-dataUrl.indexOf(',')-1;
+      try{console.info('[tv plus] image optimized',report)}catch{}
+      window._lastImageReport=report;
+      return{dataUrl,report};
+    };
+    // Already within limits: keep the original bytes, unless it has transparency that must be flattened.
+    if(fit===1&&!cropped&&file.size<=MAXB&&IMG_KEEP_TYPES.includes(file.type)){
+      let alpha=false;
+      if(mayAlpha){
+        const c=document.createElement('canvas');c.width=w0;c.height=h0;
+        const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(src,0,0);
+        alpha=canvasHasAlpha(x,w0,h0);
+      }
+      report.transparencyDetected=alpha;
+      if(!alpha){
+        const d=await blobToDataUrl(file);
+        if(IMG_OK.test(d))return await done(file,d);
+      }
+    }
+    // Resize (proportionally, never enlarging), then composite onto solid black.
+    const t=document.createElement('canvas');t.width=w;t.height=h;
+    const tctx=t.getContext('2d',{willReadFrequently:true});
+    tctx.imageSmoothingEnabled=true;tctx.imageSmoothingQuality='high';
+    drawScaled(src,sx,sy,sw,sh,tctx,w,h);
+    if(mayAlpha&&!report.transparencyDetected)report.transparencyDetected=canvasHasAlpha(tctx,w,h);
+    const flat=document.createElement('canvas');flat.width=w;flat.height=h;
+    const fctx=flat.getContext('2d');
+    fctx.fillStyle='#000';fctx.fillRect(0,0,w,h);     // opaque black background
+    fctx.drawImage(t,0,0);                             // transparent / semi-transparent pixels blend against black
+    report.flattened=report.transparencyDetected;
+    report.finalWidth=w;report.finalHeight=h;
+    let best=null,bestQ=null;
+    if(/^image\/(png|gif)$/.test(file.type)){          // graphics: keep lossless PNG if it already fits
+      const pb=await canvasBlob(flat,'image/png');
+      if(pb&&pb.type==='image/png'&&pb.size<=MAXB){best=pb;bestQ='lossless'}
+    }
+    if(!best){
+      const type=(await webpSupported())?'image/webp':'image/jpeg';
+      const enc=q=>canvasBlob(flat,type,q);
+      const hi=await enc(IMG_Q_START);
+      if(!hi||!IMG_KEEP_TYPES.includes(hi.type))throw new Error('This image could not be converted.');
+      if(hi.size<=MAXB){best=hi;bestQ=IMG_Q_START}
+      else{
+        const lo=await enc(IMG_Q_FLOOR);
+        if(!lo||lo.size>MAXB){best=lo&&lo.size<hi.size?lo:hi;bestQ=best===lo?IMG_Q_FLOOR:IMG_Q_START;report.targetReached=false}
+        else{
+          best=lo;bestQ=IMG_Q_FLOOR;
+          let l=IMG_Q_FLOOR,u=IMG_Q_START;
+          for(let i=0;i<5;i++){                       // highest quality that still fits
+            const mid=(l+u)/2,m=await enc(mid);
+            if(m&&m.size<=MAXB){best=m;bestQ=mid;l=mid}else u=mid;
+          }
+        }
+      }
+    }
+    report.quality=bestQ;
+    return await done(best,await blobToDataUrl(best));
+  }finally{src.close?.()}
 }
 
 const Store={
@@ -3211,7 +3395,7 @@ function renderStats(o,opts){
         </div>
         <div class="profile-id-info">
           <div class="profile-id-name" id="profile-name-display">${esc(profile.name)||'Your name'}</div>
-          <button type="button" class="profile-edit-btn" id="profile-edit-toggle">Settings</button>
+          <div class="profile-btn-row"><button type="button" class="profile-edit-btn" id="profile-edit-toggle">Settings</button><span class="cloud-chip" id="cloud-chip" hidden></span></div>
         </div>
       </div>
       <div class="profile-edit-overlay bglass" id="profile-edit-overlay">
@@ -3237,6 +3421,8 @@ function renderStats(o,opts){
         <div class="setting-row">
           <label class="switch" title="Switch between dark and light mode"><input type="checkbox" id="theme-toggle" ${profile.theme==='light'?'checked':''} /><span class="slider"><span class="thumb"><svg class="ico-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span></span></label>
         </div>
+        <div class="setting-cat">Account &amp; Cloud Sync</div>
+        <div id="cloud-account" class="cl-box"></div>
         <div class="setting-cat">Local Data</div>
     <div>
       <div class="field fs-field"><span id="fs-status">${FileSync.supported?'No data file connected yet. Choose or create a .txt file to keep your data auto-saved on this device.':'You can export/import a backup .txt file below.'}</span></div>
@@ -3312,6 +3498,7 @@ function renderStats(o,opts){
     rows.forEach((row,r)=>row.forEach(it=>it.el.animate([{opacity:0},{opacity:1}],{duration:300,delay:r*100,easing:'ease-out',fill:'backwards'})));
   }
 
+  cloudMountUI(o);
   const nameInput=o.querySelector('#profile-name');
   const nameDisplay=o.querySelector('#profile-name-display');
   nameInput.addEventListener('change',()=>{
@@ -3319,47 +3506,23 @@ function renderStats(o,opts){
     Store.setProfile({name:v});
     nameDisplay.textContent=v||'Your name';
   });
-  async function imageToDataUrl(file,maxSide){
-    let src;
-    try{src=await createImageBitmap(file,{imageOrientation:'from-image'})}
-    catch{
-      src=await new Promise((res,rej)=>{const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{URL.revokeObjectURL(u);res(im)};im.onerror=rej;im.src=u});
+  async function pickImage(input,kind,apply){
+    const file=input.files[0];
+    input.value='';
+    if(!file)return;
+    try{
+      const {dataUrl,report}=await optimizeImage(file,kind);
+      if(!(await saveProfileImage(kind,dataUrl)))throw new Error('The image could not be saved on this device.');
+      apply(dataUrl);
+      if(!report.targetReached)showConfirmDialog({title:'Image saved',message:`This image is ${Math.round(report.finalBytes/1024)} KB, above the ${Math.round(report.targetBytes/1024)} KB target. It was kept at the best acceptable quality instead of being degraded further.`,confirmLabel:'OK',onConfirm(){}});
+    }catch(err){
+      showConfirmDialog({title:'Image not updated',message:esc((err&&err.message)||'Something went wrong while processing the image.'),confirmLabel:'OK',onConfirm(){}});
     }
-    const w0=src.width||src.naturalWidth,h0=src.height||src.naturalHeight;
-    let scale=Math.min(1,maxSide/Math.max(w0,h0)),q=0.88,out='';
-    for(let n=0;n<6;n++){
-      const c=document.createElement('canvas');
-      c.width=Math.max(1,Math.round(w0*scale));c.height=Math.max(1,Math.round(h0*scale));
-      const ctx=c.getContext('2d');
-      ctx.fillStyle='#000';ctx.fillRect(0,0,c.width,c.height);
-      ctx.drawImage(src,0,0,c.width,c.height);
-      out=c.toDataURL('image/jpeg',q);
-      if(out.length<700000)break;
-      scale*=0.75;q=Math.max(0.6,q-0.06);
-    }
-    src.close?.();
-    return out;
   }
   const avatarInput=o.querySelector('#profile-avatar-input');
-  avatarInput.addEventListener('change',async()=>{
-    const file=avatarInput.files[0];
-    avatarInput.value='';
-    if(!file)return;
-    try{
-      const dataUrl=await imageToDataUrl(file,640);
-      if(await saveProfileImage('avatar',dataUrl))o.querySelector('#profile-avatar-img').src=dataUrl;
-    }catch{}
-  });
+  avatarInput.addEventListener('change',()=>pickImage(avatarInput,'avatar',d=>{o.querySelector('#profile-avatar-img').src=d}));
   const bannerInput=o.querySelector('#profile-banner-input');
-  bannerInput.addEventListener('change',async()=>{
-    const file=bannerInput.files[0];
-    bannerInput.value='';
-    if(!file)return;
-    try{
-      const dataUrl=await imageToDataUrl(file,1800);
-      if(await saveProfileImage('banner',dataUrl))o.querySelector('#profile-banner').style.backgroundImage=`url('${dataUrl}')`;
-    }catch{}
-  });
+  bannerInput.addEventListener('change',()=>pickImage(bannerInput,'banner',d=>{o.querySelector('#profile-banner').style.backgroundImage=`url('${d}')`}));
   const sheetEl=o.querySelector('#profile-edit-overlay');
   sheetEl.addEventListener('scroll',()=>{if(sheetEl.scrollLeft)sheetEl.scrollLeft=0},{passive:true});
   o.querySelectorAll('#style-toggle button').forEach(btn=>btn.addEventListener('click',()=>{
@@ -3578,10 +3741,11 @@ function renderStats(o,opts){
   o.querySelector('#fs-delete').addEventListener('click',()=>{
     showConfirmDialog({
       title:'Delete local data?',
-      message:'This clears your library, watched history, and favorites on this device. This cannot be undone.',
+      message:'This clears your library, watched history, and favorites on this device. This cannot be undone.'+(Cloud.user?' Your cloud copy is NOT deleted; it will be restored the next time you sync.':''),
       confirmLabel:'Delete',
       danger:true,
       onConfirm:()=>{
+        Cloud.noteLocalWipe();
         Object.values(K).forEach(k=>localStorage.removeItem(k));
         _pk.clear();_progCache=null;
         idbDel('profile.avatar');idbDel('profile.banner');ProfileImg.avatar=ProfileImg.banner='';
@@ -4557,7 +4721,428 @@ async function offerRestore(){
   }
   showConfirmDialog({title:'Restore your data?',message:'This device has no saved library, but a backup file is connected. Load it now?',confirmLabel:'Load backup',onConfirm:restore});
 }
+
+/* =====================================================================================================
+   Cloud sync (Supabase). Optional: the app works exactly as before when nobody is logged in.
+   - What is synced: the app's own localStorage data (CLOUD_KEYS) + avatar/banner, as one JSON document in
+     public.user_data.data. The TXT export/import format is untouched.
+   - Safety: writes are compare-and-swap on updated_at, so a stale device can never silently overwrite newer
+     cloud data; every ambiguous situation asks the user and keeps a safety copy of whatever gets replaced.
+   ===================================================================================================== */
+const CLOUD_KEYS=['lib','movieLib','watched','movieWatched','favShows','favMovies','rewatch','epRewatch','seasonRewatch','profile','stopped','showReg','movieReg'].map(n=>K[n]);
+const SB_SDK_URL='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js';
+const CLOUD_META='nx.cloudmeta';      // per-device sync bookkeeping (never uploaded, never wiped by "Delete local data")
+const CLOUD_DATA_KEYS=[K.lib,K.movieLib,K.watched,K.movieWatched,K.favShows,K.favMovies];
+
+function cloudCanon(v){
+  if(v===null||typeof v!=='object')return JSON.stringify(v);
+  if(Array.isArray(v))return '['+v.map(cloudCanon).join(',')+']';
+  return '{'+Object.keys(v).sort().filter(k=>v[k]!==undefined).map(k=>JSON.stringify(k)+':'+cloudCanon(v[k])).join(',')+'}';
+}
+function cloudHash(snap){   // canonical (key-order independent: Postgres JSONB reorders keys) 53-bit hash
+  const str=cloudCanon(snap);let h1=0xdeadbeef,h2=0x41c6ce57;
+  for(let i=0;i<str.length;i++){const c=str.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
+  h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);
+  h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
+  return (h2>>>0).toString(16)+(h1>>>0).toString(16)+'.'+str.length;
+}
+function cloudSnapshot(){
+  const keys={};
+  CLOUD_KEYS.forEach(k=>{const r=localStorage.getItem(k);if(r===null)return;try{keys[k]=JSON.parse(r)}catch{}});
+  return{app:'tv_plus',v:1,keys,images:{avatar:ProfileImg.avatar||'',banner:ProfileImg.banner||''}};
+}
+function cloudIsEmpty(snap){return !snap||!snap.keys||CLOUD_DATA_KEYS.every(k=>!Object.keys(snap.keys[k]||{}).length)}
+function cloudCounts(snap){const n=k=>Object.keys((snap&&snap.keys&&snap.keys[k])||{}).length;return `${n(K.lib)} shows, ${n(K.movieLib)} movies`}
+
+/* union merge: nothing is lost, counters take the larger value. (A merge cannot represent deletions.) */
+function mergeSnapshots(a,b){
+  const ts=o=>o&&typeof o==='object'?(o.at||o.watchedAt||o.addedAt||o.favAt||0):0;
+  const mergeMap=(x={},y={})=>{const r={...y};for(const k in x)r[k]=(k in y&&ts(y[k])>ts(x[k]))?y[k]:x[k];return r};
+  const maxMap=(x={},y={})=>{const r={...y};for(const k in x)r[k]=Math.max(x[k]||0,y[k]||0);return r};
+  const keys={};
+  CLOUD_KEYS.forEach(k=>{
+    const x=a.keys[k],y=b.keys[k];
+    if(x===undefined&&y===undefined)return;
+    if(k===K.profile){keys[k]={...(y||{}),...Object.fromEntries(Object.entries(x||{}).filter(([,v])=>v!==''&&v!=null))}}
+    else if(k===K.rewatch){keys[k]={...(y||{}),...(x||{}),show:maxMap((x||{}).show,(y||{}).show),movie:maxMap((x||{}).movie,(y||{}).movie)}}
+    else if(k===K.epRewatch||k===K.seasonRewatch)keys[k]=maxMap(x,y);
+    else keys[k]=mergeMap(x,y);
+  });
+  const ia=a.images||{},ib=b.images||{};
+  return{app:'tv_plus',v:1,keys,images:{avatar:ia.avatar||ib.avatar||'',banner:ia.banner||ib.banner||''}};
+}
+
+function cloudAuthMessage(e){
+  const m=String((e&&(e.message||e.msg||e.error_description))||e||'');
+  if(/invalid login credentials/i.test(m))return 'Wrong email or password.';
+  if(/email not confirmed/i.test(m))return 'Please confirm your email first. Check your inbox for the confirmation link.';
+  if(/already (been )?registered|already exists/i.test(m))return 'An account with this email already exists. Try logging in.';
+  if(/password.*(at least|short|weak|characters)/i.test(m))return 'Password is too weak. Use at least 6 characters.';
+  if(/rate limit|too many|security purposes/i.test(m))return 'Too many attempts. Please wait a moment and try again.';
+  if(/valid email|invalid.*email|email.*invalid/i.test(m))return 'Please enter a valid email address.';
+  if(/failed to fetch|network|load failed|timeout/i.test(m)||!navigator.onLine)return 'No connection. Check your internet and try again.';
+  return m||'Something went wrong. Please try again.';
+}
+function cloudCleanAuthHash(){   // email-confirmation links land on "#access_token=..."; keep that out of the app's hash router
+  const h=location.hash||'';
+  if(/^#(access_token|error|error_code)=/.test(h)||/[#&]type=(signup|recovery|magiclink|email_change)/.test(h)){
+    const p=new URLSearchParams(h.slice(1));
+    window._cloudNotice=p.get('error_description')||(p.get('type')==='signup'?'Email confirmed. You can log in now.':'');
+    try{history.replaceState(null,'',location.pathname+location.search)}catch{}
+  }
+}
+function cloudChoice({title,message,options}){
+  return new Promise(res=>{
+    const back=document.createElement('div');back.className='modal-backdrop';
+    back.innerHTML=`<div class="modal-card" role="dialog" aria-modal="true"><div class="modal-title">${esc(title)}</div><div class="modal-message">${esc(message)}</div><div class="modal-actions cl-choices"></div></div>`;
+    const box=back.querySelector('.cl-choices');
+    options.forEach(o=>{
+      const b=document.createElement('button');b.type='button';
+      b.className='btn '+(o.primary?'btn-accent':o.danger?'btn-disconnect':'btn-ghost');b.textContent=o.label;
+      b.addEventListener('click',()=>{back.remove();res(o.value)});box.appendChild(b);
+    });
+    document.body.appendChild(back);
+  });
+}
+
+const Cloud={
+  debounceMs:2500,
+  sb:null,user:null,status:'off',error:'',held:false,note:'',backups:[],rev:0,
+  q:Promise.resolve(),timer:null,retryT:null,retryN:0,pollT:null,applying:false,listeners:new Set(),initDone:false,
+  cfg(){return window.TVPLUS_SUPABASE||{}},
+  configured(){const c=this.cfg();return !!(c.url&&c.publishableKey&&/^https?:\/\//.test(c.url)&&!/PASTE|YOUR_/i.test(c.publishableKey))},
+  subscribe(fn){this.listeners.add(fn);return()=>this.listeners.delete(fn)},
+  emit(){this.listeners.forEach(f=>{try{f()}catch{}})},
+  setStatus(st,err=''){this.status=st;this.error=err;this.emit()},
+  setNote(t){this.note=t;this.emit();clearTimeout(this._noteT);if(t)this._noteT=setTimeout(()=>{this.note='';this.emit()},9000)},
+  lock(fn){const r=this.q.then(()=>fn());this.q=r.catch(()=>{});return r},      // one sync operation at a time: no overlapping uploads
+  meta(){try{return JSON.parse(localStorage.getItem(CLOUD_META)||'{}')||{}}catch{return{}}},
+  setMeta(p){const m={...this.meta(),...p};try{localStorage.setItem(CLOUD_META,JSON.stringify(m))}catch{}return m},
+  lastSync(){return this.meta().lastSyncAt||0},
+
+  async init(){
+    if(this.initDone)return;this.initDone=true;
+    try{this.backups=JSON.parse((await idbGet('cloud.backups'))||'[]')}catch{this.backups=[]}
+    window.addEventListener('online',()=>{if(this.user){this.retryN=0;this.syncSoon('online')}});
+    window.addEventListener('offline',()=>{if(this.user)this.setStatus('offline')});
+    document.addEventListener('visibilitychange',()=>{if(!document.hidden&&this.user)this.syncSoon('focus')});
+    if(!this.configured()){this.setStatus('off');return}
+    try{await this.loadSdk()}
+    catch{this.setStatus(navigator.onLine?'failed':'offline',navigator.onLine?'Could not load the cloud library.':'');return}
+    const c=this.cfg();
+    this.sb=window.supabase.createClient(c.url,c.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+    this.sb.auth.onAuthStateChange((ev,session)=>{
+      setTimeout(()=>{   // never await Supabase calls inside this callback
+        if(ev==='SIGNED_OUT'){if(this.user)this.userGone()}
+        else if((ev==='SIGNED_IN'||ev==='INITIAL_SESSION')&&session&&session.user&&!(this.user&&this.user.id===session.user.id))this.onUser(session.user);
+      },0);
+    });
+    const {data}=await this.sb.auth.getSession();
+    if(data&&data.session&&!this.user)this.onUser(data.session.user);
+    else if(!this.user)this.emit();
+  },
+  loadSdk(){
+    if(window.supabase&&window.supabase.createClient)return Promise.resolve();
+    return new Promise((res,rej)=>{
+      const sc=document.createElement('script');sc.src=SB_SDK_URL;sc.async=true;
+      const t=setTimeout(()=>rej(new Error('timeout')),20000);
+      sc.onload=()=>{clearTimeout(t);window.supabase&&window.supabase.createClient?res():rej(new Error('bad sdk'))};
+      sc.onerror=()=>{clearTimeout(t);rej(new Error('load failed'))};
+      document.head.appendChild(sc);
+    });
+  },
+
+  /* ---- authentication ---- */
+  async signUp(email,password){
+    if(!this.sb)return{ok:false,message:this.configured()?'The cloud service is not available right now.':'Cloud sync is not configured.'};
+    const {data,error}=await this.sb.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}});
+    if(error)return{ok:false,message:cloudAuthMessage(error)};
+    if(data&&data.user&&Array.isArray(data.user.identities)&&!data.user.identities.length)return{ok:false,message:'An account with this email already exists. Try logging in.'};
+    if(!data.session)return{ok:true,confirm:true,message:'Account created. Check your email and click the confirmation link, then log in here.'};
+    return{ok:true,message:'Account created.'};
+  },
+  async signIn(email,password){
+    if(!this.sb)return{ok:false,message:this.configured()?'The cloud service is not available right now.':'Cloud sync is not configured.'};
+    const {error}=await this.sb.auth.signInWithPassword({email,password});
+    return error?{ok:false,message:cloudAuthMessage(error)}:{ok:true};
+  },
+  async signOut(opts={}){
+    clearTimeout(this.timer);
+    if(!opts.skipFlush&&this.user&&navigator.onLine){   // best-effort: don't leave unsynced changes behind
+      try{await Promise.race([this.lock(()=>this.pushLocked()),new Promise(r=>setTimeout(r,4000))])}catch{}
+    }
+    this.userGone();
+    try{await this.sb.auth.signOut({scope:'local'})}catch{}   // local scope: other devices stay logged in
+  },
+  userGone(){
+    this.user=null;this.held=false;
+    clearTimeout(this.timer);clearTimeout(this.retryT);clearInterval(this.pollT);this.pollT=null;
+    this.setStatus('off');       // local data and bookkeeping stay untouched
+  },
+  onUser(user){
+    this.user=user;this.retryN=0;this.held=false;
+    this.setStatus('syncing');
+    clearInterval(this.pollT);this.pollT=setInterval(()=>{if(!document.hidden&&this.user&&this.status!=='syncing')this.syncSoon('poll')},60000);
+    this.syncSoon('login');
+  },
+
+  /* ---- scheduling ---- */
+  syncSoon(reason){
+    return this.lock(async()=>{
+      if(!this.user)return;
+      try{await this.syncLocked(reason);this.retryN=0}catch(e){this.fail(e)}
+    });
+  },
+  syncNow(){clearTimeout(this.retryT);return this.syncSoon('manual')},
+  markDirty(){
+    if(!this.user||this.applying||this.held)return;
+    const m=this.meta();if(m.owner!==this.user.id||m.wiped)return;
+    this.setStatus(navigator.onLine?'syncing':'offline');
+    clearTimeout(this.timer);
+    this.timer=setTimeout(()=>{this.lock(async()=>{if(!this.user)return;try{await this.pushLocked();this.retryN=0}catch(e){this.fail(e)}})},this.debounceMs);
+  },
+  fail(e){
+    const msg=String((e&&(e.message||e.details))||e||'');
+    const net=!navigator.onLine||/failed to fetch|networkerror|load failed|network request failed|timeout|fetch failed/i.test(msg);
+    this.setStatus(net?'offline':'failed',net?'':cloudAuthMessage(e));
+    if(!this.user)return;
+    clearTimeout(this.retryT);
+    this.retryT=setTimeout(()=>this.syncSoon('retry'),Math.min(300,5*2**this.retryN++)*1000);   // local data stays as it is; retry with back-off
+  },
+  noteLocalWipe(){   // "Delete local data": must never turn into "delete cloud data"
+    clearTimeout(this.timer);
+    if(this.meta().owner)this.setMeta({wiped:true});
+  },
+  uploadLocal(){
+    if(!this.user)return;
+    this.setMeta({owner:this.user.id,base:null,hash:'',wiped:false});this.held=false;
+    return this.syncSoon('upload');
+  },
+
+  /* ---- core sync steps (always called inside lock) ---- */
+  markSynced(){this.setMeta({lastSyncAt:Date.now()});this.setStatus('synced')},
+  async syncLocked(){
+    const u=this.user;if(!u||!this.sb)return;
+    if(!navigator.onLine){this.setStatus('offline');return}
+    const m=this.meta();
+    if(m.owner===u.id&&!m.wiped&&!this.held){
+      this.setStatus('syncing');
+      const {data,error}=await this.sb.from('user_data').select('updated_at').eq('user_id',u.id).maybeSingle();
+      if(error)throw error;
+      if((data?data.updated_at:null)===(m.base||null)){   // cloud unchanged since our last sync
+        if(cloudHash(cloudSnapshot())!==m.hash)await this.pushLocked();else this.markSynced();
+        return;
+      }
+    }
+    await this.reconcileFull();
+  },
+  async write(uid,snap,base){
+    if(base){
+      const {data,error}=await this.sb.from('user_data').update({data:snap,updated_at:new Date().toISOString()}).eq('user_id',uid).eq('updated_at',base).select('updated_at');
+      if(error)throw error;
+      if(!data||!data.length)return{conflict:true};      // someone else wrote since our last sync
+      return{updated_at:data[0].updated_at};
+    }
+    const {data,error}=await this.sb.from('user_data').insert({user_id:uid,data:snap,updated_at:new Date().toISOString()}).select('updated_at');
+    if(error){if(error.code==='23505'||/duplicate key/i.test(error.message||''))return{conflict:true};throw error}
+    return{updated_at:data[0].updated_at};
+  },
+  async pushLocked(depth=0){
+    const u=this.user;if(!u||!this.sb)return;
+    const m=this.meta();
+    if(m.owner!==u.id||m.wiped||this.held)return;
+    if(!navigator.onLine){this.setStatus('offline');return}
+    const snap=cloudSnapshot(),h=cloudHash(snap);
+    if(h===m.hash){this.markSynced();return}
+    this.setStatus('syncing');
+    const res=await this.write(u.id,snap,m.base||null);
+    if(res.conflict){
+      if(depth>=2)throw new Error('The collection keeps changing on another device. Try again in a moment.');
+      await this.reconcileFull(depth+1);return;
+    }
+    this.setMeta({base:res.updated_at,hash:h,lastSyncAt:Date.now(),hadData:!cloudIsEmpty(snap),wiped:false});
+    this.setStatus('synced');
+  },
+  async ask(kind,ctx){
+    const dev=cloudCounts(ctx.snap);
+    const T={
+      upload:{title:'Back up to the cloud?',message:`Your account has no cloud data yet. Upload the collection on this device (${dev})?`,
+        options:[{label:'Upload to the cloud',value:'upload',primary:true},{label:'Not now',value:'later'}]},
+      otherEmpty:{title:'Different account',message:`The data on this device was last synced with another account (${dev}). It will not be uploaded to this account unless you choose to.`,
+        options:[{label:'Upload this device’s data to this account',value:'upload'},{label:'Cancel and log out',value:'logout',primary:true}]},
+      both:{title:'Cloud data found',message:`This account already has a collection in the cloud (${cloudCounts(ctx.cloud)}) and this device has its own data (${dev}). A safety copy of anything that gets replaced is kept.`,
+        options:[{label:'Merge both (recommended)',value:'merge',primary:true},{label:'Use cloud data (replace this device)',value:'cloud'},{label:'Use this device (replace cloud)',value:'device',danger:true}]},
+      other:{title:'Different account',message:`The data on this device was last synced with another account (${dev}). It will not be merged into this account. A safety copy of anything that gets replaced is kept.`,
+        options:[{label:'Use this account’s cloud data',value:'cloud',primary:true},{label:'Upload this device’s data (replace cloud)',value:'device',danger:true},{label:'Cancel and log out',value:'logout'}]},
+      conflict:{title:'Changes on two devices',message:`This collection was changed on another device (cloud: ${cloudCounts(ctx.cloud)}) and you also have changes here that are not synced yet (this device: ${dev}). Nothing has been overwritten. A safety copy of anything that gets replaced is kept.`,
+        options:[{label:'Merge both (recommended)',value:'merge',primary:true},{label:'Use cloud data (discard my changes here)',value:'cloud'},{label:'Use this device (replace cloud)',value:'device',danger:true}]}
+    }[kind];
+    return cloudChoice(T);
+  },
+  async reconcileFull(depth=0){
+    const u=this.user;if(!u)return;const uid=u.id;
+    if(!navigator.onLine){this.setStatus('offline');return}
+    this.setStatus('syncing');
+    const {data:row,error}=await this.sb.from('user_data').select('data,updated_at').eq('user_id',uid).maybeSingle();
+    if(error)throw error;
+    const d=row&&row.data,rowBase=row?row.updated_at:null;
+    if(d&&Object.keys(d).length&&!d.keys)throw new Error('The cloud data has an unknown format, so it was left untouched.');
+    const cloudEmpty=!d||cloudIsEmpty(d);
+    const m=this.meta(),snap=cloudSnapshot(),h=cloudHash(snap),localEmpty=cloudIsEmpty(snap);
+    const mine=m.owner===uid,dirty=mine?h!==m.hash:!localEmpty;
+    const ctx={snap,cloud:d};
+
+    if(m.wiped){   // local data was deleted on purpose; the cloud copy is never deleted by that
+      if(!cloudEmpty){await this.applyCloud(row,uid,'Restored your collection from the cloud.');return}
+      this.setMeta({wiped:false,owner:uid,base:rowBase,hash:h,hadData:false});this.markSynced();return;
+    }
+    if(cloudEmpty){
+      if(localEmpty){this.setMeta({owner:uid,base:rowBase,hash:h,hadData:false,lastSyncAt:Date.now()});this.held=false;this.setStatus('synced');return}
+      if(mine&&dirty&&m.base==null&&rowBase==null){await this.pushLocked(depth);return}     // this account already owns this device's data
+      const choice=await this.ask(!mine&&m.owner?'otherEmpty':'upload',ctx);
+      if(choice==='upload'){this.setMeta({owner:uid,base:rowBase,hash:'',wiped:false,hadData:false});this.held=false;await this.pushLocked(depth);return}
+      if(choice==='logout'){await this.signOut({skipFlush:true});return}
+      this.held=true;this.setStatus('idle');return;     // "Not now": nothing is uploaded; local data untouched
+    }
+    let choice;
+    if(mine){
+      if(rowBase===m.base){if(dirty)await this.pushLocked(depth);else this.markSynced();return}
+      if(!dirty){await this.applyCloud(row,uid,'Loaded the latest changes from your other device.');return}
+      choice=await this.ask('conflict',ctx);
+    }else if(localEmpty){await this.applyCloud(row,uid,'Loaded your collection from the cloud.');return}
+    else choice=await this.ask(m.owner?'other':'both',ctx);
+    await this.applyChoice(choice,row,uid,snap,depth);
+  },
+  async applyChoice(choice,row,uid,snap,depth){
+    const d=row.data;
+    if(choice==='logout'){await this.signOut({skipFlush:true});return}
+    if(choice==='cloud'){await this.saveBackup('This device, before loading cloud data',snap);await this.applyCloud(row,uid,'Loaded your collection from the cloud.');return}
+    if(choice==='merge'){
+      await this.saveBackup('This device, before merge',snap);
+      await this.applySnapshot(mergeSnapshots(snap,d));
+      this.setMeta({owner:uid,base:row.updated_at,hash:'merge',wiped:false,hadData:true});this.held=false;
+      this.setNote('Merged this device with your cloud collection.');
+      await this.pushLocked(depth);return;
+    }
+    if(choice==='device'){
+      await this.saveBackup('Cloud copy, before it was replaced',d);
+      this.setMeta({owner:uid,base:row.updated_at,hash:'force',wiped:false,hadData:true});this.held=false;
+      await this.pushLocked(depth);return;
+    }
+  },
+  async applyCloud(row,uid,note){
+    await this.applySnapshot(row.data);
+    this.setMeta({owner:uid,base:row.updated_at,hash:cloudHash(cloudSnapshot()),lastSyncAt:Date.now(),hadData:true,wiped:false});
+    this.held=false;this.setStatus('synced');if(note)this.setNote(note);
+  },
+  async applySnapshot(snap){
+    this.applying=true;
+    try{
+      CLOUD_KEYS.forEach(k=>{
+        if(snap.keys&&Object.prototype.hasOwnProperty.call(snap.keys,k))lset(k,snap.keys[k]);
+        else{localStorage.removeItem(k);_pk.delete(k)}
+      });
+      localStorage.removeItem(K.prog);_pk.delete(K.prog);_progCache=null;
+      const im=snap.images||{};
+      for(const kind of ['avatar','banner']){
+        const v=im[kind];
+        if(v&&IMG_OK.test(v)){await saveProfileImage(kind,v)}
+        else{await idbDel('profile.'+kind);ProfileImg[kind]=''}
+      }
+      showsDirty=true;moviesDirty=true;bumpShowsCache();bumpMoviesCache();
+      applyTheme(Store.profile().theme);applyStyle(Store.profile().style);
+      const{route,id}=hashRoute();nav(route,{id,noAnim:true});
+    }finally{this.applying=false}
+  },
+
+  /* ---- safety copies (kept on this device, newest 3) ---- */
+  async saveBackup(label,snap){
+    this.backups=[{id:Date.now().toString(36),at:Date.now(),label,snap},...this.backups].slice(0,3);
+    await idbSet('cloud.backups',JSON.stringify(this.backups));this.rev++;this.emit();
+  },
+  async restoreBackup(id){
+    const b=this.backups.find(x=>x.id===id);if(!b)return;
+    await this.saveBackup('This device, before restoring a safety copy',cloudSnapshot());
+    await this.applySnapshot(b.snap);
+    if(this.user&&this.meta().owner===this.user.id)this.markDirty();
+  }
+};
+_cloudHook=k=>{if(k==='img'||CLOUD_KEYS.includes(k))Cloud.markDirty()};
+
+/* ---- account UI (Settings > Account & Cloud Sync) and the status chip next to the Settings button ---- */
+function cloudMountUI(o){
+  const box=o.querySelector('#cloud-account'),chip=o.querySelector('#cloud-chip');
+  if(!box)return;
+  const LABEL={syncing:'Syncing…',synced:'Synced',offline:'Offline',failed:'Sync failed',held:'Not uploaded',idle:'Not synced'};
+  const key=()=>Cloud.held?'held':(Cloud.status==='off'?'':Cloud.status);
+  const fmt=t=>t?new Date(t).toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Never';
+  const mode=()=>!Cloud.configured()?'unconfigured':(Cloud.user?'in':'out');
+  let cur='',rev=-1,busy=false;
+  const paint=()=>{
+    const k=key();
+    if(chip){chip.hidden=!(Cloud.user&&k);chip.dataset.k=k;chip.innerHTML=`<span class="cl-dot"></span>${esc(LABEL[k]||'')}`}
+    const st=box.querySelector('#cl-stat'),last=box.querySelector('#cl-last'),err=box.querySelector('#cl-err'),note=box.querySelector('#cl-note');
+    if(st){st.dataset.k=k;st.innerHTML=`<span class="cl-dot"></span>${esc(LABEL[k]||'')}`}
+    if(last)last.textContent='Last synced: '+fmt(Cloud.lastSync());
+    if(err)err.textContent=Cloud.status==='failed'?Cloud.error:'';
+    if(note)note.textContent=Cloud.note||'';
+    const sync=box.querySelector('#cl-sync');if(sync)sync.disabled=Cloud.status==='syncing';
+  };
+  const setMsg=(t,ok)=>{const m=box.querySelector('#cl-msg');if(m){m.textContent=t||'';m.className=ok?'cl-ok':'cl-err'}};
+  function render(){
+    cur=mode();rev=Cloud.rev;
+    if(cur==='unconfigured'){
+      box.innerHTML='<div class="cl-line">Cloud sync is not set up yet. Add your Supabase publishable key to <b>supabase-config.js</b> to enable accounts and syncing across devices.</div>';
+    }else if(cur==='out'){
+      box.innerHTML=`<form id="cl-form" class="cl-box" novalidate>
+          <div class="cl-line">Log in to keep your collection in the cloud and use it on all your devices.</div>
+          <input type="email" id="cl-email" placeholder="Email" autocomplete="email" inputmode="email" />
+          <input type="password" id="cl-pass" placeholder="Password (min. 6 characters)" autocomplete="current-password" />
+          <div class="data-row"><button type="submit" id="cl-login" class="btn btn-accent">Log in</button><button type="button" id="cl-signup" class="btn btn-ghost">Create account</button></div>
+          <div id="cl-msg" class="cl-err" role="status"></div>
+        </form>`;
+      if(window._cloudNotice){setMsg(window._cloudNotice,true)}
+      const form=box.querySelector('#cl-form');
+      const run=async(fn,pw)=>{
+        if(busy)return;
+        const email=box.querySelector('#cl-email').value.trim(),pass=box.querySelector('#cl-pass').value;
+        if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){setMsg('Please enter a valid email address.');return}
+        if(pass.length<6){setMsg('Password must be at least 6 characters.');return}
+        busy=true;form.querySelectorAll('button').forEach(b=>b.disabled=true);setMsg('Please wait…',true);
+        try{
+          const r=await fn(email,pass);
+          if(!r.ok)setMsg(r.message);else{window._cloudNotice='';setMsg(r.message||'',true)}
+        }catch(e){setMsg(cloudAuthMessage(e))}
+        busy=false;form.querySelectorAll('button').forEach(b=>b.disabled=false);
+      };
+      form.addEventListener('submit',e=>{e.preventDefault();run((a,b)=>Cloud.signIn(a,b))});
+      box.querySelector('#cl-signup').addEventListener('click',()=>run((a,b)=>Cloud.signUp(a,b)));
+    }else{
+      const email=Cloud.user&&Cloud.user.email||'';
+      box.innerHTML=`<div class="cl-line">Signed in as <b>${esc(email)}</b></div>
+        <div class="cl-status" id="cl-stat"></div>
+        <div class="cl-line" id="cl-last"></div>
+        <div class="cl-ok" id="cl-note"></div><div class="cl-err" id="cl-err" role="status"></div>
+        <div class="data-row"><button type="button" id="cl-sync" class="btn btn-accent">Sync now</button>${Cloud.held?'<button type="button" id="cl-upload" class="btn btn-ghost">Upload this device’s data</button>':''}<button type="button" id="cl-logout" class="btn btn-ghost">Log out</button></div>
+        ${Cloud.backups.length?`<div class="cl-line">Safety copies kept on this device</div><div class="cl-backups">${Cloud.backups.map(b=>`<div class="cl-backup"><span>${esc(b.label)} · ${esc(fmt(b.at))}</span><button type="button" class="btn btn-ghost" data-restore="${esc(b.id)}">Restore</button></div>`).join('')}</div>`:''}`;
+      box.querySelector('#cl-sync').addEventListener('click',()=>Cloud.syncNow());
+      box.querySelector('#cl-logout').addEventListener('click',async e=>{e.target.disabled=true;await Cloud.signOut()});
+      const up=box.querySelector('#cl-upload');if(up)up.addEventListener('click',()=>Cloud.uploadLocal());
+      box.querySelectorAll('[data-restore]').forEach(btn=>btn.addEventListener('click',()=>{
+        showConfirmDialog({title:'Restore this safety copy?',message:'This device’s collection will be replaced by the selected copy and then synced. Your current collection is saved as a new safety copy first.',confirmLabel:'Restore',onConfirm:()=>Cloud.restoreBackup(btn.dataset.restore)});
+      }));
+    }
+    paint();
+  }
+  const unsub=Cloud.subscribe(()=>{
+    if(!box.isConnected){unsub();return}
+    if(mode()!==cur||Cloud.rev!==rev||(cur==='in'&&!!box.querySelector('#cl-upload')!==Cloud.held))render();else paint();
+  });
+  render();
+}
+
 (async function boot(){
+  cloudCleanAuthHash();
   applyTheme(Store.profile().theme);
   if(Store.profile().style==='liquid')Store.setProfile({style:'glass'});
   applyStyle(Store.profile().style);
@@ -4570,6 +5155,7 @@ async function offerRestore(){
   const{route,id}=hashRoute();
   nav(route,{id});
   offerRestore().catch(()=>{});
+  Cloud.init().catch(()=>{});
   setTimeout(repairMissingPosters,1500);
   setInterval(repairMissingPosters,4000);
 })();
