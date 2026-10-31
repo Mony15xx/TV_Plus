@@ -798,7 +798,27 @@ input[type=email]:focus,input[type=password]:focus{border-color:var(--accent);ou
 .cl-backup{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--text-dim)}
 .cl-backup .btn{padding:5px 12px;font-size:11px}
 html[data-theme="light"] .profile-edit-overlay input[type=email],html[data-theme="light"] .profile-edit-overlay input[type=password]{background:var(--bg-elev);border-color:var(--border)}
-html[data-theme="light"] .cloud-chip{color:var(--text);background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.18)}
+
+.cl-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cl-state{display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap;font-size:12px}
+.cl-state .cl-status{font-size:12px;white-space:nowrap}
+.cl-sep{color:var(--text-dim)}
+.cl-group .btn.cl-fit{width:auto;flex:none;padding-left:14px;padding-right:14px;white-space:nowrap}
+html[data-theme="light"] .switch input:checked + .slider .thumb,html[data-style="glass"][data-theme="light"] .switch input:checked + .slider .thumb{background:#f6f3ec;color:#2b1200}
+html[data-style="glass"][data-theme="light"] .profile-edit-overlay{--text:#05070c;--text-dim:#0f1522;--cat-color:#05070c;--heading:#05070c}
+html[data-style="glass"][data-theme="light"] .profile-edit-overlay :is(.overlay-title,.setting-label,.settings-version,fieldset.outlined legend,.fs-field,.cl-line,.cl-state,.cl-sep,.cl-backup,select,input,.seg-toggle button,label.field-btn,.btn:not(.btn-accent):not(.btn-disconnect)){color:#05070c}
+html[data-style="glass"][data-theme="light"] .profile-edit-overlay input::placeholder{color:#2a3245;opacity:1}
+
+.cl-left{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cl-group .cl-row{gap:12px}
+.cl-group .btn.cl-fit{height:38px;padding-top:0;padding-bottom:0;display:inline-flex;align-items:center;justify-content:center}
+.cl-chip-x{}
+.cloud-chip,html[data-theme="light"] .cloud-chip{background:var(--bg-elev);border:1px solid var(--border);color:var(--text)}
+html[data-style="glass"] .cloud-chip{border-color:transparent;background:rgba(130,130,136,.16);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:inset 1px 1px 0 rgba(255,255,255,.42),inset -1px -1px 0 rgba(255,255,255,.3),0 3px 10px rgba(var(--shc),.18);color:#fff}
+html[data-style="glass"][data-theme="light"] .cloud-chip{background:rgba(255,255,255,.7);color:#05070c;box-shadow:inset 1px 1px 0 rgba(255,255,255,.9),inset -1px -1px 0 rgba(255,255,255,.7),0 3px 10px rgba(var(--shc),.14)}
+html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outlined{border-color:rgba(30,40,60,.45)}
+html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outlined legend{color:#05070c}
+html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outlined select{color:#05070c;-webkit-text-fill-color:#05070c;opacity:1}
 </style>
 </head>
 <body>
@@ -990,15 +1010,61 @@ async function rotateBackup(text){
   await idbSet('bak1',text);await idbSet('bakAt',Date.now());
 }
 async function latestBackup(){for(const k of ['bak1','bak2']){const t=await idbGet(k);if(fileHasData(t))return t}return null}
-function downloadBackup(){
-  const blob=new Blob([exportDataText()],{type:'text/plain'});
+/* ---- minimal ZIP (single file) for backups: deflate via CompressionStream when available, else stored ---- */
+const _crcT=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=_crcT[(c^u8[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
+async function streamBytes(u8,Ctor,fmt){
+  const st=new Ctor(fmt);const w=st.writable.getWriter();w.write(u8);w.close();
+  return new Uint8Array(await new Response(st.readable).arrayBuffer());
+}
+async function zipFile(name,text){
+  const raw=new TextEncoder().encode(text),nm=new TextEncoder().encode(name),crc=crc32(raw);
+  let data=raw,method=0;
+  if(typeof CompressionStream!=='undefined'){try{const d=await streamBytes(raw,CompressionStream,'deflate-raw');if(d.length<raw.length){data=d;method=8}}catch{}}
+  const d=new Date(),dt=((d.getFullYear()-1980)<<9|(d.getMonth()+1)<<5|d.getDate())&0xFFFF,tm=(d.getHours()<<11|d.getMinutes()<<5|(d.getSeconds()>>1))&0xFFFF;
+  const lh=new DataView(new ArrayBuffer(30)),ch=new DataView(new ArrayBuffer(46)),ec=new DataView(new ArrayBuffer(22));
+  lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(8,method,true);lh.setUint16(10,tm,true);lh.setUint16(12,dt,true);
+  lh.setUint32(14,crc,true);lh.setUint32(18,data.length,true);lh.setUint32(22,raw.length,true);lh.setUint16(26,nm.length,true);
+  ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint16(10,method,true);ch.setUint16(12,tm,true);ch.setUint16(14,dt,true);
+  ch.setUint32(16,crc,true);ch.setUint32(20,data.length,true);ch.setUint32(24,raw.length,true);ch.setUint16(28,nm.length,true);
+  const cdOff=30+nm.length+data.length;
+  ec.setUint32(0,0x06054b50,true);ec.setUint16(8,1,true);ec.setUint16(10,1,true);ec.setUint32(12,46+nm.length,true);ec.setUint32(16,cdOff,true);
+  return new Blob([lh,nm,data,ch,nm,ec],{type:'application/zip'});
+}
+async function unzipFirstText(buf){
+  const u8=new Uint8Array(buf),dv=new DataView(buf);
+  let e=-1;for(let i=u8.length-22;i>=Math.max(0,u8.length-65558);i--){if(dv.getUint32(i,true)===0x06054b50){e=i;break}}
+  if(e<0)throw new Error('Not a valid ZIP file');
+  let p=dv.getUint32(e+16,true);
+  for(let n=dv.getUint16(e+10,true);n>0;n--){
+    if(dv.getUint32(p,true)!==0x02014b50)throw new Error('Corrupt ZIP file');
+    const method=dv.getUint16(p+10,true),csize=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),xl=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),off=dv.getUint32(p+42,true);
+    const name=new TextDecoder().decode(u8.subarray(p+46,p+46+nl));
+    p+=46+nl+xl+cl;
+    if(name.endsWith('/')||!/\.txt$/i.test(name)&&n>1)continue;
+    const ds=off+30+dv.getUint16(off+26,true)+dv.getUint16(off+28,true),comp=u8.subarray(ds,ds+csize);
+    let out;
+    if(method===0)out=comp;
+    else if(method===8){if(typeof DecompressionStream==='undefined')throw new Error('This browser cannot open compressed ZIP files');out=await streamBytes(comp,DecompressionStream,'deflate-raw')}
+    else throw new Error('Unsupported ZIP compression');
+    return new TextDecoder().decode(out);
+  }
+  throw new Error('No data file found inside the ZIP');
+}
+async function readBackupFile(file){
+  const buf=await file.arrayBuffer(),b=new Uint8Array(buf,0,4);
+  if(b[0]===0x50&&b[1]===0x4B)return unzipFirstText(buf);     // "PK": zip
+  return new TextDecoder().decode(buf);                         // plain .txt (older backups)
+}
+async function downloadBackup(){
+  const blob=await zipFile('tv-plus-data.txt',exportDataText());
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
-  a.href=url;a.download='tv-plus-data.txt';document.body.appendChild(a);a.click();a.remove();
+  a.href=url;a.download='tv-plus-data.zip';document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-const APP_VERSION='140';
+const APP_VERSION='142';
 function applyStyle(st){
   const r=document.documentElement;
   r.dataset.style=st==='glass'?'glass':'flat';
@@ -3406,6 +3472,7 @@ function renderStats(o,opts){
           <label class="field-btn fb-left" for="profile-avatar-input">Change photo</label>
           <label class="field-btn fb-right" for="profile-banner-input">Change banner</label>
         </div>
+        <div id="cloud-account" class="cl-box cl-group"></div>
         <div class="setting-cat">Personalization</div>
         <div class="setting-pair">
           <div class="setting-block">
@@ -3421,8 +3488,6 @@ function renderStats(o,opts){
         <div class="setting-row">
           <label class="switch" title="Switch between dark and light mode"><input type="checkbox" id="theme-toggle" ${profile.theme==='light'?'checked':''} /><span class="slider"><span class="thumb"><svg class="ico-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span></span></label>
         </div>
-        <div class="setting-cat">Account &amp; Cloud Sync</div>
-        <div id="cloud-account" class="cl-box"></div>
         <div class="setting-cat">Local Data</div>
     <div>
       <div class="field fs-field"><span id="fs-status">${FileSync.supported?'No data file connected yet. Choose or create a .txt file to keep your data auto-saved on this device.':'You can export/import a backup .txt file below.'}</span></div>
@@ -3434,7 +3499,7 @@ function renderStats(o,opts){
         <button type="button" id="fs-delete" class="btn btn-disconnect btn-icon" title="Delete data" aria-label="Delete data"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
         </div>
       </div>
-      <input type="file" id="fs-import-input" accept=".txt" hidden />
+      <input type="file" id="fs-import-input" accept=".zip,.txt,application/zip,text/plain" hidden />
     </div>
       <div class="settings-version">TV Plus · Version ${APP_VERSION}</div>
         <input type="file" id="profile-avatar-input" accept="image/*" hidden />
@@ -3722,7 +3787,7 @@ function renderStats(o,opts){
     });
   }
   o.querySelector('#fs-download').addEventListener('click',()=>{
-    downloadBackup();
+    downloadBackup().catch(()=>{});
   });
   const importInput=o.querySelector('#fs-import-input');
   o.querySelector('#fs-import').addEventListener('click',()=>importInput.click());
@@ -3730,7 +3795,7 @@ function renderStats(o,opts){
     const file=importInput.files[0];
     if(!file)return;
     try{
-      const text=await file.text();
+      const text=await readBackupFile(file);
       if(await importDataText(text)){
         closeSettings();
         setTimeout(()=>{if(o.isConnected)renderStats(o,{noAnim:true})},560);
@@ -5081,12 +5146,14 @@ function cloudMountUI(o){
   const paint=()=>{
     const k=key();
     if(chip){chip.hidden=!(Cloud.user&&k);chip.dataset.k=k;chip.innerHTML=`<span class="cl-dot"></span>${esc(LABEL[k]||'')}`}
-    const st=box.querySelector('#cl-stat'),last=box.querySelector('#cl-last'),err=box.querySelector('#cl-err'),note=box.querySelector('#cl-note');
+    const st=box.querySelector('#cl-stat'),last=box.querySelector('#cl-last'),msgs=box.querySelector('#cl-msgs');
     if(st){st.dataset.k=k;st.innerHTML=`<span class="cl-dot"></span>${esc(LABEL[k]||'')}`}
-    if(last)last.textContent='Last synced: '+fmt(Cloud.lastSync());
-    if(err)err.textContent=Cloud.status==='failed'?Cloud.error:'';
-    if(note)note.textContent=Cloud.note||'';
-    const sync=box.querySelector('#cl-sync');if(sync)sync.disabled=Cloud.status==='syncing';
+    if(last)last.textContent='Last sync: '+fmt(Cloud.lastSync());
+    if(msgs){   // notes / errors exist only while there is something to say
+      const e=Cloud.status==='failed'?Cloud.error:'',n=Cloud.note||'';
+      const html=(n?`<div class="cl-ok">${esc(n)}</div>`:'')+(e?`<div class="cl-err" role="status">${esc(e)}</div>`:'');
+      if(msgs.dataset.h!==html){msgs.dataset.h=html;msgs.innerHTML=html}
+    }
   };
   const setMsg=(t,ok)=>{const m=box.querySelector('#cl-msg');if(m){m.textContent=t||'';m.className=ok?'cl-ok':'cl-err'}};
   function render(){
@@ -5119,13 +5186,10 @@ function cloudMountUI(o){
       box.querySelector('#cl-signup').addEventListener('click',()=>run((a,b)=>Cloud.signUp(a,b)));
     }else{
       const email=Cloud.user&&Cloud.user.email||'';
-      box.innerHTML=`<div class="cl-line">Signed in as <b>${esc(email)}</b></div>
-        <div class="cl-status" id="cl-stat"></div>
-        <div class="cl-line" id="cl-last"></div>
-        <div class="cl-ok" id="cl-note"></div><div class="cl-err" id="cl-err" role="status"></div>
-        <div class="data-row"><button type="button" id="cl-sync" class="btn btn-accent">Sync now</button>${Cloud.held?'<button type="button" id="cl-upload" class="btn btn-ghost">Upload this device’s data</button>':''}<button type="button" id="cl-logout" class="btn btn-ghost">Log out</button></div>
+      box.innerHTML=`<div class="cl-row"><div class="cl-left"><div class="cl-line">Signed in as <b>${esc(email)}</b></div><div class="cl-state"><span id="cl-stat" class="cl-status"></span><span class="cl-sep">·</span><span id="cl-last" class="cl-line"></span></div></div><button type="button" id="cl-logout" class="btn btn-disconnect cl-fit">Log out</button></div>
+        <div id="cl-msgs"></div>
+        ${Cloud.held?'<div class="data-row"><button type="button" id="cl-upload" class="btn btn-ghost">Upload this device’s data</button></div>':''}
         ${Cloud.backups.length?`<div class="cl-line">Safety copies kept on this device</div><div class="cl-backups">${Cloud.backups.map(b=>`<div class="cl-backup"><span>${esc(b.label)} · ${esc(fmt(b.at))}</span><button type="button" class="btn btn-ghost" data-restore="${esc(b.id)}">Restore</button></div>`).join('')}</div>`:''}`;
-      box.querySelector('#cl-sync').addEventListener('click',()=>Cloud.syncNow());
       box.querySelector('#cl-logout').addEventListener('click',async e=>{e.target.disabled=true;await Cloud.signOut()});
       const up=box.querySelector('#cl-upload');if(up)up.addEventListener('click',()=>Cloud.uploadLocal());
       box.querySelectorAll('[data-restore]').forEach(btn=>btn.addEventListener('click',()=>{
