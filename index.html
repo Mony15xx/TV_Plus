@@ -811,6 +811,23 @@ html[data-style="glass"][data-theme="light"] .cloud-chip{background:rgba(255,255
 html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outlined{border-color:rgba(30,40,60,.45)}
 html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outlined legend{color:#05070c}
 html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outlined select{color:#05070c;-webkit-text-fill-color:#05070c;opacity:1}
+
+/* phones: the glass nav bar lines up with the page margins (20px); wide screens keep the original width */
+@media (max-width:559px){html[data-style="glass"] #bottomnav{width:calc(100% - 40px)}}
+/* glass rims on large surfaces: light at the top/bottom edge, easing to the darker side tone over ~80px */
+html[data-style="glass"]{--rim-L:rgba(255,255,255,.42);--rim-D:rgba(0,0,0,.28);--rim-soft-L:rgba(255,255,255,.2)}
+html[data-style="glass"][data-theme="light"]{--rim-L:rgba(255,255,255,.95);--rim-D:rgba(40,50,70,.2);--rim-soft-L:rgba(255,255,255,.6)}
+html[data-style="glass"] :is(.modal-card,.profile-edit-overlay.bglass,.sheet-surf.bglass),html[data-style="glass"][data-theme="light"] :is(.profile-edit-overlay.bglass,.sheet-surf.bglass){box-shadow:none}
+html[data-style="glass"] .modal-card{position:relative}
+html[data-style="glass"] :is(#bottomnav,.stat-card2,.profile-list-pair .hscroll-section,.list-overlay,.sheet-surf.bglass,.modal-card)::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:6;box-shadow:none!important;padding:1px;
+  background:linear-gradient(180deg,var(--rim-L) 0,var(--rim-D) min(80px,50%),var(--rim-D) max(calc(100% - 80px),50%),var(--rim-L) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
+html[data-style="glass"] #outlet :is(.stat-card2,.profile-list-pair .hscroll-section){--rim-L:var(--rim-soft-L)}
+html[data-style="glass"] #outlet .stat-card2:hover{--rim-L:rgba(255,255,255,.42)}
+html[data-style="glass"][data-theme="light"] #outlet .stat-card2:hover{--rim-L:rgba(255,255,255,.95)}
+/* the settings sheet scrolls, so its rim is painted as its own border background (does not scroll away) */
+html[data-style="glass"] .profile-edit-overlay.bglass{--ov-fill:rgba(12,14,20,.64);border:1px solid transparent;background:linear-gradient(var(--ov-fill),var(--ov-fill)) padding-box,linear-gradient(180deg,var(--rim-L) 0,var(--rim-D) min(80px,50%),var(--rim-D) max(calc(100% - 80px),50%),var(--rim-L) 100%) border-box}
+html[data-style="glass"][data-theme="light"] .profile-edit-overlay.bglass{--ov-fill:rgba(206,213,227,.66)}
 </style>
 </head>
 <body>
@@ -876,9 +893,9 @@ function dataUrlToFile(uri){
 }
 /* Imported images pass through optimizeImage() exactly like manual uploads. An image already saved on this
    device is not overwritten. A bad image is skipped without interrupting the rest of the import. */
-async function applyImportedImages(avatar,banner){
+async function applyImportedImages(avatar,banner,force){
   for(const [kind,uri] of [['avatar',avatar],['banner',banner]]){
-    if(!uri||ProfileImg[kind]||!IMG_OK.test(uri))continue;
+    if(!uri||(ProfileImg[kind]&&!force)||!IMG_OK.test(uri))continue;
     try{
       const {dataUrl}=await optimizeImage(dataUrlToFile(uri),kind);
       await saveProfileImage(kind,dataUrl);
@@ -931,6 +948,7 @@ const FileSync={
     if(!this.supported)return false;
     const h=await idbGet('fileHandle');
     if(!h)return false;
+    if(/\.txt$/i.test(h.name||'')){await idbDel('fileHandle');return false}   // old single-file .txt target is never overwritten with a .zip
     try{
       const perm=await h.queryPermission({mode:'readwrite'});
       if(perm==='granted'){this.handle=h;return true}
@@ -941,7 +959,7 @@ const FileSync={
   async chooseOrCreate(){
     if(!this.supported)return false;
     try{
-      const h=await window.showSaveFilePicker({suggestedName:'tv-plus-data.txt',types:[{description:'Text file',accept:{'text/plain':['.txt']}}]});
+      const h=await window.showSaveFilePicker({suggestedName:'tv-plus-data.zip',types:[{description:'ZIP archive',accept:{'application/zip':['.zip']}}]});
       this.handle=h;
       await idbSet('fileHandle',h);
       await this.save();
@@ -964,14 +982,14 @@ const FileSync={
       const due=Date.now()-((await idbGet('bakAt'))||0)>6*3600e3;
       if(isLocalDataEmpty()||due){
         const cur=await this.load();
-        const hasFile=!!cur&&fileHasData(cur);
+        const hasFile=!!cur&&filesHaveData(await unzipFiles(cur).catch(()=>null));
         if(hasFile&&isLocalDataEmpty()){
           return false;
         }
         if(hasFile)await rotateBackup(cur);
       }
       const w=await this.handle.createWritable();
-      await w.write(exportDataText());
+      await w.write(await exportZipBlob());
       await w.close();
       return true;
     }catch{return false}
@@ -979,8 +997,9 @@ const FileSync={
   async load(){
     if(!this.handle)return null;
     if(!(await this.ensurePermission()))return null;
-    try{return await (await this.handle.getFile()).text()}catch{return null}
-  }
+    try{return await (await this.handle.getFile()).arrayBuffer()}catch{return null}
+  },
+  async loadFiles(){const b=await this.load();return b?unzipFiles(b).catch(()=>null):null}
 };
 function showHasWatched(id){return Object.values(lpeek(K.watched,{})).some(r=>r&&typeof r==='object'&&String(r.showId)===String(id))}
 function restoreWatchedShows(){
@@ -995,13 +1014,12 @@ function restoreWatchedShows(){
   return ch;
 }
 function isLocalDataEmpty(){return [K.lib,K.movieLib,K.watched,K.movieWatched,K.favShows,K.favMovies].every(k=>!Object.keys(lget(k,{})).length)}
-function fileHasData(t){return /\[(?:TVDB ID|tvdb|id):\s*\d+\]/i.test(t||'')}
-async function rotateBackup(text){
+async function rotateBackup(buf){
   const b1=await idbGet('bak1');
   if(b1)await idbSet('bak2',b1);
-  await idbSet('bak1',text);await idbSet('bakAt',Date.now());
+  await idbSet('bak1',buf);await idbSet('bakAt',Date.now());
 }
-async function latestBackup(){for(const k of ['bak1','bak2']){const t=await idbGet(k);if(fileHasData(t))return t}return null}
+async function latestBackup(){for(const k of ['bak1','bak2']){const b=await idbGet(k);if(b&&typeof b!=='string'){const f=await unzipFiles(b).catch(()=>null);if(filesHaveData(f))return f}}return null}
 /* ---- minimal ZIP (single file) for backups: deflate via CompressionStream when available, else stored ---- */
 const _crcT=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
 function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=_crcT[(c^u8[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
@@ -1009,54 +1027,70 @@ async function streamBytes(u8,Ctor,fmt){
   const st=new Ctor(fmt);const w=st.writable.getWriter();w.write(u8);w.close();
   return new Uint8Array(await new Response(st.readable).arrayBuffer());
 }
-async function zipFile(name,text){
-  const raw=new TextEncoder().encode(text),nm=new TextEncoder().encode(name),crc=crc32(raw);
-  let data=raw,method=0;
-  if(typeof CompressionStream!=='undefined'){try{const d=await streamBytes(raw,CompressionStream,'deflate-raw');if(d.length<raw.length){data=d;method=8}}catch{}}
-  const d=new Date(),dt=((d.getFullYear()-1980)<<9|(d.getMonth()+1)<<5|d.getDate())&0xFFFF,tm=(d.getHours()<<11|d.getMinutes()<<5|(d.getSeconds()>>1))&0xFFFF;
-  const lh=new DataView(new ArrayBuffer(30)),ch=new DataView(new ArrayBuffer(46)),ec=new DataView(new ArrayBuffer(22));
-  lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(8,method,true);lh.setUint16(10,tm,true);lh.setUint16(12,dt,true);
-  lh.setUint32(14,crc,true);lh.setUint32(18,data.length,true);lh.setUint32(22,raw.length,true);lh.setUint16(26,nm.length,true);
-  ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint16(10,method,true);ch.setUint16(12,tm,true);ch.setUint16(14,dt,true);
-  ch.setUint32(16,crc,true);ch.setUint32(20,data.length,true);ch.setUint32(24,raw.length,true);ch.setUint16(28,nm.length,true);
-  const cdOff=30+nm.length+data.length;
-  ec.setUint32(0,0x06054b50,true);ec.setUint16(8,1,true);ec.setUint16(10,1,true);ec.setUint32(12,46+nm.length,true);ec.setUint32(16,cdOff,true);
-  return new Blob([lh,nm,data,ch,nm,ec],{type:'application/zip'});
-}
-async function unzipFirstText(buf){
-  const u8=new Uint8Array(buf),dv=new DataView(buf);
-  let e=-1;for(let i=u8.length-22;i>=Math.max(0,u8.length-65558);i--){if(dv.getUint32(i,true)===0x06054b50){e=i;break}}
-  if(e<0)throw new Error('Not a valid ZIP file');
-  let p=dv.getUint32(e+16,true);
-  for(let n=dv.getUint16(e+10,true);n>0;n--){
-    if(dv.getUint32(p,true)!==0x02014b50)throw new Error('Corrupt ZIP file');
-    const method=dv.getUint16(p+10,true),csize=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),xl=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),off=dv.getUint32(p+42,true);
-    const name=new TextDecoder().decode(u8.subarray(p+46,p+46+nl));
-    p+=46+nl+xl+cl;
-    if(name.endsWith('/')||!/\.txt$/i.test(name)&&n>1)continue;
-    const ds=off+30+dv.getUint16(off+26,true)+dv.getUint16(off+28,true),comp=u8.subarray(ds,ds+csize);
-    let out;
-    if(method===0)out=comp;
-    else if(method===8){if(typeof DecompressionStream==='undefined')throw new Error('This browser cannot open compressed ZIP files');out=await streamBytes(comp,DecompressionStream,'deflate-raw')}
-    else throw new Error('Unsupported ZIP compression');
-    return new TextDecoder().decode(out);
+async function zipFiles(entries){
+  const enc=new TextEncoder(),d=new Date(),dt=((d.getFullYear()-1980)<<9|(d.getMonth()+1)<<5|d.getDate())&0xFFFF,tm=(d.getHours()<<11|d.getMinutes()<<5|(d.getSeconds()>>1))&0xFFFF;
+  const parts=[],central=[];let offset=0;
+  for(const {name,text} of entries){
+    const raw=enc.encode(text),nm=enc.encode(name),crc=crc32(raw);
+    let data=raw,method=0;
+    if(typeof CompressionStream!=='undefined'){try{const z=await streamBytes(raw,CompressionStream,'deflate-raw');if(z.length<raw.length){data=z;method=8}}catch{}}
+    const lh=new DataView(new ArrayBuffer(30)),ch=new DataView(new ArrayBuffer(46));
+    lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(8,method,true);lh.setUint16(10,tm,true);lh.setUint16(12,dt,true);
+    lh.setUint32(14,crc,true);lh.setUint32(18,data.length,true);lh.setUint32(22,raw.length,true);lh.setUint16(26,nm.length,true);
+    ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint16(10,method,true);ch.setUint16(12,tm,true);ch.setUint16(14,dt,true);
+    ch.setUint32(16,crc,true);ch.setUint32(20,data.length,true);ch.setUint32(24,raw.length,true);ch.setUint16(28,nm.length,true);ch.setUint32(42,offset,true);
+    parts.push(lh,nm,data);central.push(ch,nm);offset+=30+nm.length+data.length;
   }
-  throw new Error('No data file found inside the ZIP');
+  const cdSize=central.reduce((n,x)=>n+(x.byteLength),0),ec=new DataView(new ArrayBuffer(22));
+  ec.setUint32(0,0x06054b50,true);ec.setUint16(8,entries.length,true);ec.setUint16(10,entries.length,true);ec.setUint32(12,cdSize,true);ec.setUint32(16,offset,true);
+  return new Blob([...parts,...central,ec],{type:'application/zip'});
 }
-async function readBackupFile(file){
-  const buf=await file.arrayBuffer(),b=new Uint8Array(buf,0,4);
-  if(b[0]===0x50&&b[1]===0x4B)return unzipFirstText(buf);     // "PK": zip
-  return new TextDecoder().decode(buf);                         // plain .txt (older backups)
+/* ZIP -> {fileName: text}. Throws a readable error for anything that is not a valid ZIP. */
+async function unzipFiles(buf){
+  const u8=new Uint8Array(buf),dv=new DataView(u8.buffer,u8.byteOffset,u8.byteLength);
+  if(u8.length<22||u8[0]!==0x50||u8[1]!==0x4B)throw new Error('This is not a .zip backup file.');
+  let e=-1;for(let i=u8.length-22;i>=Math.max(0,u8.length-65558);i--){if(dv.getUint32(i,true)===0x06054b50){e=i;break}}
+  if(e<0)throw new Error('This .zip file is damaged.');
+  let p=dv.getUint32(e+16,true);const out={};
+  for(let n=dv.getUint16(e+10,true);n>0;n--){
+    if(dv.getUint32(p,true)!==0x02014b50)throw new Error('This .zip file is damaged.');
+    const method=dv.getUint16(p+10,true),csize=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),xl=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),off=dv.getUint32(p+42,true);
+    const name=new TextDecoder().decode(u8.subarray(p+46,p+46+nl)).split('/').pop();
+    p+=46+nl+xl+cl;
+    if(!name)continue;
+    const ds=off+30+dv.getUint16(off+26,true)+dv.getUint16(off+28,true),comp=u8.subarray(ds,ds+csize);
+    let raw;
+    if(method===0)raw=comp;
+    else if(method===8){if(typeof DecompressionStream==='undefined')throw new Error('This browser cannot open compressed .zip files.');raw=await streamBytes(comp,DecompressionStream,'deflate-raw')}
+    else throw new Error('Unsupported .zip compression.');
+    out[name]=new TextDecoder().decode(raw);
+  }
+  return out;
 }
+const BACKUP_FILES=[
+  {name:'tv-plus-profile-data.txt',title:'PROFILE'},
+  {name:'tv-plus-shows-data.txt',title:'SHOWS'},
+  {name:'tv-plus-movies-data.txt',title:'MOVIES WATCHED'},
+  {name:'tv-plus-movie-watchlist-data.txt',title:'MOVIE WATCHLIST'}
+];
+/* The one and only export: four organised files. Used by Export Backup, the auto-save file and cloud sync. */
+function buildExportFiles(){
+  const movies=exportMoviesSections(),cutAt=movies.indexOf('MOVIE WATCHLIST');
+  const texts=[exportProfileSection(),exportShowsSection(),movies.slice(0,cutAt),movies.slice(cutAt)];
+  return BACKUP_FILES.map((f,i)=>({name:f.name,text:texts[i].join('\n')+'\n'}));
+}
+function exportZipBlob(){return zipFiles(buildExportFiles())}
+function filesHaveData(files){return !!files&&/\[(?:TVDB ID|tvdb|id):\s*\d+\]/i.test(Object.values(files).join('\n'))}
+async function readBackupFiles(file){return unzipFiles(await file.arrayBuffer())}
 async function downloadBackup(){
-  const blob=await zipFile('tv-plus-data.txt',exportDataText());
+  const blob=await exportZipBlob();
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;a.download='tv-plus-data.zip';document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-const APP_VERSION='144';
+const APP_VERSION='145';
 function applyStyle(st){
   const r=document.documentElement;
   r.dataset.style=st==='glass'?'glass':'flat';
@@ -1571,13 +1605,6 @@ function exportProfileSection(){
     ...exportImageLines(),
     ''];
 }
-function exportDataText(){
-  return [
-    ...exportProfileSection(),
-    ...exportShowsSection(),
-    ...exportMoviesSections()
-  ].join('\n')+'\n';
-}
 
 function importAliasStrings(hit){
   const out=[hit&&hit.name];
@@ -1603,11 +1630,13 @@ function pickBestSearchHit(hits,name,alt){
   }
   return hits.length===1?hits[0]:null;
 }
+let _importUseLocal=false;   // cloud pulls reuse already-known show/movie details instead of asking TheTVDB again
 const _importShowCache=new Map(),_importMovieCache=new Map();
 async function resolveImportShow(fileId,name,alt){
   const cacheKey=`${fileId??''}|${(name||'').toLowerCase()}`;
   if(_importShowCache.has(cacheKey))return _importShowCache.get(cacheKey);
   const p=(async()=>{
+    if(_importUseLocal&&fileId!=null){const r=Store.reg('show')[fileId];if(r&&r.name)return{id:String(r.id||fileId),name:r.name,image:r.image,aliases:r.aliases,averageRuntime:r.averageRuntime}}
     if(fileId!=null){
       try{
         const s=await Api.seriesExtended(fileId);
@@ -1638,6 +1667,7 @@ async function resolveImportMovie(fileId,name,alt){
   const cacheKey=`${fileId??''}|${(name||'').toLowerCase()}`;
   if(_importMovieCache.has(cacheKey))return _importMovieCache.get(cacheKey);
   const p=(async()=>{
+    if(_importUseLocal&&fileId!=null){const r=Store.reg('movie')[fileId];if(r&&r.name)return{id:String(r.id||fileId),name:r.name,image:r.image,aliases:r.aliases,runtime:r.runtime,year:r.year,releaseDate:r.releaseDate}}
     if(fileId!=null){
       try{
         const m=await Api.movieExtended(fileId);
@@ -1677,7 +1707,18 @@ async function mapLimit(items,limit,fn){
   return out;
 }
 
-async function importDataText(text){
+/* Imports the organised backup files. mode 'merge' (default) only adds what is missing; mode 'replace' makes this
+   device mirror the files (used for cloud pulls) while keeping local metadata of items that exist on both sides. */
+async function importBackupFiles(files,opts={}){
+  if(!files||typeof files!=='object')throw new Error('Nothing to import.');
+  const known=BACKUP_FILES.filter(f=>typeof files[f.name]==='string');
+  if(!known.length)throw new Error('This .zip does not contain TV Plus backup files (tv-plus-profile-data, tv-plus-shows-data, tv-plus-movies-data, tv-plus-movie-watchlist-data).');
+  if(opts.mode==='replace'&&known.length<BACKUP_FILES.length)throw new Error('The backup is missing some files. Nothing was changed.');
+  return importBackupText(known.map(f=>files[f.name]).join('\n'),opts);
+}
+async function importBackupText(text,opts={}){
+  const replace=opts.mode==='replace';
+  _importUseLocal=!!opts.localRegistry;
   const lines=(text||'').replace(/\r\n/g,'\n').split('\n');
   const isSep=l=>/^[-–—]{10,}\s*$/.test(l||'');
 
@@ -1934,43 +1975,62 @@ async function importDataText(text){
 
   const addNew=(local,incoming,onAdd)=>{for(const k in incoming)if(!(k in local)){local[k]=incoming[k];onAdd?.(k,incoming[k])}return local};
   const maxInto=(local,incoming)=>{for(const k in incoming)local[k]=Math.max(local[k]||0,incoming[k]||0);return local};
-  const mLib=lget(K.lib,{}),mStopped=lget(K.stopped,{}),addedShows=new Set();
-  addNew(mLib,newShowLib,k=>addedShows.add(String(k)));
-  Object.keys(newStopped).forEach(k=>{if(addedShows.has(k.split(':')[1]))mStopped[k]=true});
-  const mWatched=lget(K.watched,{}),touched=new Set();
-  addNew(mWatched,newWatched,(k,r)=>{if(r&&r.showId!=null)touched.add(String(r.showId))});
-  const mProg=lget(K.prog,{});
-  touched.forEach(id=>delete mProg[id]);
-  Object.keys(newProg).forEach(id=>{if(!touched.has(String(id))&&!(id in mProg))mProg[id]=newProg[id]});
-  lset(K.lib,mLib);
-  lset(K.movieLib,addNew(lget(K.movieLib,{}),newMovieLib));
-  lset(K.watched,mWatched);
-  _progCache=null;
-  lset(K.prog,mProg);
-  lset(K.movieWatched,addNew(lget(K.movieWatched,{}),newMovieWatched));
-  lset(K.favShows,addNew(lget(K.favShows,{}),newFavShows));
-  lset(K.favMovies,addNew(lget(K.favMovies,{}),newFavMovies));
-  lset(K.stopped,mStopped);
-  lset(K.showReg,newShowReg);
-  lset(K.movieReg,newMovieReg);
-  lset(K.epRewatch,maxInto(lget(K.epRewatch,{}),newEpRewatch));
-  lset(K.seasonRewatch,maxInto(lget(K.seasonRewatch,{}),newSeasonRewatch));
-  const rw=Store.rewatch();
-  rw.movie=maxInto(rw.movie||{},newMovieRewatch);
-  lset(K.rewatch,rw);
-  await applyImportedImages(importedAvatar,importedBanner);
+  /* replace mode: exactly the items of the files, but an item that already exists here keeps its local record */
+  const mirror=(local,incoming)=>{const r={};for(const k in incoming)r[k]=(k in local)?local[k]:incoming[k];return r};
+  if(replace){
+    lset(K.lib,mirror(lget(K.lib,{}),newShowLib));
+    lset(K.movieLib,mirror(lget(K.movieLib,{}),newMovieLib));
+    lset(K.watched,mirror(lget(K.watched,{}),newWatched));
+    _progCache=null;
+    lset(K.prog,newProg);
+    lset(K.movieWatched,mirror(lget(K.movieWatched,{}),newMovieWatched));
+    lset(K.favShows,mirror(lget(K.favShows,{}),newFavShows));
+    lset(K.favMovies,mirror(lget(K.favMovies,{}),newFavMovies));
+    lset(K.stopped,newStopped);
+    lset(K.showReg,newShowReg);
+    lset(K.movieReg,newMovieReg);
+    lset(K.epRewatch,newEpRewatch);
+    lset(K.seasonRewatch,newSeasonRewatch);
+    const rw=Store.rewatch();rw.movie=newMovieRewatch;lset(K.rewatch,rw);
+  }else{
+    const mLib=lget(K.lib,{}),mStopped=lget(K.stopped,{}),addedShows=new Set();
+    addNew(mLib,newShowLib,k=>addedShows.add(String(k)));
+    Object.keys(newStopped).forEach(k=>{if(addedShows.has(k.split(':')[1]))mStopped[k]=true});
+    const mWatched=lget(K.watched,{}),touched=new Set();
+    addNew(mWatched,newWatched,(k,r)=>{if(r&&r.showId!=null)touched.add(String(r.showId))});
+    const mProg=lget(K.prog,{});
+    touched.forEach(id=>delete mProg[id]);
+    Object.keys(newProg).forEach(id=>{if(!touched.has(String(id))&&!(id in mProg))mProg[id]=newProg[id]});
+    lset(K.lib,mLib);
+    lset(K.movieLib,addNew(lget(K.movieLib,{}),newMovieLib));
+    lset(K.watched,mWatched);
+    _progCache=null;
+    lset(K.prog,mProg);
+    lset(K.movieWatched,addNew(lget(K.movieWatched,{}),newMovieWatched));
+    lset(K.favShows,addNew(lget(K.favShows,{}),newFavShows));
+    lset(K.favMovies,addNew(lget(K.favMovies,{}),newFavMovies));
+    lset(K.stopped,mStopped);
+    lset(K.showReg,newShowReg);
+    lset(K.movieReg,newMovieReg);
+    lset(K.epRewatch,maxInto(lget(K.epRewatch,{}),newEpRewatch));
+    lset(K.seasonRewatch,maxInto(lget(K.seasonRewatch,{}),newSeasonRewatch));
+    const rw=Store.rewatch();
+    rw.movie=maxInto(rw.movie||{},newMovieRewatch);
+    lset(K.rewatch,rw);
+  }
+  await applyImportedImages(importedAvatar,importedBanner,replace);
   if(importedStyle==='flat'||importedStyle==='glass'){Store.setProfile({style:importedStyle});applyStyle(importedStyle)}
   if(importedTheme==='light'||importedTheme==='dark'){Store.setProfile({theme:importedTheme});applyTheme(importedTheme)}
-  if(importedUsername!=null&&!Store.profile().name)Store.setProfile({name:importedUsername});
+  if(importedUsername!=null&&(replace?importedUsername!=='':!Store.profile().name))Store.setProfile({name:importedUsername});
   if(importedCountry){
     const codeM=/\(([A-Za-z]{2})\)\s*$/.exec(importedCountry);
     const code=codeM?codeM[1].toUpperCase():(COUNTRIES.find(c=>c[1].toLowerCase()===importedCountry.toLowerCase())||[])[0];
-    if(code&&COUNTRIES.some(c=>c[0]===code)&&!Store.profile().country)Store.setProfile({country:code});
+    if(code&&COUNTRIES.some(c=>c[0]===code)&&(replace||!Store.profile().country))Store.setProfile({country:code});
   }
   if(importedTz){
     let validTz=false;
     try{new Intl.DateTimeFormat('en',{timeZone:importedTz});validTz=true}catch{}
-    if(validTz&&!Store.profile().timezone)Store.setProfile({timezone:importedTz});
+    if(validTz&&(replace||!Store.profile().timezone))Store.setProfile({timezone:importedTz});
   }
   bumpShowsCache();
   bumpMoviesCache();
@@ -1978,6 +2038,7 @@ async function importDataText(text){
   if(restoreWatchedShows())bumpShowsCache();
   Object.keys(_posterTry).forEach(k=>delete _posterTry[k]);
   setTimeout(repairMissingPosters,300);
+  _importUseLocal=false;
   return true;
 }
 
@@ -2279,6 +2340,7 @@ function updateShowProgressBar(wrap,progress){
     if(progress.complete&&!wasComplete)triggerConfetti();
   }
 }
+function importError(err){showConfirmDialog({title:'Import failed',message:esc((err&&err.message)||'Something went wrong.'),confirmLabel:'OK',cancelLabel:'Close'})}
 function showConfirmDialog({title,message,confirmLabel='Confirm',cancelLabel='Cancel',danger=false,onConfirm,onCancel}){
   const backdrop=document.createElement('div');
   backdrop.className='modal-backdrop';
@@ -3482,7 +3544,7 @@ function renderStats(o,opts){
         </div>
         <div class="setting-cat">Local Data</div>
     <div>
-      <div class="field fs-field"><span id="fs-status">${FileSync.supported?'No data file connected yet. Choose or create a .txt file to keep your data auto-saved on this device.':'You can export/import a backup .txt file below.'}</span></div>
+      <div class="field fs-field"><span id="fs-status">${FileSync.supported?'No data file connected yet. Choose or create a .zip file to keep your data auto-saved on this device.':'You can export/import a backup .zip file below.'}</span></div>
       <div class="data-row">
         ${FileSync.supported?`<button type="button" id="fs-choose" class="btn btn-accent">Choose / Create Data File</button><button type="button" id="fs-load" class="btn btn-ghost">Load From File</button><button type="button" id="fs-bak" class="btn btn-ghost">Restore Auto-Backup</button>`:''}
         <div class="data-row-io">
@@ -3491,7 +3553,7 @@ function renderStats(o,opts){
         <button type="button" id="fs-delete" class="btn btn-disconnect btn-icon" title="Delete data" aria-label="Delete data"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
         </div>
       </div>
-      <input type="file" id="fs-import-input" accept=".zip,.txt,application/zip,text/plain" hidden />
+      <input type="file" id="fs-import-input" accept=".zip,application/zip" hidden />
     </div>
       <div class="settings-version">TV Plus · Version ${APP_VERSION}</div>
         <input type="file" id="profile-avatar-input" accept="image/*" hidden />
@@ -3757,7 +3819,7 @@ function renderStats(o,opts){
   const fsStatus=o.querySelector('#fs-status');
   function refreshFsStatus(connected){
     if(!FileSync.supported)return;
-    fsStatus.textContent=connected?'Data file connected — your data auto-saves here on every change.':'No data file connected yet. Choose or create a .txt file to keep your data auto-saved on this device.';
+    fsStatus.textContent=connected?'Data file connected — your data auto-saves here on every change.':'No data file connected yet. Choose or create a .zip file to keep your data auto-saved on this device.';
   }
   if(FileSync.supported){
     refreshFsStatus(Boolean(FileSync.handle));
@@ -3766,16 +3828,16 @@ function renderStats(o,opts){
       refreshFsStatus(ok);
     });
     o.querySelector('#fs-bak').addEventListener('click',async()=>{
-      const text=await latestBackup();
-      if(!text){return}
-      try{if(await importDataText(text))renderStats(o,{msg:'Auto-backup restored.'})}
-      catch(err){}
+      const files=await latestBackup();
+      if(!files){return}
+      try{if(await importBackupFiles(files))renderStats(o,{msg:'Auto-backup restored.'})}
+      catch(err){importError(err)}
     });
     o.querySelector('#fs-load').addEventListener('click',async()=>{
-      const text=await FileSync.load();
-      if(!text){return}
-      try{if(await importDataText(text))renderStats(o,{msg:'Data loaded from file.'})}
-      catch(err){}
+      const files=await FileSync.loadFiles();
+      if(!files){importError(new Error('The connected file is empty or is not a .zip backup.'));return}
+      try{if(await importBackupFiles(files))renderStats(o,{msg:'Data loaded from file.'})}
+      catch(err){importError(err)}
     });
   }
   o.querySelector('#fs-download').addEventListener('click',()=>{
@@ -3787,12 +3849,12 @@ function renderStats(o,opts){
     const file=importInput.files[0];
     if(!file)return;
     try{
-      const text=await readBackupFile(file);
-      if(await importDataText(text)){
+      const files=await readBackupFiles(file);
+      if(await importBackupFiles(files)){
         closeSettings();
         setTimeout(()=>{if(o.isConnected)renderStats(o,{noAnim:true})},560);
       }
-    }catch(err){}
+    }catch(err){importError(err)}
     importInput.value='';
   });
   o.querySelector('#fs-delete').addEventListener('click',()=>{
@@ -4788,23 +4850,23 @@ async function repairMissingPosters(){
 async function offerRestore(){
   if(!FileSync.handle||!isLocalDataEmpty())return;
   const restore=async()=>{
-    let t=await FileSync.load();
-    if(!fileHasData(t))t=await latestBackup();
-    if(!fileHasData(t)){return}
-    try{await importDataText(t);const{route,id}=hashRoute();nav(route,{id,noAnim:true})}
+    let f=await FileSync.loadFiles();
+    if(!filesHaveData(f))f=await latestBackup();
+    if(!filesHaveData(f)){return}
+    try{await importBackupFiles(f);const{route,id}=hashRoute();nav(route,{id,noAnim:true})}
     catch(err){}
   };
   if(await FileSync.handle.queryPermission?.({mode:'readwrite'})==='granted'){
-    const t=await FileSync.load();
-    if(!fileHasData(t)&&!fileHasData(await latestBackup()))return;
+    if(!filesHaveData(await FileSync.loadFiles())&&!filesHaveData(await latestBackup()))return;
   }
   showConfirmDialog({title:'Restore your data?',message:'This device has no saved library, but a backup file is connected. Load it now?',confirmLabel:'Load backup',onConfirm:restore});
 }
 
 /* =====================================================================================================
    Cloud sync (Supabase). Optional: the app works exactly as before when nobody is logged in.
-   - What is synced: the app's own localStorage data (CLOUD_KEYS) + avatar/banner, as one JSON document in
-     public.user_data.data. The TXT export/import format is untouched.
+   - What is synced: exactly the file the Export Backup button produces (the .zip with the four organised files,
+     avatar/banner included), stored base64-encoded inside public.user_data.data (v2). Older rows (v1, a native
+     snapshot) are still understood and are upgraded to v2 on the next sync, after a safety copy.
    - Safety: writes are compare-and-swap on updated_at, so a stale device can never silently overwrite newer
      cloud data; every ambiguous situation asks the user and keeps a safety copy of whatever gets replaced.
    ===================================================================================================== */
@@ -4831,7 +4893,13 @@ function cloudSnapshot(){
   return{app:'tv_plus',v:1,keys,images:{avatar:ProfileImg.avatar||'',banner:ProfileImg.banner||''}};
 }
 function cloudIsEmpty(snap){return !snap||!snap.keys||CLOUD_DATA_KEYS.every(k=>!Object.keys(snap.keys[k]||{}).length)}
-function cloudCounts(snap){const n=k=>Object.keys((snap&&snap.keys&&snap.keys[k])||{}).length;return `${n(K.lib)} shows, ${n(K.movieLib)} movies`}
+function rowEmpty(d){return !d||(d.keys?cloudIsEmpty(d):(!d.zip||d.empty===true))}
+function cloudCounts(d){
+  if(d&&d.counts)return `${d.counts.shows} shows, ${d.counts.movies} movies`;
+  const n=k=>Object.keys((d&&d.keys&&d.keys[k])||{}).length;return `${n(K.lib)} shows, ${n(K.movieLib)} movies`;
+}
+const b64FromBlob=blob=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]||'');r.onerror=()=>rej(r.error);r.readAsDataURL(blob)});
+function bytesFromB64(b){const bin=atob(b),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u}
 
 /* union merge: nothing is lost, counters take the larger value. (A merge cannot represent deletions.) */
 function mergeSnapshots(a,b){
@@ -4994,8 +5062,22 @@ const Cloud={
   },
   uploadLocal(){
     if(!this.user)return;
-    this.setMeta({owner:this.user.id,base:null,hash:'',wiped:false});this.held=false;
+    this.setMeta({owner:this.user.id,base:null,hash:'',fmt:2,wiped:false});this.held=false;
     return this.syncSoon('upload');
+  },
+
+  /* ---- what gets uploaded: the exact export zip ---- */
+  async currentExport(){
+    const files=buildExportFiles(),blob=await zipFiles(files),snap=cloudSnapshot();
+    return{
+      hash:cloudHash(files.map(f=>[f.name,f.text])),
+      doc:{app:'tv_plus',v:2,format:'zip',zip:await b64FromBlob(blob),files:files.map(f=>f.name),
+        counts:{shows:Object.keys(snap.keys[K.lib]||{}).length,movies:Object.keys(snap.keys[K.movieLib]||{}).length},empty:cloudIsEmpty(snap)}
+    };
+  },
+  async isDirty(m){
+    if(m.fmt===2)return(await this.currentExport()).hash!==m.hash;
+    return cloudHash(cloudSnapshot())!==m.hash;      // device last synced with the older (v1) format
   },
 
   /* ---- core sync steps (always called inside lock) ---- */
@@ -5009,20 +5091,20 @@ const Cloud={
       const {data,error}=await this.sb.from('user_data').select('updated_at').eq('user_id',u.id).maybeSingle();
       if(error)throw error;
       if((data?data.updated_at:null)===(m.base||null)){   // cloud unchanged since our last sync
-        if(cloudHash(cloudSnapshot())!==m.hash)await this.pushLocked();else this.markSynced();
+        if(await this.isDirty(m))await this.pushLocked();else this.markSynced();
         return;
       }
     }
     await this.reconcileFull();
   },
-  async write(uid,snap,base){
+  async write(uid,doc,base){
     if(base){
-      const {data,error}=await this.sb.from('user_data').update({data:snap,updated_at:new Date().toISOString()}).eq('user_id',uid).eq('updated_at',base).select('updated_at');
+      const {data,error}=await this.sb.from('user_data').update({data:doc,updated_at:new Date().toISOString()}).eq('user_id',uid).eq('updated_at',base).select('updated_at');
       if(error)throw error;
       if(!data||!data.length)return{conflict:true};      // someone else wrote since our last sync
       return{updated_at:data[0].updated_at};
     }
-    const {data,error}=await this.sb.from('user_data').insert({user_id:uid,data:snap,updated_at:new Date().toISOString()}).select('updated_at');
+    const {data,error}=await this.sb.from('user_data').insert({user_id:uid,data:doc,updated_at:new Date().toISOString()}).select('updated_at');
     if(error){if(error.code==='23505'||/duplicate key/i.test(error.message||''))return{conflict:true};throw error}
     return{updated_at:data[0].updated_at};
   },
@@ -5031,15 +5113,21 @@ const Cloud={
     const m=this.meta();
     if(m.owner!==u.id||m.wiped||this.held)return;
     if(!navigator.onLine){this.setStatus('offline');return}
-    const snap=cloudSnapshot(),h=cloudHash(snap);
-    if(h===m.hash){this.markSynced();return}
+    const exp=await this.currentExport();
+    if(m.fmt===2&&exp.hash===m.hash){this.markSynced();return}
     this.setStatus('syncing');
-    const res=await this.write(u.id,snap,m.base||null);
+    if(m.fmt!==2&&m.base){   // first upgrade of an older (v1) cloud row: keep a safety copy of it on this device
+      const {data:old,error:e0}=await this.sb.from('user_data').select('data,updated_at').eq('user_id',u.id).maybeSingle();
+      if(e0)throw e0;
+      if(old&&old.updated_at!==m.base){await this.reconcileFull(depth+1);return}
+      if(old&&old.data&&old.data.keys&&!cloudIsEmpty(old.data))await this.saveBackup('Cloud copy before format upgrade',old.data);
+    }
+    const res=await this.write(u.id,exp.doc,m.base||null);
     if(res.conflict){
       if(depth>=2)throw new Error('The collection keeps changing on another device. Try again in a moment.');
       await this.reconcileFull(depth+1);return;
     }
-    this.setMeta({base:res.updated_at,hash:h,lastSyncAt:Date.now(),hadData:!cloudIsEmpty(snap),wiped:false});
+    this.setMeta({base:res.updated_at,hash:exp.hash,fmt:2,lastSyncAt:Date.now(),hadData:!exp.doc.empty,wiped:false});
     this.setStatus('synced');
   },
   async ask(kind,ctx){
@@ -5065,21 +5153,21 @@ const Cloud={
     const {data:row,error}=await this.sb.from('user_data').select('data,updated_at').eq('user_id',uid).maybeSingle();
     if(error)throw error;
     const d=row&&row.data,rowBase=row?row.updated_at:null;
-    if(d&&Object.keys(d).length&&!d.keys)throw new Error('The cloud data has an unknown format, so it was left untouched.');
-    const cloudEmpty=!d||cloudIsEmpty(d);
-    const m=this.meta(),snap=cloudSnapshot(),h=cloudHash(snap),localEmpty=cloudIsEmpty(snap);
-    const mine=m.owner===uid,dirty=mine?h!==m.hash:!localEmpty;
+    if(d&&Object.keys(d).length&&!d.keys&&!d.zip)throw new Error('The cloud data has an unknown format, so it was left untouched.');
+    const cloudEmpty=rowEmpty(d);
+    const m=this.meta(),snap=cloudSnapshot(),localEmpty=cloudIsEmpty(snap);
+    const mine=m.owner===uid,dirty=mine?await this.isDirty(m):!localEmpty;
     const ctx={snap,cloud:d};
 
     if(m.wiped){   // local data was deleted on purpose; the cloud copy is never deleted by that
       if(!cloudEmpty){await this.applyCloud(row,uid,'Restored your collection from the cloud.');return}
-      this.setMeta({wiped:false,owner:uid,base:rowBase,hash:h,hadData:false});this.markSynced();return;
+      this.setMeta({wiped:false,owner:uid,base:rowBase,hash:'',fmt:2,hadData:false});this.markSynced();return;
     }
     if(cloudEmpty){
-      if(localEmpty){this.setMeta({owner:uid,base:rowBase,hash:h,hadData:false,lastSyncAt:Date.now()});this.held=false;this.setStatus('synced');return}
+      if(localEmpty){const exp=await this.currentExport();this.setMeta({owner:uid,base:rowBase,hash:exp.hash,fmt:2,hadData:false,lastSyncAt:Date.now()});this.held=false;this.setStatus('synced');return}
       if(mine&&dirty&&m.base==null&&rowBase==null){await this.pushLocked(depth);return}     // this account already owns this device's data
       const choice=await this.ask(!mine&&m.owner?'otherEmpty':'upload',ctx);
-      if(choice==='upload'){this.setMeta({owner:uid,base:rowBase,hash:'',wiped:false,hadData:false});this.held=false;await this.pushLocked(depth);return}
+      if(choice==='upload'){this.setMeta({owner:uid,base:rowBase,hash:'',fmt:2,wiped:false,hadData:false});this.held=false;await this.pushLocked(depth);return}
       if(choice==='logout'){await this.signOut({skipFlush:true});return}
       this.held=true;this.setStatus('idle');return;     // "Not now": nothing is uploaded; local data untouched
     }
@@ -5098,24 +5186,43 @@ const Cloud={
     if(choice==='cloud'){await this.saveBackup('This device, before loading cloud data',snap);await this.applyCloud(row,uid,'Loaded your collection from the cloud.');return}
     if(choice==='merge'){
       await this.saveBackup('This device, before merge',snap);
-      await this.applySnapshot(mergeSnapshots(snap,d));
-      this.setMeta({owner:uid,base:row.updated_at,hash:'merge',wiped:false,hadData:true});this.held=false;
+      await this.pullRow(d,'merge');
+      this.setMeta({owner:uid,base:row.updated_at,hash:'',fmt:2,wiped:false,hadData:true});this.held=false;
       this.setNote('Merged this device with your cloud collection.');
       await this.pushLocked(depth);return;
     }
     if(choice==='device'){
       await this.saveBackup('Cloud copy, before it was replaced',d);
-      this.setMeta({owner:uid,base:row.updated_at,hash:'force',wiped:false,hadData:true});this.held=false;
+      this.setMeta({owner:uid,base:row.updated_at,hash:'',fmt:2,wiped:false,hadData:true});this.held=false;
       await this.pushLocked(depth);return;
     }
   },
   async applyCloud(row,uid,note){
-    await this.applySnapshot(row.data);
-    this.setMeta({owner:uid,base:row.updated_at,hash:cloudHash(cloudSnapshot()),lastSyncAt:Date.now(),hadData:true,wiped:false});
+    await this.pullRow(row.data,'replace');
+    const exp=await this.currentExport();
+    this.setMeta({owner:uid,base:row.updated_at,hash:exp.hash,fmt:2,lastSyncAt:Date.now(),hadData:true,wiped:false});
     this.held=false;this.setStatus('synced');if(note)this.setNote(note);
   },
-  async applySnapshot(snap){
+  /* Bring a cloud document into this device. v2 = the export zip, read by the same importer as "Import Backup". */
+  async pullRow(d,mode){
     this.applying=true;
+    try{
+      if(d&&d.keys){                       // v1 row (native snapshot)
+        await this.applySnapshot(mode==='merge'?mergeSnapshots(cloudSnapshot(),d):d);
+      }else{
+        const files=await unzipFiles(bytesFromB64(d.zip));
+        await importBackupFiles(files,{mode,localRegistry:true});
+        this.afterApply();
+      }
+    }finally{this.applying=false}
+  },
+  afterApply(){
+    showsDirty=true;moviesDirty=true;bumpShowsCache();bumpMoviesCache();
+    applyTheme(Store.profile().theme);applyStyle(Store.profile().style);
+    const{route,id}=hashRoute();nav(route,{id,noAnim:true});
+  },
+  async applySnapshot(snap){
+    const was=this.applying;this.applying=true;
     try{
       CLOUD_KEYS.forEach(k=>{
         if(snap.keys&&Object.prototype.hasOwnProperty.call(snap.keys,k))lset(k,snap.keys[k]);
@@ -5125,13 +5232,10 @@ const Cloud={
       const im=snap.images||{};
       for(const kind of ['avatar','banner']){
         const v=im[kind];
-        if(v&&IMG_OK.test(v)){await saveProfileImage(kind,v)}
-        else{await idbDel('profile.'+kind);ProfileImg[kind]=''}
+        if(v&&IMG_OK.test(v))await saveProfileImage(kind,v);    // a missing image in the snapshot never deletes the local one
       }
-      showsDirty=true;moviesDirty=true;bumpShowsCache();bumpMoviesCache();
-      applyTheme(Store.profile().theme);applyStyle(Store.profile().style);
-      const{route,id}=hashRoute();nav(route,{id,noAnim:true});
-    }finally{this.applying=false}
+      this.afterApply();
+    }finally{this.applying=was}
   },
 
   /* ---- safety copies (kept on this device, newest 3) ---- */
@@ -5142,11 +5246,11 @@ const Cloud={
   async restoreBackup(id){
     const b=this.backups.find(x=>x.id===id);if(!b)return;
     await this.saveBackup('This device, before restoring a safety copy',cloudSnapshot());
-    await this.applySnapshot(b.snap);
+    await this.pullRow(b.snap,'replace');
     if(this.user&&this.meta().owner===this.user.id)this.markDirty();
   }
 };
-_cloudHook=k=>{if(k==='img'||CLOUD_KEYS.includes(k))Cloud.markDirty()};
+_cloudHook=k=>{if(k==='img'||(CLOUD_KEYS.includes(k)&&k!==K.showReg&&k!==K.movieReg))Cloud.markDirty()};
 
 /* ---- account UI (Settings > Account & Cloud Sync) and the status chip next to the Settings button ---- */
 function cloudMountUI(o){
