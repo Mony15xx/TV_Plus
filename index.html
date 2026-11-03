@@ -141,7 +141,7 @@ code{background:var(--bg-elev);padding:1px 6px;border-radius:4px;font-family:'Je
 .lib-popup .lib-pop-remove{color:var(--red)}
 .lib-popup .lib-pop-remove:hover{border-color:var(--red);background:rgba(250,50,10,.1)}
 .profile-hero{position:relative;margin:-28px -20px 20px;overflow:visible;--hh:252px;height:var(--hh)}
-.profile-banner{position:absolute;left:0;right:0;top:0;height:calc(var(--hh) + 72px);background:var(--bg-elev) center/cover no-repeat}
+.profile-banner{position:absolute;left:0;right:0;top:0;height:calc(var(--hh) + 72px);background:#1f232e center/cover no-repeat}
 .profile-route .stat-card2{position:relative;z-index:1}
 html:not([data-theme="light"]) .profile-banner::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.15);pointer-events:none}
 .profile-banner::after{content:'';position:absolute;left:0;right:0;bottom:0;height:230px;background:linear-gradient(to bottom,transparent 0%,color-mix(in srgb,var(--bg) 6%,transparent) 14%,color-mix(in srgb,var(--bg) 20%,transparent) 30%,color-mix(in srgb,var(--bg) 42%,transparent) 48%,color-mix(in srgb,var(--bg) 68%,transparent) 66%,color-mix(in srgb,var(--bg) 88%,transparent) 82%,var(--bg) 100%);pointer-events:none}
@@ -813,7 +813,7 @@ html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outl
 html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outlined select{color:#05070c;-webkit-text-fill-color:#05070c;opacity:1}
 
 /* phones: the glass nav bar lines up with the page margins (20px); wide screens keep the original width */
-@media (max-width:559px){html[data-style="glass"] #bottomnav{width:calc(100% - 40px)}}
+@media (max-width:559px){html[data-style="glass"] #bottomnav{width:calc(100% - 16px)}}
 /* glass rims on large surfaces: light at the top/bottom edge, easing to the darker side tone over ~80px */
 html[data-style="glass"]{--rim-L:rgba(255,255,255,.42);--rim-D:rgba(0,0,0,.28);--rim-soft-L:rgba(255,255,255,.2)}
 html[data-style="glass"][data-theme="light"]{--rim-L:rgba(255,255,255,.95);--rim-D:rgba(40,50,70,.2);--rim-soft-L:rgba(255,255,255,.6)}
@@ -825,9 +825,53 @@ html[data-style="glass"] :is(#bottomnav,.stat-card2,.profile-list-pair .hscroll-
 html[data-style="glass"] #outlet :is(.stat-card2,.profile-list-pair .hscroll-section){--rim-L:var(--rim-soft-L)}
 html[data-style="glass"] #outlet .stat-card2:hover{--rim-L:rgba(255,255,255,.42)}
 html[data-style="glass"][data-theme="light"] #outlet .stat-card2:hover{--rim-L:rgba(255,255,255,.95)}
-/* the settings sheet scrolls, so its rim is painted as its own border background (does not scroll away) */
-html[data-style="glass"] .profile-edit-overlay.bglass{--ov-fill:rgba(12,14,20,.64);border:1px solid transparent;background:linear-gradient(var(--ov-fill),var(--ov-fill)) padding-box,linear-gradient(180deg,var(--rim-L) 0,var(--rim-D) min(80px,50%),var(--rim-D) max(calc(100% - 80px),50%),var(--rim-L) 100%) border-box}
-html[data-style="glass"][data-theme="light"] .profile-edit-overlay.bglass{--ov-fill:rgba(206,213,227,.66)}
+/* the settings sheet scrolls: its rim is a sticky layer pinned to the visible area (height set by JS in --ovh), the background stays untouched */
+html[data-style="glass"] .profile-edit-overlay.bglass::before{content:'';display:block;position:sticky;top:-16px;z-index:6;pointer-events:none;box-sizing:border-box;
+  height:var(--ovh,100%);width:calc(100% + 32px);flex:none;margin:-16px -16px calc(6px - var(--ovh,0px)) -16px;border-radius:inherit;padding:1px;
+  background:linear-gradient(180deg,var(--rim-L) 0,var(--rim-D) min(80px,50%),var(--rim-D) max(calc(100% - 80px),50%),var(--rim-L) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
+
+/* nav press / hold animation (glass only) and finger-drag support */
+html[data-style="glass"] #bottomnav{touch-action:none;-webkit-user-select:none;user-select:none;transition:transform .4s cubic-bezier(.3,.9,.4,1)}
+html[data-style="glass"] #bottomnav.pressing,html[data-style="glass"] #bottomnav.compact.pressing{transform:translateX(-50%) scale(1.05);--rim-L:rgba(255,255,255,.85)}
+/* glow = a cheap opacity-animated layer (no filter/backdrop repaint), faster than the scale animation */
+html[data-style="glass"] #bottomnav::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:5;opacity:0;transition:opacity .12s ease-out;background:rgba(255,255,255,.26);backdrop-filter:blur(22px) brightness(1.7) saturate(1.1);-webkit-backdrop-filter:blur(22px) brightness(1.7) saturate(1.1)}
+  background:rgba(255,255,255,.34);box-shadow:0 0 30px rgba(255,255,255,.4),0 0 8px rgba(255,255,255,.3),inset 0 0 22px rgba(255,255,255,.25)}
+html[data-style="glass"] #bottomnav.pressing::before{opacity:1}
+html[data-style="glass"][data-theme="light"] #bottomnav::before{background:rgba(255,255,255,.6);backdrop-filter:blur(22px) brightness(1.2);-webkit-backdrop-filter:blur(22px) brightness(1.2)}
+html[data-style="glass"] #bottomnav.pressing .nav-pill{background:rgba(255,255,255,.34);transition:background-color .12s ease-out,transform .4s cubic-bezier(.3,1.25,.45,1),width .4s cubic-bezier(.3,1.25,.45,1)}
+html[data-style="glass"] #bottomnav.pressing .nav-item{color:rgba(255,255,255,.92)}
+html[data-style="glass"][data-theme="light"] #bottomnav.pressing .nav-pill{background:rgba(0,0,0,.08);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18),0 2px 8px rgba(0,0,0,.15)}
+html[data-style="glass"][data-theme="light"] #bottomnav.pressing .nav-item{color:rgba(22,27,39,.8)}
+html[data-style="glass"][data-theme="light"] #bottomnav.pressing .nav-item.active,html[data-style="glass"][data-theme="light"] #bottomnav.pressing .nav-item.peek{color:#000}
+html[data-style="glass"] #bottomnav .nav-item.peek{color:#fff}
+html[data-style="glass"] #bottomnav.pressing.dragging .nav-pill,html[data-style="glass"] #bottomnav.dragging .nav-pill.no-anim{transition:background-color .12s ease-out!important}
+html[data-style="glass"] #bottomnav.dragging .nav-item.active:not(.peek){color:rgba(255,255,255,.62)}
+html[data-style="glass"][data-theme="light"] #bottomnav.dragging .nav-item.active:not(.peek){color:rgba(22,27,39,.55)}
+html[data-style="glass"][data-theme="light"] #bottomnav .nav-item.peek{color:#000}
+
+/* light mode fixes */
+html[data-theme="light"] .shows-tabs .shows-tab,html[data-theme="light"] .shows-tabs .shows-tab:hover,html[data-theme="light"] .shows-tabs .shows-tab:focus,html[data-theme="light"] .shows-tabs .shows-tab:focus-visible,html[data-theme="light"] .shows-tabs .shows-tab:active,html[data-theme="light"] .shows-tabs .shows-tab.active{background:transparent}
+html[data-theme="light"] .hscroll-icon{color:#000}
+/* glass: drop shadows are black, not purple */
+html[data-style="glass"][data-theme="light"]{--shc:0,0,0}
+
+/* v152: side grid texture + flattened nav icon strokes */
+body{background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:56px 56px;background-position:center top;background-attachment:fixed}
+html[data-theme="light"] body{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:56px 56px;background-position:center top;background-attachment:fixed}
+html[data-style="glass"] #bottomnav .nav-icon svg{stroke:var(--ic,#fff);opacity:var(--ia,.62);transition:opacity .15s ease,stroke .15s ease}
+html[data-style="glass"] #bottomnav .nav-item{--ic:#fff;--ia:.62}
+html[data-style="glass"] #bottomnav .nav-item:hover{--ia:.85}
+html[data-style="glass"] #bottomnav .nav-item.active{--ia:1}
+html[data-style="glass"][data-theme="light"] #bottomnav .nav-item{--ic:#161b27;--ia:.55}
+html[data-style="glass"][data-theme="light"] #bottomnav .nav-item.active{--ic:#000;--ia:1}
+html[data-style="glass"] #bottomnav.pressing .nav-item{--ia:.92}
+html[data-style="glass"][data-theme="light"] #bottomnav.pressing .nav-item{--ia:.8}
+html[data-style="glass"][data-theme="light"] #bottomnav.pressing .nav-item.active,html[data-style="glass"][data-theme="light"] #bottomnav.pressing .nav-item.peek{--ic:#000;--ia:1}
+html[data-style="glass"] #bottomnav .nav-item.peek{--ia:1}
+html[data-style="glass"] #bottomnav.dragging .nav-item.active:not(.peek){--ia:.62}
+html[data-style="glass"][data-theme="light"] #bottomnav.dragging .nav-item.active:not(.peek){--ic:#161b27;--ia:.55}
+html[data-style="glass"][data-theme="light"] #bottomnav .nav-item.peek{--ic:#000;--ia:1}
 </style>
 </head>
 <body>
@@ -1090,7 +1134,7 @@ async function downloadBackup(){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-const APP_VERSION='145';
+const APP_VERSION='152';
 function applyStyle(st){
   const r=document.documentElement;
   r.dataset.style=st==='glass'?'glass':'flat';
@@ -2099,6 +2143,10 @@ function imgUrl(p,opts={}){
   if(opts.thumb)url=url.replace(/\.([a-zA-Z0-9]+)$/,'_t.$1');
   return url.replace(/["'<>\s]/g,encodeURIComponent);
 }
+function avatarPlaceholder(){
+  const svg=encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="#1f232e"/><circle cx="100" cy="78" r="36" fill="#8b93a3"/><path d="M28 200c0-42 32-72 72-72s72 30 72 72z" fill="#8b93a3"/></svg>`);
+  return `data:image/svg+xml,${svg}`;
+}
 function placeholder(){
   const svg=encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450"><rect width="100%" height="100%" fill="#1f232e"/><text x="50%" y="50%" fill="#8b93a3" font-family="sans-serif" font-size="16" text-anchor="middle" dominant-baseline="middle">No image</text></svg>`);
   return `data:image/svg+xml,${svg}`;
@@ -2922,6 +2970,7 @@ function closeListOverlay(){
   }
 }
 function updateNavPill(instant){
+  if(window._navDrag)return;
   const pill=document.querySelector('.nav-pill'),act=document.querySelector('#bottomnav .nav-item.active');
   if(!pill||!act)return;
   if(instant)pill.classList.add('no-anim');
@@ -3232,37 +3281,80 @@ function refreshMovieInPanes(movieId,movieItem,{mayNowAppearInUpcoming=false}={}
   }
 }
 async function renderUpcomingTab(o){
-  const allLib=Object.values(Store.lib('show')).filter(s=>!Store.isStopped('show',s.id));
-  if(!allLib.length){o.innerHTML=emptyState('You are not tracking any shows yet.','explore','Explore shows');return}
+  const P=Store.prog();
+  const allLib=Object.values(Store.lib('show')).filter(s=>{
+    if(Store.isStopped('show',s.id))return false;
+    const sum=P[s.id];
+    if(!sum)return true;
+    if(!sum.w)return false;
+    const pr=progressFromSummary(sum);
+    if(pr.complete)return false;
+    if(sum.x&&!sum.nx)return false;
+    return true;
+  });
+  if(!allLib.length){o.innerHTML=emptyState('No shows are being watched right now.','explore','Explore shows');return}
   const stubs=[...allLib].sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
   o.innerHTML='<div class="upcoming-list" data-list></div>';
   o.insertAdjacentHTML('beforeend',loadingHtml('Loading…'));
   const listEl=o.querySelector('[data-list]');
   const sorted=[];
+  const rowEls=new Map();
+  let drawn=0,shown=false;
   function insertSorted(item){
     let i=sorted.length;
     while(i>0&&sorted[i-1].ts>item.ts)i--;
     sorted.splice(i,0,item);
   }
   function redraw(){
-    listEl.innerHTML='';
-    let lastDate=null;
     const userTz=getUserTimeZone();
-    sorted.forEach(({show:s,ep,channel,ts,timed,tag})=>{
+    let lastDate=null;
+    const frag=document.createDocumentFragment();
+    const fresh=[];
+    sorted.forEach(it=>{
+      const {show:s,ep,channel,ts,timed,tag}=it;
       const key=dateKeyInTz(ts,userTz);
-      if(key!==lastDate){lastDate=key;listEl.appendChild(upcomingDatePill(key));}
-      listEl.appendChild(upcomingRow(s,ep,{channel,ts,timed,tag}));
+      if(key!==lastDate){lastDate=key;frag.appendChild(upcomingDatePill(key));}
+      let el=rowEls.get(ep.id);
+      if(!el){el=upcomingRow(s,ep,{channel,ts,timed,tag,lazy:true});rowEls.set(ep.id,el);fresh.push(el)}
+      frag.appendChild(el);
     });
+    listEl.innerHTML='';
+    listEl.appendChild(frag);
+    if(sorted.length)o.querySelector('.loading-row')?.remove();
+    fresh.forEach(el=>el.animate?.([{opacity:0},{opacity:1}],{duration:250,easing:'ease-out'}));
   }
+  let timer=0;
+  const schedule=()=>{if(timer)return;timer=setTimeout(()=>{timer=0;redraw()},250)};
+  const sinceKey=dateKeyInTz(Date.now()-864e5*2,getUserTimeZone());
   const fetchOne=async s=>{
-    const[eps,series]=await Promise.all([getEpisodes(s.id),Api.seriesExtended(s.id).catch(()=>null)]);
-    if(!eps.some(e=>Store.isWatched(e.id)))return[];
-    if(!eps.some(e=>e.seasonNumber>0&&!epFuture(e)))return[];
+    const sum=P[s.id];
+    // Step 1: light call only (series info incl. nextAired + season list) - no episode list.
+    const series=await Api.seriesExtended(s.id).catch(()=>null);
+    const na=series?.nextAired||'';
+    const hasNext=(na&&na>=sinceKey)||(sum&&sum.nx&&sum.nx>=sinceKey)||epCache.has(s.id);
+    if(!hasNext)return[];
+    // Step 2: only the newest season's episodes (full list only as a fallback).
+    let eps;
+    if(epCache.has(s.id))eps=epCache.get(s.id);
+    else{
+      const seasons=(series?.seasons||[]).filter(x=>x.type?.type==='official'&&x.number>0);
+      const n=Math.max(0,...seasons.map(x=>x.number));
+      eps=null;
+      if(n){
+        try{
+          const j=await Api._getRaw(`/series/${s.id}/episodes/default?season=${n}&page=0`);
+          const l=j.data?.episodes||[];
+          if(l.length&&!j.links?.next){l.forEach(e=>{if(e.seriesId==null)e.seriesId=s.id});eps=l}
+        }catch{}
+      }
+      if(!eps)eps=await getEpisodes(s.id);
+    }
+    if(sum&&!sum.w)return[];
+    if(!sum&&!eps.some(e=>Store.isWatched(e.id)))return[];
     const airtime=series?.airsTime||null;
     const srcTz=seriesSourceTz(series);
     const channel=series?.originalNetwork?.name||series?.latestNetwork?.name||null;
-    const nowTs=Date.now();
-    const todayKey=dateKeyInTz(nowTs,getUserTimeZone());
+    const todayKey=dateKeyInTz(Date.now(),getUserTimeZone());
     const lastNo={};
     eps.forEach(e=>{if(e.seasonNumber>0&&e.number>(lastNo[e.seasonNumber]||0))lastNo[e.seasonNumber]=e.number});
     const lastSeason=Math.max(0,...Object.keys(lastNo).map(Number));
@@ -3274,19 +3366,25 @@ async function renderUpcomingTab(o){
       if(e.number!==lastNo[e.seasonNumber])return false;
       return e.seasonNumber<lastSeason||(showEnded&&e.seasonNumber===lastSeason);
     };
-    return eps.filter(e=>e.aired&&e.seasonNumber>0).map(e=>{
+    return eps.filter(e=>e.aired&&e.seasonNumber>0&&e.aired>=sinceKey).map(e=>{
       const {ts,timed}=airInstant(e.aired,airtime,srcTz);
       const tag=e.number===1?'PREMIERE':(isSeasonFinale(e)?'FINALE':'');
       return{ep:e,channel,ts,timed,tag};
     }).filter(x=>dateKeyInTz(x.ts,getUserTimeZone())>=todayKey);
   };
+  // Stage 1: episode boxes (appear as soon as each show answers)
   await loadAllItems(stubs,fetchOne,({stub:s,data})=>{
     (data||[]).forEach(({ep,channel,ts,timed,tag})=>insertSorted({show:s,ep,channel,ts,timed,tag}));
-  });
+    if(data&&data.length)schedule();
+  },12);
+  clearTimeout(timer);timer=0;
   redraw();
-  if(!sorted.length)listEl.appendChild(noUpcomingCard('No upcoming episodes at the moment'));
   o.querySelector('.loading-row')?.remove();
-  [...listEl.children].forEach((c,i)=>c.animate?.([{opacity:0},{opacity:1}],{duration:400,delay:i*100,easing:'ease-out',fill:'backwards'}));
+  if(!sorted.length)listEl.appendChild(noUpcomingCard('No upcoming episodes at the moment'));
+  // Stage 2: translations, Stage 3: images
+  const els=[...rowEls.values()];
+  await Promise.race([Promise.allSettled(els.map(el=>el._translate())),sleep(1500)]);
+  els.forEach(el=>el._loadImg());
 }
 
 let moviesTabState='watchlist';
@@ -3418,7 +3516,8 @@ async function patchMovieInWatchlistPane(movieId,movieItem){
   if(insertBefore)grid.insertBefore(card,insertBefore);else grid.appendChild(card);
 }
 async function renderMovieUpcomingTab(o){
-  const allLib=Object.values(Store.lib('movie')).filter(m=>!Store.isMovieWatched(m.id));
+  const _yr=new Date().getFullYear();
+  const allLib=Object.values(Store.lib('movie')).filter(m=>!Store.isMovieWatched(m.id)&&!(Number(m.year)>1800&&Number(m.year)<_yr));
   if(!allLib.length){o.innerHTML=emptyState('You are not tracking any movies yet.','explore','Explore movies');return}
   const stubs=[...allLib].sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
   o.innerHTML='<div class="upcoming-list upcoming-movies" data-list></div>';
@@ -3431,7 +3530,7 @@ async function renderMovieUpcomingTab(o){
     if(!releaseDate||releaseDate<dateKeyInTz(Date.now(),getUserTimeZone()))return null;
     return{date:releaseDate};
   };
-  await loadAllItems(stubs,fetchOne,({stub:m,data})=>{if(data)found.push({movie:m,date:data.date})});
+  await loadAllItems(stubs,fetchOne,({stub:m,data})=>{if(data)found.push({movie:m,date:data.date})},12);
   o.querySelector('.loading-row')?.remove();
   if(!found.length){listEl.appendChild(noUpcomingCard('No upcoming movies at the moment'));return}
   found.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
@@ -3511,7 +3610,7 @@ function renderStats(o,opts){
       <div class="profile-banner" id="profile-banner" style="${ProfileImg.banner?`background-image:url('${ProfileImg.banner}')`:''}"></div>
       <div class="profile-id-row">
         <div class="profile-avatar-wrap">
-          <img class="profile-avatar" id="profile-avatar-img" src="${ProfileImg.avatar||placeholder()}" alt="" />
+          <img class="profile-avatar" id="profile-avatar-img" src="${ProfileImg.avatar||avatarPlaceholder()}" alt="" />
         </div>
         <div class="profile-id-info">
           <div class="profile-id-name" id="profile-name-display">${esc(profile.name)||'Your name'}</div>
@@ -3689,6 +3788,7 @@ function renderStats(o,opts){
   tzSel.addEventListener('change',()=>{Store.setProfile({timezone:tzSel.value});resetUpcomingPanes()});
   const editToggle=o.querySelector('#profile-edit-toggle');
   const editOverlay=o.querySelector('#profile-edit-overlay');
+  if(window.ResizeObserver){const ro=new ResizeObserver(()=>editOverlay.style.setProperty('--ovh',editOverlay.clientHeight+'px'));ro.observe(editOverlay)}
   const backdropEl=editOverlay.nextElementSibling;
   const OD=460,CD=420,STEP=40,EASE='cubic-bezier(.4,0,.2,1)';
   let sAnims=[],closing=false,surf=null,cached=null;
@@ -3782,7 +3882,12 @@ function renderStats(o,opts){
     stopAnims();
     if(surf){surf.el.remove();surf=null}
     editOverlay.scrollTop=0;
-    const g0=cached.g,home=editToggle.getBoundingClientRect();
+    const g0={...cached.g},home=editToggle.getBoundingClientRect();
+    { // refresh theme-dependent colours so the close animation matches the current theme
+      const f=geo();
+      g0.bBg=f.bBg;g0.oBg=f.oBg;g0.bBd=f.bBd;g0.oBd=f.oBd;g0.oRad=f.oRad;
+      g0.bFont={...g0.bFont,color:f.bFont.color};g0.tFont={...g0.tFont,color:f.tFont.color};
+    }
     const dx=home.left-g0.br.left,dy=home.top-g0.br.top;
     const sh=r=>({left:r.left+dx,top:r.top+dy,width:r.width,height:r.height});
     const g={...g0,br:sh(g0.br),bt:sh(g0.bt),pr:editOverlay.getBoundingClientRect(),tt:textRect(g0.title)};
@@ -3994,8 +4099,8 @@ function posterCard({id,name,image,sub,kind='series',showType=false}){
 }
 
 const LOAD_CONCURRENCY=6;
-async function loadAllItems(stubs,fetchItemData,onResult){
-  await mapLimit(stubs,LOAD_CONCURRENCY,async stub=>{
+async function loadAllItems(stubs,fetchItemData,onResult,limit){
+  await mapLimit(stubs,limit||LOAD_CONCURRENCY,async stub=>{
     let data=null;
     try{data=await fetchItemData(stub)}catch{data=null}
     onResult({stub,data});
@@ -4200,7 +4305,7 @@ function upcomingRow(s,ep,meta={}){
   const airtime=meta.timed?fmtLocalTime(meta.ts):null;
   const channel=meta.channel||null;
   el.innerHTML=`
-    <img class="feed-thumb" src="${imgUrl(ep.image||s.image,{thumb:true})}" alt="" />
+    <img class="feed-thumb" ${meta.lazy?`src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="${imgUrl(ep.image||s.image,{thumb:true})}"`:`src="${imgUrl(ep.image||s.image,{thumb:true})}"`} alt="" />
     <div class="feed-content">
       <div class="feed-body">
         <div class="feed-meta-row">
@@ -4242,14 +4347,21 @@ function upcomingRow(s,ep,meta={}){
   const pill=el.querySelector('.upcoming-show-pill');
   pill.dataset.full=s.name||'';
   setUpcomingPillText(pill);
-  if(needsTranslation(s.name)){
-    translateToEnglish(s.name).then(({text,sourceLang})=>{
-      if(sourceLang&&sourceLang.startsWith('en'))return;
-      if(!text||text.trim()===s.name.trim())return;
-      pill.dataset.full=text;setUpcomingPillText(pill);
-    }).catch(()=>{});
-  }
-  wireTitleTranslate(el,titleId,ep.name);
+  const doTranslate=()=>{
+    const ps=[];
+    if(needsTranslation(s.name)){
+      ps.push(translateToEnglish(s.name).then(({text,sourceLang})=>{
+        if(sourceLang&&sourceLang.startsWith('en'))return;
+        if(!text||text.trim()===s.name.trim())return;
+        pill.dataset.full=text;setUpcomingPillText(pill);
+      }).catch(()=>{}));
+    }
+    wireTitleTranslate(el,titleId,ep.name);
+    return Promise.all(ps);
+  };
+  el._translate=()=>{if(el._trDone)return Promise.resolve();el._trDone=1;return doTranslate()};
+  el._loadImg=()=>{const im=el.querySelector('img[data-src]');if(im){im.src=im.dataset.src;im.removeAttribute('data-src')}};
+  if(!meta.lazy)el._translate();
   el.setAttribute('role','button');el.tabIndex=0;
   el.addEventListener('click',()=>nav('show',{id:s.id}));
   return el;
@@ -4684,7 +4796,7 @@ async function renderMovie(o,{id}){
   }
 }
 
-document.querySelectorAll('.nav-item[data-route]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.route!==currentRoute)nav(b.dataset.route)}));
+document.querySelectorAll('.nav-item[data-route]').forEach(b=>b.addEventListener('click',()=>{if(window._navJustDragged)return;nav(b.dataset.route)}));   // tapping the current tab reloads it
 const NavBar=(()=>{
   /* Glass style only: the bar shrinks to 84% (16% smaller) while a list, the settings sheet or a show/movie page is open,
      or after scrolling down; it grows again on scroll up, a tap, or when the mouse is within 50px of it.
@@ -4723,6 +4835,73 @@ const NavBar=(()=>{
   const tap=()=>{if(!tapBig){tapBig=true;evaluate()}};
   bar.addEventListener('pointerdown',tap);
   bar.addEventListener('focusin',tap);
+  /* press feedback: 5% bigger and 10% brighter while a finger/mouse is down; touch can also hold and slide across the tabs */
+  let press=null,pressAt=0;
+  const navItems=()=>[...bar.querySelectorAll('.nav-item[data-route]')];
+  const scaleOf=()=>{const r=bar.getBoundingClientRect();return bar.offsetWidth?r.width/bar.offsetWidth:1};
+  function itemAt(x){
+    const its=navItems();let best=its[0],bd=1e9;
+    its.forEach(it=>{const r=it.getBoundingClientRect(),d=x<r.left?r.left-x:x>r.right?x-r.right:0,c=Math.abs(x-(r.left+r.right)/2);if(d<bd||(d===bd&&c<Math.abs(x-(best.getBoundingClientRect().left+best.getBoundingClientRect().right)/2))){best=it;bd=d}});
+    return best;
+  }
+  let geo=null,lastHit=null;
+  function dragGeo(){
+    const its=navItems(),br=bar.getBoundingClientRect();
+    geo={its,pill:document.querySelector('.nav-pill'),br,k:scaleOf(),w:its[0].offsetWidth,min:its[0].offsetLeft,max:its[its.length-1].offsetLeft,centers:its.map(it=>{const r=it.getBoundingClientRect();return(r.left+r.right)/2})};
+    lastHit=null;
+  }
+  function dragNow(x){
+    if(!geo||!geo.pill)return;
+    let left=(x-geo.br.left)/geo.k-geo.w/2;
+    left=Math.max(geo.min,Math.min(geo.max,left));
+    geo.pill.classList.add('no-anim');geo.pill.style.width=geo.w+'px';geo.pill.style.transform=`translateX(${left}px)`;
+    let bi=0,bd=1e9;geo.centers.forEach((c,i)=>{const d=Math.abs(x-c);if(d<bd){bd=d;bi=i}});
+    if(bi!==lastHit){lastHit=bi;geo.its.forEach((it,i)=>it.classList.toggle('peek',i===bi))}
+  }
+  function dragTo(x){dragNow(x)}
+  function startDrag(){
+    if(!press||press.drag)return;press.drag=true;window._navDrag=true;bar.classList.add('dragging');
+    try{bar.setPointerCapture(press.id)}catch{}
+    dragGeo();dragTo(press.x);
+  }
+  function endPress(e,cancelled){
+    if(!press||(e&&e.pointerId!==press.id))return;
+    clearTimeout(press.timer);
+    const p=press;press=null;
+    const done=()=>bar.classList.remove('pressing');
+    const wait=Math.max(0,180-(performance.now()-pressAt));
+    if(wait)setTimeout(done,wait);else done();
+    if(p.drag){
+      window._navDrag=false;bar.classList.remove('dragging');geo=null;
+      const its=navItems();its.forEach(it=>it.classList.remove('peek'));
+      const pill=document.querySelector('.nav-pill');if(pill){pill.classList.remove('no-anim')}
+      window._navJustDragged=true;setTimeout(()=>{window._navJustDragged=false},400);
+      if(!cancelled){
+        const target=itemAt(e.clientX);
+        if(target&&target.dataset.route&&target.dataset.route!==currentRoute)nav(target.dataset.route);
+      }
+      updateNavPill(false);
+    }
+  }
+  bar.addEventListener('pointerdown',e=>{
+    if(!isGlass()||(e.pointerType==='mouse'&&e.button!==0))return;
+    if(!e.target.closest('.nav-item'))return;
+    press={id:e.pointerId,x:e.clientX,startX:e.clientX,drag:false,touch:e.pointerType!=='mouse',timer:0};
+    pressAt=performance.now();bar.classList.add('pressing');
+    if(press.touch)press.timer=setTimeout(startDrag,220);
+  });
+  bar.addEventListener('pointermove',e=>{
+    if(!press||e.pointerId!==press.id||!press.touch)return;
+    press.x=e.clientX;
+    if(!press.drag&&Math.abs(e.clientX-press.startX)>10)startDrag();
+    if(press.drag){
+      const ev=(e.getCoalescedEvents&&e.getCoalescedEvents())||[];
+      dragTo(ev.length?ev[ev.length-1].clientX:e.clientX);
+    }
+  });
+  bar.addEventListener('pointerup',e=>endPress(e,false));
+  bar.addEventListener('pointercancel',e=>endPress(e,true));
+  bar.addEventListener('lostpointercapture',e=>{if(press&&!press.drag)endPress(e,true)});
   return{
     onRoute(r){route=r;scrolled=false;tapBig=false;tops=new WeakMap();evaluate()}
   };
