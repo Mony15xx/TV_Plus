@@ -762,7 +762,7 @@ html:has(.profile-edit-overlay.open),html:has(.profile-edit-overlay.open) body,h
 .profile-edit-overlay{overscroll-behavior-y:contain}
 /* profile: no gray edge tint above the banner on phones */
 @media(max-width:600px){html,body{background:var(--bg)}}
-.profile-route::before{content:'';position:fixed;top:0;left:0;right:0;height:1px;pointer-events:none;z-index:1;background:rgba(0,0,0,.01)}
+/* v155: removed the 1px fixed top element - iOS Safari 26 treated it as a fixed header and drew a blur/tint bar under the status bar */
 /* upcoming: mark-watched button replaces "Aired" */
 .upcoming-check{margin:0}
 
@@ -813,7 +813,7 @@ html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outl
 html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outlined select{color:#05070c;-webkit-text-fill-color:#05070c;opacity:1}
 
 /* phones: the glass nav bar lines up with the page margins (20px); wide screens keep the original width */
-@media (max-width:559px){html[data-style="glass"] #bottomnav{width:calc(100% - 16px)}}
+@media (max-width:559px){html[data-style="glass"] #bottomnav{width:calc(100% - 60px)}}
 /* glass rims on large surfaces: light at the top/bottom edge, easing to the darker side tone over ~80px */
 html[data-style="glass"]{--rim-L:rgba(255,255,255,.42);--rim-D:rgba(0,0,0,.28);--rim-soft-L:rgba(255,255,255,.2)}
 html[data-style="glass"][data-theme="light"]{--rim-L:rgba(255,255,255,.95);--rim-D:rgba(40,50,70,.2);--rim-soft-L:rgba(255,255,255,.6)}
@@ -1134,7 +1134,7 @@ async function downloadBackup(){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-const APP_VERSION='152';
+const APP_VERSION='155';
 function applyStyle(st){
   const r=document.documentElement;
   r.dataset.style=st==='glass'?'glass':'flat';
