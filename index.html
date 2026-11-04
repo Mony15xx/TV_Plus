@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" data-style="flat">
+<html lang="en" data-style="glass">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>TV Plus</title>
 <meta name="theme-color" content="#000000">
-<script>try{var _p=JSON.parse(localStorage.getItem('nx.profile')||'{}'),_r=document.documentElement;if(_p.theme==='light')_r.dataset.theme='light';if(_p.style==='glass')_r.dataset.style='glass';}catch(e){}</script>
+<script>try{var _p=JSON.parse(localStorage.getItem('nx.profile')||'{}'),_r=document.documentElement;if(_p.theme==='light')_r.dataset.theme='light';}catch(e){}</script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -19,11 +19,10 @@ const appIcon=px=>new Promise(res=>{const im=new Image();im.onload=()=>{const c=
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&family=Quattrocento+Sans:wght@700&display=swap" rel="stylesheet">
-<style>
-:root{
+<style>:root{
   --bg:#000000; --bg-card:#111111; --bg-elev:#1a1a1a; --border:#3a3a3a;
   --text:#eef0f3; --text-dim:#8b93a3; --heading:#c7cddb;
-  --accent:#ffd400; --accent-dark:#4a3d00;
+  --accent:#ffd400; --accent-dark:#4a3d00; --gut:20px;
   --complete:#a855f7;
   --progress:var(--accent);
   --amber:#ffc247; --amber-dark:#4a3512;
@@ -42,11 +41,10 @@ a{color:var(--accent);text-decoration:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 #shell{display:flex;flex-direction:column;height:100vh;height:100dvh;align-items:center;gap:0;overflow-x:hidden;width:100%}
 #main{overflow-x:clip;display:flex;flex-direction:column;min-height:0;min-width:0;flex:1;order:1;width:100%;max-width:var(--page-width);background:var(--bg);margin:0}
-.explore-search{position:sticky;top:0;z-index:5;display:flex;align-items:center;min-height:56px;padding:10px 20px;background:var(--bg);border-bottom:1px solid var(--border)}
+.explore-search{position:sticky;top:0;z-index:5;display:flex;align-items:center;min-height:56px;padding:10px var(--gut);background:var(--bg);border-bottom:1px solid var(--border)}
 .topbar-search{flex:1;min-width:160px;max-width:none;display:flex;align-items:center;position:relative}
 .topbar-search input{flex:1;min-width:0;padding-right:42px}
 .search-btn{position:absolute;right:4px;top:50%;transform:translateY(-50%);flex-shrink:0;width:32px;height:32px;border-radius:50%;border:none;background:transparent;color:var(--text-dim);display:flex;align-items:center;justify-content:center;cursor:pointer}
-
 .search-btn:hover{border-color:var(--accent);color:var(--accent)}
 .search-btn svg{width:16px;height:16px}
 #bottomnav{order:2;flex-shrink:0;display:flex;align-items:stretch;justify-content:center;gap:7.25%;background:#000;border-top:1px solid var(--border);padding:6px 0 calc(6px + env(safe-area-inset-bottom));width:100%;max-width:var(--page-width);min-height:52px;margin:0}
@@ -56,20 +54,21 @@ a{color:var(--accent);text-decoration:none}
 .nav-icon{display:flex;align-items:center;justify-content:center;width:23px;height:23px;flex-shrink:0;color:inherit}
 .nav-icon svg{width:100%;height:100%;display:block;stroke:currentColor}
 .nav-label{font-size:10px;line-height:1.1;font-weight:600}
-.brand{display:flex;align-items:center;gap:10px;font-family:'Poppins',sans-serif;font-weight:700;font-size:19px;flex-shrink:0}
-.brand-mark{width:32px;height:32px;border-radius:9px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#2b1200;font-size:21px;font-family:'Poppins',sans-serif;font-weight:700;flex-shrink:0}
 input[type=text]{width:100%;background:var(--bg-elev);border:1px solid var(--border);border-radius:999px;padding:10px 16px;font-size:14px}
 input[type=text]:focus{border-color:var(--accent)}
 input[type=text]:focus,input[type=text]:focus-visible{outline:none}
 .topbar-search input:focus,.topbar-search input:focus-visible{outline:none}
-#outlet{flex:1;overflow-y:auto;overflow-x:hidden;padding:28px 20px;scrollbar-width:none;-ms-overflow-style:none}
+#outlet{flex:1;overflow-y:auto;overflow-x:hidden;padding:28px var(--gut);scrollbar-width:none;-ms-overflow-style:none}
 #outlet::-webkit-scrollbar{display:none}
 .sub{color:var(--text-dim);margin:0 0 24px;font-size:14px}
 .loading-row{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;pointer-events:none;margin:0;padding:0}
 #bottomnav{position:relative;z-index:85}
-
-.loader{--color-1:#6B5900;--color-2:#ffd400;--color-3:transparent;--size:1px;--ring:calc(3 * var(--size));width:calc(48 * var(--size));height:calc(48 * var(--size));border-radius:50%;display:inline-block;position:relative;background:linear-gradient(0deg,var(--color-1) 33%,var(--color-2) 100%);box-sizing:border-box;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - var(--ring) - .5px),#000 calc(100% - var(--ring)));mask:radial-gradient(farthest-side,transparent calc(100% - var(--ring) - .5px),#000 calc(100% - var(--ring)));animation:rotation 1s linear infinite}
-.loader::after{content:'';box-sizing:border-box;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:calc(42 * var(--size));height:calc(42 * var(--size));border-radius:50%;background:var(--color-3)}
+.spinner{width:46px;height:46px;display:block;animation:spin-rot 1.6s linear infinite;filter:drop-shadow(0 0 6px rgba(255,212,0,.25))}
+.spinner circle{fill:none;stroke-width:4}
+.spinner .sp-track{stroke:var(--accent);opacity:.14}
+.spinner .sp-arc{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:1 130;stroke-dashoffset:0;transform-origin:center;animation:spin-dash 1.6s cubic-bezier(.45,.05,.35,.95) infinite}
+@keyframes spin-rot{to{transform:rotate(360deg)}}
+@keyframes spin-dash{0%{stroke-dasharray:2 130;stroke-dashoffset:0}50%{stroke-dasharray:80 130;stroke-dashoffset:-22}100%{stroke-dasharray:2 130;stroke-dashoffset:-126}}
 @keyframes rotation{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:18px;max-width:560px}
 .card.wide{max-width:none}
@@ -126,7 +125,6 @@ code{background:var(--bg-elev);padding:1px 6px;border-radius:4px;font-family:'Je
 .pill.future{color:var(--amber);border-color:var(--amber-dark)}
 .section-h{font-family:'Poppins',sans-serif;font-weight:600;font-size:18px;color:var(--heading);margin:22px 0 12px}
 .section-h.profile-title{color:#fff;font-size:22px}
-.section-h.profile-title.sub-page-title{font-size:23px}
 .cat-box{display:inline-block;width:auto;background:#767676;border:none;border-radius:999px;padding:6px 16px;text-align:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;line-height:1;letter-spacing:.04em;text-transform:uppercase;color:#ffffff;margin:0 auto 14px;box-shadow:0 2px 6px rgba(var(--shc),.35)}
 .cat-box-wrap{text-align:center}
 .cat-section{margin-bottom:14px}
@@ -140,7 +138,7 @@ code{background:var(--bg-elev);padding:1px 6px;border-radius:4px;font-family:'Je
 .lib-popup button:hover{border-color:var(--text-dim);background:var(--bg)}
 .lib-popup .lib-pop-remove{color:var(--red)}
 .lib-popup .lib-pop-remove:hover{border-color:var(--red);background:rgba(250,50,10,.1)}
-.profile-hero{position:relative;margin:-28px -20px 20px;overflow:visible;--hh:252px;height:var(--hh)}
+.profile-hero{position:relative;margin:-28px calc(-1 * var(--gut)) 20px;overflow:visible;--hh:252px;height:var(--hh)}
 .profile-banner{position:absolute;left:0;right:0;top:0;height:calc(var(--hh) + 72px);background:#1f232e center/cover no-repeat}
 .profile-route .stat-card2{position:relative;z-index:1}
 html:not([data-theme="light"]) .profile-banner::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.15);pointer-events:none}
@@ -170,13 +168,12 @@ html[data-theme="light"] .modal-card{background:#fafbfd}
 .modal-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:17px;color:#fff;margin-bottom:8px}
 .modal-message{font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:18px}
 .modal-actions{display:flex;justify-content:flex-end;gap:10px}
-
 .detail-view{padding:0 0 60px}
 #outlet.detail-view{padding-top:0;background:#202020}
-.detail-hero-wrap{position:relative;margin:0 -20px 8px;overflow:visible}
+.detail-hero-wrap{position:relative;margin:0 calc(-1 * var(--gut)) 8px;overflow:visible}
 .detail-banner{position:absolute;inset:0;background-size:cover;background-position:center 20%;z-index:0;filter:brightness(.85)}
 .detail-hero-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0) 0%,rgba(0,0,0,.78) 92%);z-index:1;pointer-events:none}
-.detail-hero-inner{position:relative;z-index:3;padding:28px 20px}
+.detail-hero-inner{position:relative;z-index:3;padding:28px var(--gut)}
 .detail-progress-wrap{padding:14px 0 0;position:relative;z-index:2;max-width:none;width:100%}
 .detail-progress{height:10px;background:var(--border);border-radius:0;overflow:hidden;width:100%}
 .detail-progress-fill{height:100%;background:var(--progress);transform-origin:left center;animation:nx-bar-grow 1s cubic-bezier(.22,1,.36,1) .15s both;transition:width .7s cubic-bezier(.22,1,.36,1),background-color .4s ease}
@@ -199,10 +196,6 @@ html,body,body *{touch-action:pan-x pan-y}
 .overview-text{color:var(--text)!important;margin:0 0 14px}
 .see-more-btn{display:inline-block;margin:0 0 0 6px;background:#164563;color:#fff;border:none;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:800;letter-spacing:.07em;cursor:pointer}
 .see-more-btn:hover{background:#1d5a82}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px}
-.stat-card{background:var(--bg-elev);border:1px solid var(--border);border-radius:12px;padding:14px}
-.stat-num{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--accent)}
-.stat-label{font-size:12px;color:var(--text-dim);margin-top:4px}
 .stats-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:24px}
 @media(min-width:680px){.stats-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .stats-grid{--sc:1}
@@ -305,7 +298,7 @@ html[data-style="glass"] .btn-green.on{background:color-mix(in srgb,var(--green)
 @media(max-width:499.98px){.upcoming-feed-item .feed-thumb{width:calc(188px * .7)}.upcoming-feed-item .upcoming-new{font-size:calc(10px * .75);padding:calc(2px * .75) calc(8px * .75);border-radius:calc(6px * .75)}.upcoming-feed-item .ep-meta{font-size:calc(19px * .7)}.upcoming-feed-item .feed-title{font-size:calc(15px * .7)}}
 html[data-theme="light"] #outlet.shows-route.upcoming-route,html[data-theme="light"] #outlet.shows-route.upcoming-route .shows-tabs{background:#e3e7ee}
 html,body{transition:background-color .35s ease}
-.shows-tabs{display:flex;border-bottom:1px solid var(--border);margin:0 -20px 20px;padding:0;position:sticky;top:0;z-index:5;background:var(--bg)}
+.shows-tabs{display:flex;border-bottom:1px solid var(--border);margin:0 calc(-1 * var(--gut)) 20px;padding:0;position:sticky;top:0;z-index:5;background:var(--bg)}
 .shows-tabs.upcoming-active{margin-bottom:0}
 .shows-tab{flex:1;text-align:center;padding:12px 20px 11px;font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--text-dim);cursor:pointer;background:none;border:none;border-bottom:3px solid transparent;transition:color .3s ease}
 .shows-tab.active{color:var(--text)}
@@ -316,14 +309,7 @@ html,body{transition:background-color .35s ease}
 .upcoming-date-pill-wrap:first-child{margin-top:2px}
 .upcoming-date-pill{display:inline-block;width:auto;background:#767676;border:none;border-radius:999px;padding:6px 16px;font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;line-height:1;letter-spacing:.04em;text-transform:uppercase;color:#ffffff;box-shadow:0 2px 6px rgba(var(--shc),.35)}
 .upcoming-date-pill.today{background:var(--accent);color:#2b1200}
-.upcoming-list{background:#232323;border:none;box-shadow:none;border-radius:0;margin:0 -20px;padding:20px;flex:1}
-.upcoming-row{display:flex;align-items:center;gap:12px;background:#000;border:none;border-radius:14px;padding:10px;margin-bottom:10px;cursor:pointer}
-.upcoming-row:hover{background:#0a0a0a}
-.upcoming-thumb{width:64px;height:64px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--bg-elev)}
-.upcoming-body{flex:1;min-width:0}
-.upcoming-show{font-size:11px;font-weight:700;color:var(--text-dim);border:1px solid var(--border);border-radius:999px;padding:2px 8px;display:inline-block;margin-bottom:4px}
-.upcoming-se{font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:var(--text)}
-.upcoming-title{font-size:13px;color:var(--text-dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.upcoming-list{background:#232323;border:none;box-shadow:none;border-radius:0;margin:0 calc(-1 * var(--gut));padding:var(--gut);flex:1}
 .upcoming-tag.premiere{background:#1f9d6b;color:#fff}
 .upcoming-tag.finale{background:#e5392e;color:#fff}
 .upcoming-new{display:inline-block;background:var(--accent);color:#2b1200;font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px}
@@ -347,13 +333,6 @@ html,body{transition:background-color .35s ease}
 .nav-item.active .nav-icon{transform:none}
 .nav-pill{display:none}
 .nav-label{transition:opacity .2s ease}
-.upcoming-movie-row{display:flex;align-items:stretch;background:#000;border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden;height:170px;cursor:pointer}
-.upcoming-movie-thumb{width:110px;height:calc(100% - 20px);margin:10px 0 10px 10px;border-radius:10px;aspect-ratio:210/297;object-fit:cover;flex-shrink:0;background:var(--bg-elev)}
-.upcoming-movie-content{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;flex:1;min-width:0;padding:14px 16px;overflow:hidden;background:#000}
-.upcoming-movie-content::before{content:'';position:absolute;inset:0;background-image:var(--upcoming-bg,none);background-size:cover;background-position:center;opacity:.5;z-index:0}
-.upcoming-movie-content::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.6) 40%,rgba(0,0,0,.2) 100%);z-index:0}
-.upcoming-movie-body{position:relative;z-index:1;flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-.upcoming-movie-title{font-family:'Poppins',sans-serif;font-weight:800;font-size:24px;line-height:1.2;color:#ffffff;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .upcoming-check{width:30px;height:30px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--text-dim)}
 .hscroll-section{margin:0 0 26px}
 .hscroll-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;cursor:pointer;background:none;border:none;padding:0;width:100%;text-align:left;color:inherit}
@@ -362,13 +341,13 @@ html,body{transition:background-color .35s ease}
 .hscroll-heart{color:var(--red);font-size:21px;line-height:1;flex-shrink:0}
 .hscroll-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:22px;color:#fff;flex:1;min-width:0}
 .hscroll-chevron{width:18px;height:18px;color:var(--text-dim);flex-shrink:0}
-.hscroll-track{display:flex;gap:4px;overflow-x:auto;margin:0 -20px;padding:0 20px 4px;scrollbar-width:none;-ms-overflow-style:none}
+.hscroll-track{display:flex;gap:4px;overflow-x:auto;margin:0 calc(-1 * var(--gut));padding:0 var(--gut) 4px;scrollbar-width:none;-ms-overflow-style:none}
 .hscroll-track::-webkit-scrollbar{display:none}
 .hscroll-item{flex:0 0 auto;width:118px;cursor:pointer}
 .hscroll-item img{width:118px;height:177px;object-fit:cover;border-radius:10px;background:var(--bg-elev);display:block}
 .hscroll-empty{color:var(--text-dim);font-size:13px}
 .search-results-list{display:flex;flex-direction:column}
-.search-row{display:flex;align-items:center;gap:14px;padding:7px 20px;margin:0;border-bottom:1px solid var(--border);cursor:pointer}
+.search-row{display:flex;align-items:center;gap:14px;padding:7px var(--gut);margin:0;border-bottom:1px solid var(--border);cursor:pointer}
 .search-row:last-child{border-bottom:none}
 .search-row-thumb{width:45px;height:64px;border-radius:6px;object-fit:cover;flex-shrink:0;background:var(--bg-elev)}
 .search-row-body{flex:1;min-width:0}
@@ -396,10 +375,6 @@ html,body{transition:background-color .35s ease}
   .explore-search{padding:8px 12px}
   .card{padding:14px}
   .hero-title-row h2{font-size:19px}
-  .upcoming-movie-row{height:140px}
-  .upcoming-movie-thumb{width:88px;margin:8px 0 8px 8px}
-  .upcoming-movie-title{font-size:18px}
-  .upcoming-movie-content{padding:10px 12px}
   .modal-card{padding:16px}
   .season-toggle{padding:10px 12px}
 }
@@ -409,7 +384,6 @@ html,body{transition:background-color .35s ease}
 .profile-edit-overlay select{width:100%;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:9px 10px;font-size:12px;font-family:inherit}
 .profile-edit-overlay select:focus{outline:none;border-color:var(--accent)}
 .profile-edit-overlay select:disabled{opacity:.5}
-
 .profile-edit-overlay .setting-cat{font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--cat-color);padding-bottom:6px;border-bottom:1px solid var(--border);margin-top:8px}
 .profile-edit-overlay .setting-cat:first-child{margin-top:0}
 .profile-edit-overlay .setting-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -434,14 +408,12 @@ html,body{transition:background-color .35s ease}
 @media(max-width:699.98px){
   .profile-hero{--hh:151px}
 }
-
 :root{--btn-gray:#2a2a2a;--cat-color:#c3cad8}
 .profile-edit-overlay label.field-btn,
 .profile-edit-overlay .btn:not(.btn-accent):not(.btn-connect):not(.btn-disconnect){background:var(--btn-gray);border:1px solid var(--border)}
 .no-upcoming-text{font-size:20px;padding:0 16px}
 @media(max-width:480px){.no-upcoming-text{font-size:15px}}
 .cast-toggle{display:block;margin:-8px 0 20px}
-
 .profile-edit-overlay .setting-pair.seg{gap:2px}
 .profile-edit-overlay label.field-btn{padding:10px 12px}
 .profile-edit-overlay label.fb-left{border-radius:999px 0 0 999px}
@@ -465,9 +437,6 @@ html,body{transition:background-color .35s ease}
 .profile-route .btn,.profile-route .profile-edit-btn,.profile-route label.field-btn,.profile-route .hscroll-item,.profile-route .hscroll-head,.profile-route .see-more-btn{transition:transform .15s cubic-bezier(.3,.7,.4,1),background-color .2s ease,border-color .2s ease,color .2s ease,filter .2s ease}
 .profile-route .btn:active,.profile-route .profile-edit-btn:active,.profile-route label.field-btn:active{transform:scale(.94)}
 .profile-route .btn:hover,.profile-route .profile-edit-btn:hover,.profile-route label.field-btn:hover,.profile-route .back:hover{transform:translateY(-1px)}
-.seg-toggle button{white-space:nowrap}
-.profile-route .seg-toggle button{transition:transform .15s cubic-bezier(.3,.7,.4,1),background-color .25s ease,color .25s ease,box-shadow .25s ease}
-.profile-route .seg-toggle button:active{transform:scale(.94)}
 .profile-route .stat-card2{transition:transform .25s cubic-bezier(.3,.9,.4,1),box-shadow .25s ease,border-color .25s ease}
 @media(hover:hover) and (pointer:fine){
 .profile-route .stat-card2:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,255,255,.07);border-color:var(--text-dim)}
@@ -475,7 +444,6 @@ html[data-theme="light"] .profile-route .stat-card2:hover{box-shadow:0 10px 28px
 }
 .profile-route .hscroll-item:active{transform:scale(.95)}
 .profile-route .hscroll-head:active{transform:scale(.985)}
-
 .profile-edit-overlay .overlay-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:2px}
 .profile-edit-overlay .overlay-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:24px;line-height:1.2;color:var(--text)}
 .profile-edit-overlay .overlay-head + .setting-cat{margin-top:4px}
@@ -528,7 +496,6 @@ html[data-theme="light"] .profile-route .stat-card2:hover{box-shadow:0 10px 28px
 .profile-edit-overlay:not(.open){transition:opacity .16s ease,transform .2s cubic-bezier(.4,0,.6,1),visibility 0s linear .2s}
 .settings-backdrop{transition:opacity .2s ease,backdrop-filter .2s ease,-webkit-backdrop-filter .2s ease,visibility 0s linear .2s}
 .profile-edit-overlay.open + .settings-backdrop{transition:opacity .3s ease,backdrop-filter .3s ease,-webkit-backdrop-filter .3s ease,visibility 0s linear 0s}
-
 html[data-style="glass"] .nav-pill{display:block;position:absolute;top:6px;bottom:6px;left:0;width:0;border-radius:28px;z-index:0;pointer-events:none;
   background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(10px) saturate(1.6);backdrop-filter:blur(10px) saturate(1.6);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(255,255,255,.3),inset 1px 0 0 rgba(0,0,0,.22),inset -1px 0 0 rgba(0,0,0,.22),0 2px 8px rgba(var(--shc),.2);
@@ -576,7 +543,7 @@ html[data-style="glass"] #outlet :is(.stat-card2,.profile-list-pair .hscroll-sec
 html[data-style="glass"] #outlet .stat-card2:hover::after{box-shadow:var(--rim)}
 html[data-style="glass"] #outlet .stat-card2:hover{box-shadow:0 8px 28px rgba(255,255,255,.08)}
 }
-html[data-style="glass"] .profile-edit-overlay :is(.btn,.back,.profile-edit-btn,label.field-btn,.seg-toggle,.seg-toggle button,.thumb,.slider,select,input),html[data-style="glass"] .list-overlay :is(.btn,.back){-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html[data-style="glass"] .list-overlay :is(.btn,.back){-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 html[data-style="glass"] .profile-edit-overlay.bglass,html[data-style="glass"] .sheet-surf.bglass{border-color:transparent;box-shadow:var(--rim)}
 html[data-style="glass"] .list-overlay.bglass,html[data-style="glass"] #bottomnav.bglass{border-color:transparent;box-shadow:none}
 html[data-style="glass"] .profile-list-pair .hscroll-section,html[data-style="glass"] .stat-card2{position:relative}
@@ -615,35 +582,24 @@ html[data-style="glass"] .nav-pill{transition:transform .4s cubic-bezier(.3,1.25
 #bottomnav .nav-icon{transition:transform .28s cubic-bezier(.3,1.4,.5,1),width .35s ease,height .35s ease}
 #bottomnav .nav-label{max-height:14px;transition:opacity .2s ease,max-height .35s ease}
 html[data-style="glass"][data-theme="light"] #bottomnav.bglass{background:rgba(255,255,255,.45)}
-html[data-style="glass"] .switch .slider,html[data-style="glass"] .seg-toggle{position:absolute;isolation:isolate;border:none;background:rgba(255,255,255,.08);
+html[data-style="glass"] .switch .slider{position:absolute;isolation:isolate;border:none;background:rgba(255,255,255,.08);
   -webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:0 3px 10px rgba(var(--shc),.18)}
-html[data-style="glass"] .seg-toggle{position:relative}
-html[data-style="glass"] .switch .slider::before,html[data-style="glass"] .seg-toggle::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:0;
+html[data-style="glass"] .switch .slider::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:0;
   background:linear-gradient(180deg,rgba(255,255,255,.42) 0%,rgba(255,255,255,.07) 24%,rgba(0,0,0,.25) 50%,rgba(255,255,255,.07) 76%,rgba(255,255,255,.3) 100%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
 html[data-style="glass"] .switch input:checked + .slider{background:color-mix(in srgb,var(--accent) 80%,transparent);border:none}
-html[data-style="glass"] .seg-toggle button.active,html[data-style="glass"] .switch .thumb{background:rgba(255,255,255,.22);color:#fff;-webkit-backdrop-filter:blur(10px) saturate(1.6);backdrop-filter:blur(10px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(255,255,255,.3),inset 1px 0 0 rgba(0,0,0,.22),inset -1px 0 0 rgba(0,0,0,.22),0 2px 6px rgba(var(--shc),.2)}
+html[data-style="glass"] .switch .thumb{background:rgba(255,255,255,.22);color:#fff;-webkit-backdrop-filter:blur(10px) saturate(1.6);backdrop-filter:blur(10px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(255,255,255,.3),inset 1px 0 0 rgba(0,0,0,.22),inset -1px 0 0 rgba(0,0,0,.22),0 2px 6px rgba(var(--shc),.2)}
 html[data-style="glass"] .switch input:checked + .slider .thumb{background:rgba(255,255,255,.4);color:#2b1200}
-html[data-style="glass"][data-theme="light"] .seg-toggle button.active,html[data-style="glass"][data-theme="light"] .switch .thumb{background:rgba(255,255,255,.75);color:#161b27;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(255,255,255,.7),inset 1px 0 0 rgba(40,50,70,.16),inset -1px 0 0 rgba(40,50,70,.16),0 2px 6px rgba(var(--shc),.15)}
+html[data-style="glass"][data-theme="light"] .switch .thumb{background:rgba(255,255,255,.75);color:#161b27;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(255,255,255,.7),inset 1px 0 0 rgba(40,50,70,.16),inset -1px 0 0 rgba(40,50,70,.16),0 2px 6px rgba(var(--shc),.15)}
 html[data-style="glass"][data-theme="light"] .switch input:checked + .slider .thumb{background:rgba(255,255,255,.6);color:#2b1200}
-html[data-style="glass"] .seg-toggle button{position:relative;z-index:1}
-html[data-style="glass"][data-theme="light"] .switch .slider,html[data-style="glass"][data-theme="light"] .seg-toggle{background:rgba(255,255,255,.5);box-shadow:0 3px 10px rgba(var(--shc),.12)}
-html[data-style="glass"][data-theme="light"] .switch .slider::before,html[data-style="glass"][data-theme="light"] .seg-toggle::before{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,.3) 24%,rgba(40,50,70,.2) 50%,rgba(255,255,255,.3) 76%,rgba(255,255,255,.8))}
+html[data-style="glass"][data-theme="light"] .switch .slider{background:rgba(255,255,255,.5);box-shadow:0 3px 10px rgba(var(--shc),.12)}
+html[data-style="glass"][data-theme="light"] .switch .slider::before{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,.3) 24%,rgba(40,50,70,.2) 50%,rgba(255,255,255,.3) 76%,rgba(255,255,255,.8))}
 html[data-style="glass"][data-theme="light"] .switch input:checked + .slider{background:color-mix(in srgb,var(--accent) 80%,transparent)}
-.seg-toggle{display:inline-flex;background:var(--bg-elev);border:1px solid var(--border);border-radius:999px;padding:3px;gap:2px}
-.seg-toggle button{border:none;background:none;border-radius:999px;padding:6px 18px;font-size:12px;font-weight:700;color:var(--text-dim);cursor:pointer;transition:background-color .2s ease,color .2s ease}
-.seg-toggle button.active{background:var(--accent);color:#2b1200}
-.profile-edit-overlay .seg-toggle{display:flex;width:100%;height:40px;padding:3px}
-.profile-edit-overlay .seg-toggle button{flex:1;padding:0}
 .settings-version{text-align:center;font-size:11px;color:var(--text-dim);padding:6px 0 2px}
-html.style-anim *:not(.switch):not(.switch *):not(.slide):not(.slide *):not(#bottomnav):not(#bottomnav *),html.style-anim *::before,html.style-anim *::after{transition:background-color .8s ease,color .8s ease,border-color .8s ease,box-shadow .8s ease,backdrop-filter .8s ease,-webkit-backdrop-filter .8s ease,border-radius .8s ease,padding .8s ease,margin .8s ease,width .8s ease,max-width .8s ease,height .8s ease}
-#bottomnav.nav-morph,#bottomnav.nav-morph *{transition:none!important}
-html.style-anim :is(.stat-card2,.profile-list-pair .hscroll-section,.list-overlay)::after{animation:rimFade .9s ease}
 @keyframes rimFade{from{opacity:0}to{opacity:1}}
-html.theme-anim *:not(.switch):not(.switch *):not(.slide):not(.slide *),html.theme-anim *::before,html.theme-anim *::after{transition:background-color .5s ease,color .5s ease,border-color .5s ease,box-shadow .5s ease,fill .5s ease,stroke .5s ease}
+html.theme-anim *::before,html.theme-anim *::after{transition:background-color .5s ease,color .5s ease,border-color .5s ease,box-shadow .5s ease,fill .5s ease,stroke .5s ease}
 .profile-route .back{transition:transform .15s cubic-bezier(.3,.7,.4,1),background-color .2s ease,border-color .2s ease,color .2s ease}
 .profile-route .back:active{transform:scale(.94)}
-
 .profile-edit-overlay{color:var(--text)}
 html[data-theme="light"] .stat-num,
 html[data-theme="light"] .search-btn:hover,
@@ -652,7 +608,6 @@ html[data-theme="light"] .profile-edit-overlay label.field-btn:hover,
 html[data-theme="light"] .btn:not(.btn-accent):not(.btn-connect):not(.btn-disconnect):not(.btn-stopped):hover{color:var(--accent-text)}
 html[data-theme="light"] .btn-accent{color:#2b1200}
 html[data-theme="light"] .btn-disconnect{color:var(--red)}
-
 .list-backdrop{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(2.5px);backdrop-filter:blur(2.5px)}
 .list-ov-inner{position:absolute;left:0;top:0;display:flex;flex-direction:column;overflow:hidden}
 .list-overlay{position:fixed;left:20px;top:20px;width:calc(100vw - 40px);height:calc(100dvh - 40px);z-index:91;background:var(--bg-card);border-radius:18px;box-shadow:0 0 0 1px var(--border),0 12px 32px rgba(var(--shc),.5);overflow:hidden;color:var(--text)}
@@ -683,7 +638,6 @@ html[data-theme="light"] .btn-disconnect{color:var(--red)}
 .list-ov-body>.empty{margin:auto;width:100%;max-width:480px;flex-shrink:1}
 .list-overlay .empty{margin:auto}
 .lp-rw{position:absolute;top:6px;right:6px;z-index:3;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--accent);color:#2b1200;font-size:12px;font-weight:800;line-height:22px;text-align:center;box-shadow:0 3px 8px rgba(var(--shc),.55),0 1px 2px rgba(var(--shc),.4);pointer-events:none}
-
 :root{--accent-text:var(--accent)}
 html[data-theme="light"],html[data-theme="light"] .profile-edit-overlay{
   --bg:#f6f8fb; --bg-card:#fafbfd; --bg-elev:#eff1f5; --border:#8b94a5;
@@ -701,7 +655,6 @@ html[data-theme="light"] .detail-hero-wrap{
 html[data-theme="light"] .detail-hero-wrap{background:#1a1a1a}
 html[data-theme="light"] .detail-hero-wrap{color:#eef0f3}
 html[data-theme="light"],html[data-theme="light"] body{background:#e6e9ef}
-html[data-theme="light"]:not([data-style="glass"]) #bottomnav{background:#fffffe}
 html[data-theme="light"] .nav-item{color:#8a909c}
 html[data-theme="light"] .nav-item:hover{color:#4a505c}
 html[data-theme="light"] .nav-item.active{color:#000000}
@@ -745,28 +698,11 @@ html[data-theme="light"] .hscroll-count{background:var(--bg-elev)}
 .hscroll-track,.profile-list-pair .hscroll-track{padding-bottom:14px;margin-bottom:-10px}
 .hscroll-track .hscroll-item img{box-shadow:0 4px 10px -3px rgba(var(--shc),.5)}
 html[data-theme="light"] .hscroll-track .hscroll-item img{box-shadow:0 4px 10px -3px rgba(var(--shc),.3)}
-
-/* style slider */
-.seg-toggle.slide{position:relative}
-.seg-toggle.slide .seg-thumb{position:absolute;top:0;bottom:0;margin:auto 0;left:3px;width:calc(50% - 4px);height:32px;border-radius:999px;background:var(--accent);pointer-events:none;z-index:0;will-change:transform;box-shadow:0 1px 4px rgba(var(--shc),.3);transition:transform .45s cubic-bezier(.34,1.35,.5,1),background-color .4s ease}
-.seg-toggle.slide[data-pos="1"] .seg-thumb{transform:translateX(calc(100% + 2px))}
-.seg-toggle.slide button,.seg-toggle.slide button.active{position:relative;z-index:1;background:none!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;transition:color .3s ease}
-.seg-toggle.slide button.active{color:#2b1200}
-html[data-style="glass"] .seg-toggle.slide .seg-thumb{background:rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(255,255,255,.3),inset 1px 0 0 rgba(0,0,0,.22),inset -1px 0 0 rgba(0,0,0,.22),0 2px 6px rgba(var(--shc),.2)}
-html[data-style="glass"] .seg-toggle.slide button.active{color:#fff}
-html[data-style="glass"][data-theme="light"] .seg-toggle.slide .seg-thumb{background:rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(255,255,255,.7),inset 1px 0 0 rgba(40,50,70,.16),inset -1px 0 0 rgba(40,50,70,.16),0 2px 6px rgba(var(--shc),.15)}
-html[data-style="glass"][data-theme="light"] .seg-toggle.slide button.active{color:#161b27}
-/* lock page scrolling while settings is open */
 html:has(.profile-edit-overlay.open),html:has(.profile-edit-overlay.open) body,html:has(.profile-edit-overlay.open) #outlet{overflow:hidden!important;overscroll-behavior:none}
 .settings-backdrop{touch-action:none}
 .profile-edit-overlay{overscroll-behavior-y:contain}
-/* profile: no gray edge tint above the banner on phones */
 @media(max-width:600px){html,body{background:var(--bg)}}
-/* v155: removed the 1px fixed top element - iOS Safari 26 treated it as a fixed header and drew a blur/tint bar under the status bar */
-/* upcoming: mark-watched button replaces "Aired" */
 .upcoming-check{margin:0}
-
-/* cloud sync */
 input[type=email],input[type=password]{width:100%;box-sizing:border-box;background:var(--bg-elev);border:1px solid var(--border);border-radius:999px;padding:10px 16px;font-size:14px}
 input[type=email]:focus,input[type=password]:focus{border-color:var(--accent);outline:none}
 .profile-btn-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -775,46 +711,30 @@ input[type=email]:focus,input[type=password]:focus{border-color:var(--accent);ou
 .cl-dot{width:8px;height:8px;border-radius:50%;background:#8b93a3;flex-shrink:0}
 [data-k="synced"] .cl-dot{background:#3ddc84}
 [data-k="syncing"] .cl-dot{background:var(--accent);animation:cl-pulse 1s ease-in-out infinite}
-[data-k="offline"] .cl-dot,[data-k="held"] .cl-dot{background:#f5a623}
+[data-k="offline"] .cl-dot{background:#f5a623}
 [data-k="failed"] .cl-dot{background:#ff4d4f}
 @keyframes cl-pulse{50%{opacity:.35}}
 .cl-box{display:flex;flex-direction:column;gap:8px}
 .cl-line{font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:8px;flex-wrap:wrap;overflow-wrap:anywhere}
 .cl-line b{color:var(--text);font-weight:700}
-.cl-status{font-size:13px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
 .cl-err{font-size:12px;color:#ff6b6b;min-height:0}
 .cl-ok{font-size:12px;color:#3ddc84}
-.cl-choices{flex-direction:column;align-items:stretch}
-.cl-choices .btn{width:100%;text-align:center}
-.cl-backups{display:flex;flex-direction:column;gap:6px;margin-top:2px}
-.cl-backup{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--text-dim)}
-.cl-backup .btn{padding:5px 12px;font-size:11px}
 html[data-theme="light"] .profile-edit-overlay input[type=email],html[data-theme="light"] .profile-edit-overlay input[type=password]{background:var(--bg-elev);border-color:var(--border)}
-
 .cl-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.cl-state{display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap;font-size:12px}
-.cl-state .cl-status{font-size:12px;white-space:nowrap}
-.cl-sep{color:var(--text-dim)}
 .cl-group .btn.cl-fit{width:auto;flex:none;padding-left:14px;padding-right:14px;white-space:nowrap}
 html[data-theme="light"] .switch input:checked + .slider .thumb,html[data-style="glass"][data-theme="light"] .switch input:checked + .slider .thumb{background:#f6f3ec;color:#2b1200}
 html[data-style="glass"][data-theme="light"] .profile-edit-overlay{--text:#05070c;--text-dim:#0f1522;--cat-color:#05070c;--heading:#05070c}
-html[data-style="glass"][data-theme="light"] .profile-edit-overlay :is(.overlay-title,.setting-label,.settings-version,fieldset.outlined legend,.fs-field,.cl-line,.cl-state,.cl-sep,.cl-backup,select,input,.seg-toggle button,label.field-btn,.btn:not(.btn-accent):not(.btn-disconnect)){color:#05070c}
 html[data-style="glass"][data-theme="light"] .profile-edit-overlay input::placeholder{color:#2a3245;opacity:1}
-
 .cl-left{display:flex;flex-direction:column;gap:6px;min-width:0}
 .cl-group .cl-row{gap:12px}
 .cl-group .btn.cl-fit{height:38px;padding-top:0;padding-bottom:0;display:inline-flex;align-items:center;justify-content:center}
-.cl-chip-x{}
 .cloud-chip,html[data-theme="light"] .cloud-chip{background:var(--bg-elev);border:1px solid var(--border);color:var(--text)}
 html[data-style="glass"] .cloud-chip{border-color:transparent;background:rgba(130,130,136,.16);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(255,255,255,.3),inset 1px 0 0 rgba(0,0,0,.22),inset -1px 0 0 rgba(0,0,0,.22),0 3px 10px rgba(var(--shc),.18);color:#fff}
 html[data-style="glass"][data-theme="light"] .cloud-chip{background:rgba(255,255,255,.7);color:#05070c;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(255,255,255,.7),inset 1px 0 0 rgba(40,50,70,.16),inset -1px 0 0 rgba(40,50,70,.16),0 3px 10px rgba(var(--shc),.14)}
 html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outlined{border-color:rgba(30,40,60,.45)}
 html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outlined legend{color:#05070c}
 html[data-style="glass"][data-theme="light"] .profile-edit-overlay fieldset.outlined select{color:#05070c;-webkit-text-fill-color:#05070c;opacity:1}
-
-/* phones: the glass nav bar lines up with the page margins (20px); wide screens keep the original width */
 @media (max-width:559px){html[data-style="glass"] #bottomnav{width:calc(100% - 60px)}}
-/* glass rims on large surfaces: light at the top/bottom edge, easing to the darker side tone over ~80px */
 html[data-style="glass"]{--rim-L:rgba(255,255,255,.42);--rim-D:rgba(0,0,0,.28);--rim-soft-L:rgba(255,255,255,.2)}
 html[data-style="glass"][data-theme="light"]{--rim-L:rgba(255,255,255,.95);--rim-D:rgba(40,50,70,.2);--rim-soft-L:rgba(255,255,255,.6)}
 html[data-style="glass"] :is(.modal-card,.profile-edit-overlay.bglass,.sheet-surf.bglass),html[data-style="glass"][data-theme="light"] :is(.profile-edit-overlay.bglass,.sheet-surf.bglass){box-shadow:none}
@@ -825,16 +745,12 @@ html[data-style="glass"] :is(#bottomnav,.stat-card2,.profile-list-pair .hscroll-
 html[data-style="glass"] #outlet :is(.stat-card2,.profile-list-pair .hscroll-section){--rim-L:var(--rim-soft-L)}
 html[data-style="glass"] #outlet .stat-card2:hover{--rim-L:rgba(255,255,255,.42)}
 html[data-style="glass"][data-theme="light"] #outlet .stat-card2:hover{--rim-L:rgba(255,255,255,.95)}
-/* the settings sheet scrolls: its rim is a sticky layer pinned to the visible area (height set by JS in --ovh), the background stays untouched */
 html[data-style="glass"] .profile-edit-overlay.bglass::before{content:'';display:block;position:sticky;top:-16px;z-index:6;pointer-events:none;box-sizing:border-box;
   height:var(--ovh,100%);width:calc(100% + 32px);flex:none;margin:-16px -16px calc(6px - var(--ovh,0px)) -16px;border-radius:inherit;padding:1px;
   background:linear-gradient(180deg,var(--rim-L) 0,var(--rim-D) min(80px,50%),var(--rim-D) max(calc(100% - 80px),50%),var(--rim-L) 100%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
-
-/* nav press / hold animation (glass only) and finger-drag support */
 html[data-style="glass"] #bottomnav{touch-action:none;-webkit-user-select:none;user-select:none;transition:transform .4s cubic-bezier(.3,.9,.4,1)}
 html[data-style="glass"] #bottomnav.pressing,html[data-style="glass"] #bottomnav.compact.pressing{transform:translateX(-50%) scale(1.05);--rim-L:rgba(255,255,255,.85)}
-/* glow = a cheap opacity-animated layer (no filter/backdrop repaint), faster than the scale animation */
 html[data-style="glass"] #bottomnav::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:5;opacity:0;transition:opacity .12s ease-out;background:rgba(255,255,255,.26);backdrop-filter:blur(22px) brightness(1.7) saturate(1.1);-webkit-backdrop-filter:blur(22px) brightness(1.7) saturate(1.1)}
   background:rgba(255,255,255,.34);box-shadow:0 0 30px rgba(255,255,255,.4),0 0 8px rgba(255,255,255,.3),inset 0 0 22px rgba(255,255,255,.25)}
 html[data-style="glass"] #bottomnav.pressing::before{opacity:1}
@@ -849,16 +765,9 @@ html[data-style="glass"] #bottomnav.pressing.dragging .nav-pill,html[data-style=
 html[data-style="glass"] #bottomnav.dragging .nav-item.active:not(.peek){color:rgba(255,255,255,.62)}
 html[data-style="glass"][data-theme="light"] #bottomnav.dragging .nav-item.active:not(.peek){color:rgba(22,27,39,.55)}
 html[data-style="glass"][data-theme="light"] #bottomnav .nav-item.peek{color:#000}
-
-/* light mode fixes */
 html[data-theme="light"] .shows-tabs .shows-tab,html[data-theme="light"] .shows-tabs .shows-tab:hover,html[data-theme="light"] .shows-tabs .shows-tab:focus,html[data-theme="light"] .shows-tabs .shows-tab:focus-visible,html[data-theme="light"] .shows-tabs .shows-tab:active,html[data-theme="light"] .shows-tabs .shows-tab.active{background:transparent}
 html[data-theme="light"] .hscroll-icon{color:#000}
-/* glass: drop shadows are black, not purple */
 html[data-style="glass"][data-theme="light"]{--shc:0,0,0}
-
-/* v152: side grid texture + flattened nav icon strokes */
-body{background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:56px 56px;background-position:center top;background-attachment:fixed}
-html[data-theme="light"] body{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px);background-size:56px 56px;background-position:center top;background-attachment:fixed}
 html[data-style="glass"] #bottomnav .nav-icon svg{stroke:var(--ic,#fff);opacity:var(--ia,.62);transition:opacity .15s ease,stroke .15s ease}
 html[data-style="glass"] #bottomnav .nav-item{--ic:#fff;--ia:.62}
 html[data-style="glass"] #bottomnav .nav-item:hover{--ia:.85}
@@ -872,6 +781,27 @@ html[data-style="glass"] #bottomnav .nav-item.peek{--ia:1}
 html[data-style="glass"] #bottomnav.dragging .nav-item.active:not(.peek){--ia:.62}
 html[data-style="glass"][data-theme="light"] #bottomnav.dragging .nav-item.active:not(.peek){--ic:#161b27;--ia:.55}
 html[data-style="glass"][data-theme="light"] #bottomnav .nav-item.peek{--ic:#000;--ia:1}
+.detail-sheet{position:fixed;top:0;bottom:0;left:0;right:0;margin:0 auto;max-width:var(--page-width);z-index:88;background:#202020;color:var(--text);overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,.45)}
+.detail-sheet>div{height:100%;overflow-y:auto;overflow-x:hidden;padding:28px var(--gut) calc(28px + env(safe-area-inset-bottom));scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior:contain}
+.detail-sheet>div::-webkit-scrollbar{display:none}
+.detail-sheet>.detail-view{padding:0 var(--gut) calc(28px + env(safe-area-inset-bottom))}
+html[data-theme="light"] .detail-sheet{background:#e3e7ee}
+@media (max-width:559px){:root{--gut:10px}}
+html body{background:transparent!important}
+body::before,body::after{content:'';position:fixed;top:0;bottom:0;width:var(--side,0px);z-index:-1;pointer-events:none;background-size:56px 56px;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px)}
+body::before{left:0;background-position:100% 0}
+body::after{right:0;background-position:0 0}
+html[data-theme="light"] body::before,html[data-theme="light"] body::after{background-image:linear-gradient(rgba(0,0,0,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.05) 1px,transparent 1px)}
+.cl-who{flex-wrap:nowrap}
+.cl-avatar{width:26px;height:26px;border-radius:50%;object-fit:cover;flex:none;background:#1f232e}
+.nav-avatar{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.cl-group .cl-left{flex-direction:row;align-items:center;gap:12px;flex:1;min-width:0}
+.cl-group .cl-avatar{width:44px;height:44px}
+.cl-group .cl-who{min-width:0;flex:1 1 auto;font-size:16px}
+.cl-group .cl-who b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:480px){.cl-group .cl-avatar{width:38px;height:38px}.cl-group .cl-who{font-size:15px}}
+.cl-chip-time{margin-left:2px;opacity:.75;font-weight:600}
+.cl-chip-time::before{content:'·';margin-right:7px}
 </style>
 </head>
 <body>
@@ -908,7 +838,7 @@ let _progCache=null,_todayK='',_todayAt=0,showsDirty=false,moviesDirty=false;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function lget(k,f){const r=localStorage.getItem(k);if(r===null)return f;try{return JSON.parse(r)}catch{return f}}
 const _pk=new Map();
-let _cloudHook=null;   // set by the cloud-sync module; called after every localStorage write made through lset()
+let _cloudHook=null;
 function lpeek(k,f){if(_pk.has(k))return _pk.get(k);const v=lget(k,f);_pk.set(k,v);return v}
 function lset(k,v){
   try{localStorage.setItem(k,JSON.stringify(v))}
@@ -923,20 +853,12 @@ function lset(k,v){
 window.addEventListener('storage',()=>{_pk.clear();_progCache=null});
 
 const IMG_OK=/^data:image\/(png|jpe?g|webp);base64,[A-Za-z0-9+\/=]+$/;
-function exportImageLines(){
-  const out=[];
-  if(ProfileImg.avatar)out.push(`  Avatar: ${ProfileImg.avatar}`);
-  if(ProfileImg.banner)out.push(`  Banner: ${ProfileImg.banner}`);
-  return out;
-}
 function dataUrlToFile(uri){
   const i=uri.indexOf(','),mime=uri.slice(5,uri.indexOf(';'));
   const bin=atob(uri.slice(i+1)),bytes=new Uint8Array(bin.length);
   for(let k=0;k<bin.length;k++)bytes[k]=bin.charCodeAt(k);
   return new File([bytes],'imported-image',{type:mime});
 }
-/* Imported images pass through optimizeImage() exactly like manual uploads. An image already saved on this
-   device is not overwritten. A bad image is skipped without interrupting the rest of the import. */
 async function applyImportedImages(avatar,banner,force){
   for(const [kind,uri] of [['avatar',avatar],['banner',banner]]){
     if(!uri||(ProfileImg[kind]&&!force)||!IMG_OK.test(uri))continue;
@@ -992,7 +914,7 @@ const FileSync={
     if(!this.supported)return false;
     const h=await idbGet('fileHandle');
     if(!h)return false;
-    if(/\.txt$/i.test(h.name||'')){await idbDel('fileHandle');return false}   // old single-file .txt target is never overwritten with a .zip
+    if(/\.txt$/i.test(h.name||'')){await idbDel('fileHandle');return false}
     try{
       const perm=await h.queryPermission({mode:'readwrite'});
       if(perm==='granted'){this.handle=h;return true}
@@ -1064,7 +986,6 @@ async function rotateBackup(buf){
   await idbSet('bak1',buf);await idbSet('bakAt',Date.now());
 }
 async function latestBackup(){for(const k of ['bak1','bak2']){const b=await idbGet(k);if(b&&typeof b!=='string'){const f=await unzipFiles(b).catch(()=>null);if(filesHaveData(f))return f}}return null}
-/* ---- minimal ZIP (single file) for backups: deflate via CompressionStream when available, else stored ---- */
 const _crcT=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
 function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++)c=_crcT[(c^u8[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
 async function streamBytes(u8,Ctor,fmt){
@@ -1089,7 +1010,6 @@ async function zipFiles(entries){
   ec.setUint32(0,0x06054b50,true);ec.setUint16(8,entries.length,true);ec.setUint16(10,entries.length,true);ec.setUint32(12,cdSize,true);ec.setUint32(16,offset,true);
   return new Blob([...parts,...central,ec],{type:'application/zip'});
 }
-/* ZIP -> {fileName: text}. Throws a readable error for anything that is not a valid ZIP. */
 async function unzipFiles(buf){
   const u8=new Uint8Array(buf),dv=new DataView(u8.buffer,u8.byteOffset,u8.byteLength);
   if(u8.length<22||u8[0]!==0x50||u8[1]!==0x4B)throw new Error('This is not a .zip backup file.');
@@ -1117,7 +1037,12 @@ const BACKUP_FILES=[
   {name:'tv-plus-movies-data.txt',title:'MOVIES WATCHED'},
   {name:'tv-plus-movie-watchlist-data.txt',title:'MOVIE WATCHLIST'}
 ];
-/* The one and only export: four organised files. Used by Export Backup, the auto-save file and cloud sync. */
+function exportImageLines(){
+  const out=[];
+  if(ProfileImg.avatar)out.push(`  Avatar: ${ProfileImg.avatar}`);
+  if(ProfileImg.banner)out.push(`  Banner: ${ProfileImg.banner}`);
+  return out;
+}
 function buildExportFiles(){
   const movies=exportMoviesSections(),cutAt=movies.indexOf('MOVIE WATCHLIST');
   const texts=[exportProfileSection(),exportShowsSection(),movies.slice(0,cutAt),movies.slice(cutAt)];
@@ -1134,61 +1059,7 @@ async function downloadBackup(){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-const APP_VERSION='155';
-function applyStyle(st){
-  const r=document.documentElement;
-  r.dataset.style=st==='glass'?'glass':'flat';
-}
-function snapNav(bar){
-  const cs=getComputedStyle(bar);
-  return{rect:bar.getBoundingClientRect(),radius:cs.borderRadius,bg:cs.backgroundColor,bf:cs.backdropFilter,pad:cs.padding};
-}
-function morphNav(bar,snap){
-  const D=760,EASE='cubic-bezier(.32,.72,.2,1)';
-  const b=bar.getBoundingClientRect(),cs=getComputedStyle(bar);
-  const box=r=>({left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});
-  const fixed={position:'fixed',transform:'none',margin:'0px',maxWidth:'none',right:'auto',bottom:'auto'};
-  bar.classList.add('nav-morph');
-  const a=bar.animate([
-    {...fixed,...box(snap.rect),borderRadius:snap.radius,backgroundColor:snap.bg,backdropFilter:snap.bf,padding:snap.pad},
-    {...fixed,...box(b),borderRadius:cs.borderRadius,backgroundColor:cs.backgroundColor,backdropFilter:cs.backdropFilter,padding:cs.padding}
-  ],{duration:D,easing:EASE});
-  const pill=bar.querySelector('.nav-pill'),act=bar.querySelector('.nav-item.active');
-  if(pill&&getComputedStyle(pill).display!=='none')pill.animate([{opacity:0},{opacity:1}],{duration:D,easing:'ease'});
-  try{bar.animate([{opacity:0},{opacity:1}],{duration:D,easing:'ease',pseudoElement:'::after'})}catch{}
-  cancelAnimationFrame(window._pillRaf);
-  const t0=performance.now();
-  (function f(){
-    if(pill&&act&&getComputedStyle(pill).display!=='none'){
-      const br=bar.getBoundingClientRect(),ar=act.getBoundingClientRect();
-      pill.classList.add('no-anim');
-      pill.style.width=ar.width+'px';
-      pill.style.transform=`translateX(${ar.left-br.left}px)`;
-    }
-    if(performance.now()-t0<D+60)window._pillRaf=requestAnimationFrame(f);
-    else{pill?.classList.remove('no-anim');updateNavPill(true)}
-  })();
-  const done=()=>{bar.classList.remove('nav-morph');updateNavPill(true)};
-  a.onfinish=done;a.oncancel=done;
-}
-function switchStyle(st){
-  const root=document.documentElement,bar=document.getElementById('bottomnav');
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const snap=reduce?null:snapNav(bar);
-  bar.classList.add('nav-morph');
-  if(!reduce){
-    root.classList.add('style-anim');
-    clearTimeout(window._styleAnimT);
-    window._styleAnimT=setTimeout(()=>root.classList.remove('style-anim'),1000);
-  }
-  Store.setProfile({style:st});
-  applyStyle(st);
-  if(snap)morphNav(bar,snap);
-  else{
-    updateNavPill(true);
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{bar.classList.remove('nav-morph');updateNavPill(true)}));
-  }
-}
+const APP_VERSION='160';
 function applyTheme(t){
   const light=t==='light';
   document.documentElement.dataset.theme=light?'light':'dark';
@@ -1226,17 +1097,12 @@ async function saveProfileImage(key,dataUrl){
   return ok;
 }
 
-/* ---- image optimization (runs in the browser, before Base64 encoding) ---- */
-const IMG_Q_START=0.85,IMG_Q_FLOOR=0.70;            // lossy quality range; never go below the floor
-/* Per-category settings. `bytes` is a target for the encoded image (not for the Base64 text).
-   `viewRatio` (banner only): the width/height range the profile banner can ever be displayed at
-   (cover + centre, 223px tall under 700px wide / 324px tall above, 320px..1200px wide). Image content
-   outside that range is hidden in every layout, so it is cropped away; nothing inside the range is cropped. */
+const IMG_Q_START=0.85,IMG_Q_FLOOR=0.70;
 const IMG_LIMITS={
   avatar:{w:512,h:512,bytes:300*1024},
   banner:{w:1600,h:600,bytes:250*1024,viewRatio:{min:1.25,max:3.75}}
 };
-const IMG_KEEP_TYPES=['image/jpeg','image/png','image/webp'];   // stored untouched when already small enough
+const IMG_KEEP_TYPES=['image/jpeg','image/png','image/webp'];
 const IMG_ALPHA_TYPES=/^image\/(png|webp|gif|avif|svg\+xml)$/;
 let _webpOk=null;
 const canvasBlob=(c,type,q)=>new Promise(res=>{try{c.toBlob(b=>res(b),type,q)}catch{res(null)}});
@@ -1265,8 +1131,6 @@ function canvasHasAlpha(ctx,w,h){
   for(let i=3;i<d.length;i+=4)if(d[i]<255)return true;
   return false;
 }
-/* Draw the region (sx,sy,sw,sh) of src into ctx at w x h, downscaling in steps of at most 2x
-   so large photos keep their detail (avoids aliasing from one huge jump). */
 function drawScaled(src,sx,sy,sw,sh,ctx,w,h){
   let cur=src,rx=sx,ry=sy,rw=sw,rh=sh;
   while(rw/2>=w&&rh/2>=h){
@@ -1278,7 +1142,6 @@ function drawScaled(src,sx,sy,sw,sh,ctx,w,h){
   }
   ctx.drawImage(cur,rx,ry,rw,rh,0,0,w,h);
 }
-/* Returns {dataUrl,report}. report holds the diagnostics for the upload. */
 async function optimizeImage(file,kind){
   const lim=IMG_LIMITS[kind]||IMG_LIMITS.avatar;
   if(!file||!(file.type||'').startsWith('image/'))throw new Error('Please choose an image file.');
@@ -1286,7 +1149,6 @@ async function optimizeImage(file,kind){
   try{
     const w0=src.width||src.naturalWidth,h0=src.height||src.naturalHeight;
     if(!w0||!h0)throw new Error('This file could not be read as an image.');
-    // Crop only what can never be displayed (see IMG_LIMITS.banner.viewRatio); centred, like the CSS.
     let sx=0,sy=0,sw=w0,sh=h0;
     const vr=lim.viewRatio;
     if(vr){
@@ -1310,7 +1172,6 @@ async function optimizeImage(file,kind){
       window._lastImageReport=report;
       return{dataUrl,report};
     };
-    // Already within limits: keep the original bytes, unless it has transparency that must be flattened.
     if(fit===1&&!cropped&&file.size<=MAXB&&IMG_KEEP_TYPES.includes(file.type)){
       let alpha=false;
       if(mayAlpha){
@@ -1324,7 +1185,6 @@ async function optimizeImage(file,kind){
         if(IMG_OK.test(d))return await done(file,d);
       }
     }
-    // Resize (proportionally, never enlarging), then composite onto solid black.
     const t=document.createElement('canvas');t.width=w;t.height=h;
     const tctx=t.getContext('2d',{willReadFrequently:true});
     tctx.imageSmoothingEnabled=true;tctx.imageSmoothingQuality='high';
@@ -1332,12 +1192,12 @@ async function optimizeImage(file,kind){
     if(mayAlpha&&!report.transparencyDetected)report.transparencyDetected=canvasHasAlpha(tctx,w,h);
     const flat=document.createElement('canvas');flat.width=w;flat.height=h;
     const fctx=flat.getContext('2d');
-    fctx.fillStyle='#000';fctx.fillRect(0,0,w,h);     // opaque black background
-    fctx.drawImage(t,0,0);                             // transparent / semi-transparent pixels blend against black
+    fctx.fillStyle='#000';fctx.fillRect(0,0,w,h);
+    fctx.drawImage(t,0,0);
     report.flattened=report.transparencyDetected;
     report.finalWidth=w;report.finalHeight=h;
     let best=null,bestQ=null;
-    if(/^image\/(png|gif)$/.test(file.type)){          // graphics: keep lossless PNG if it already fits
+    if(/^image\/(png|gif)$/.test(file.type)){
       const pb=await canvasBlob(flat,'image/png');
       if(pb&&pb.type==='image/png'&&pb.size<=MAXB){best=pb;bestQ='lossless'}
     }
@@ -1353,7 +1213,7 @@ async function optimizeImage(file,kind){
         else{
           best=lo;bestQ=IMG_Q_FLOOR;
           let l=IMG_Q_FLOOR,u=IMG_Q_START;
-          for(let i=0;i<5;i++){                       // highest quality that still fits
+          for(let i=0;i<5;i++){
             const mid=(l+u)/2,m=await enc(mid);
             if(m&&m.size<=MAXB){best=m;bestQ=mid;l=mid}else u=mid;
           }
@@ -1467,7 +1327,6 @@ function aliasNames(item){
   list.forEach(a=>{const n=a&&a.name;if(n&&n!==item.name&&!out.includes(n))out.push(n)});
   return out;
 }
-function firstAlias(item){return aliasNames(item)[0]||''}
 function buildShowExportRows(){
   const watched=Store.watched();
   const reg=Store.reg('show');
@@ -1641,7 +1500,7 @@ function exportProfileSection(){
   return ['PROFILE',
     `  Username: ${username}`,
     `  Location: ${country?country+', ':''}${ct.tz}`,
-    `  Appearance: ${pr.style==='glass'?'glass':'flat'}, ${pr.theme==='light'?'light':'dark'}`,
+    `  Appearance: ${pr.theme==='light'?'light':'dark'}`,
     `  TV time: ${formatDurationFull(showMins)}`,
     `  Episodes watched: ${watchedEpCount}`,
     `  Movie time: ${formatDurationFull(movieMins)}`,
@@ -1674,7 +1533,7 @@ function pickBestSearchHit(hits,name,alt){
   }
   return hits.length===1?hits[0]:null;
 }
-let _importUseLocal=false;   // cloud pulls reuse already-known show/movie details instead of asking TheTVDB again
+let _importUseLocal=false;
 const _importShowCache=new Map(),_importMovieCache=new Map();
 async function resolveImportShow(fileId,name,alt){
   const cacheKey=`${fileId??''}|${(name||'').toLowerCase()}`;
@@ -1751,8 +1610,6 @@ async function mapLimit(items,limit,fn){
   return out;
 }
 
-/* Imports the organised backup files. mode 'merge' (default) only adds what is missing; mode 'replace' makes this
-   device mirror the files (used for cloud pulls) while keeping local metadata of items that exist on both sides. */
 async function importBackupFiles(files,opts={}){
   if(!files||typeof files!=='object')throw new Error('Nothing to import.');
   const known=BACKUP_FILES.filter(f=>typeof files[f.name]==='string');
@@ -1847,7 +1704,7 @@ async function importBackupText(text,opts={}){
     return m?{name:m[1].trim(),id:m[2],count:+m[3]}:null;
   }
 
-  let importedUsername=null,importedCountry='',importedTz='',importedStyle='',importedTheme='',importedAvatar='',importedBanner='';
+  let importedUsername=null,importedCountry='',importedTz='',importedTheme='',importedAvatar='',importedBanner='';
   const showBlocks=[];
   const movieWatchedRows=[];
   const watchlistRows=[];
@@ -1876,7 +1733,7 @@ async function importBackupText(text,opts={}){
         }
       }
       const ap=/^\s*Appearance:\s?(.*)$/.exec(line);
-      if(ap){const[a,b]=ap[1].split(',').map(x=>x.trim().toLowerCase());importedStyle=a||'';importedTheme=b||''}
+      if(ap){const parts=ap[1].split(',').map(x=>x.trim().toLowerCase());importedTheme=parts[parts.length-1]||''}
       const av=/^\s*Avatar:\s?(.*)$/.exec(line);
       if(av)importedAvatar=av[1].trim();
       const bn=/^\s*Banner:\s?(.*)$/.exec(line);
@@ -1885,8 +1742,6 @@ async function importBackupText(text,opts={}){
       if(co)importedCountry=co[1].trim();
       const tzm=/^\s*Time zone:\s?(.*)$/.exec(line);
       if(tzm)importedTz=tzm[1].trim();
-      const stm=/^\s*Style:\s?(.*)$/.exec(line);
-      if(stm)importedStyle=stm[1].trim().toLowerCase();
       const thm=/^\s*Theme:\s?(.*)$/.exec(line);
       if(thm)importedTheme=thm[1].trim().toLowerCase();
     }else if(section==='PROFILE IMAGES'){
@@ -2019,7 +1874,6 @@ async function importBackupText(text,opts={}){
 
   const addNew=(local,incoming,onAdd)=>{for(const k in incoming)if(!(k in local)){local[k]=incoming[k];onAdd?.(k,incoming[k])}return local};
   const maxInto=(local,incoming)=>{for(const k in incoming)local[k]=Math.max(local[k]||0,incoming[k]||0);return local};
-  /* replace mode: exactly the items of the files, but an item that already exists here keeps its local record */
   const mirror=(local,incoming)=>{const r={};for(const k in incoming)r[k]=(k in local)?local[k]:incoming[k];return r};
   if(replace){
     lset(K.lib,mirror(lget(K.lib,{}),newShowLib));
@@ -2063,7 +1917,6 @@ async function importBackupText(text,opts={}){
     lset(K.rewatch,rw);
   }
   await applyImportedImages(importedAvatar,importedBanner,replace);
-  if(importedStyle==='flat'||importedStyle==='glass'){Store.setProfile({style:importedStyle});applyStyle(importedStyle)}
   if(importedTheme==='light'||importedTheme==='dark'){Store.setProfile({theme:importedTheme});applyTheme(importedTheme)}
   if(importedUsername!=null&&(replace?importedUsername!=='':!Store.profile().name))Store.setProfile({name:importedUsername});
   if(importedCountry){
@@ -2133,7 +1986,6 @@ const Api={
   movieTranslations(id,lang='eng'){return cachedApiCall(_movieTrCache,`${id}:${lang}`,()=>this._get(`/movies/${id}/translations/${lang}`))},
   seriesArtworks(id,type){return cachedApiCall(_seriesArtCache,`${id}:${type??''}`,()=>this._get(`/series/${id}/artworks${type!=null?`?type=${type}`:''}`))},
   movieArtworks(id,type){return cachedApiCall(_movieArtCache,`${id}:${type??''}`,()=>this._get(`/movies/${id}/artworks${type!=null?`?type=${type}`:''}`))},
-  seriesEpisodes(id,page=0){return this._get(`/series/${id}/episodes/default?page=${page}`)},
 };
 function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
 
@@ -2216,16 +2068,6 @@ function firstReleaseDate(movieExt){
 }
 function numericId(hit){if(hit.tvdb_id)return hit.tvdb_id;const m=String(hit.id||'').match(/(\d+)$/);return m?m[1]:hit.id}
 
-function formatDuration(totalMinutes){
-  const totalHours=Math.floor(totalMinutes/60);
-  if(totalHours<24)return `${totalHours} hour${totalHours!==1?'s':''}`;
-  const totalDays=Math.floor(totalHours/24);
-  const hours=totalHours%24;
-  if(totalDays<30)return `${totalDays} day${totalDays!==1?'s':''}, ${hours} hour${hours!==1?'s':''}`;
-  const months=Math.floor(totalDays/30);
-  const days=totalDays%30;
-  return `${months} month${months!==1?'s':''}, ${days} day${days!==1?'s':''}, ${hours} hour${hours!==1?'s':''}`;
-}
 function formatDurationParts(totalMinutes){
   const totalHours=Math.floor(totalMinutes/60);
   const totalDays=Math.floor(totalHours/24);
@@ -2285,7 +2127,56 @@ async function getEpisodes(id){
   const eps=all;
   eps.forEach(e=>{if(e.seriesId==null)e.seriesId=id});
   epCache.set(id,eps);
+  saveEpIndex(id,eps,null);
   return eps;
+}
+const EPIDX_V=1,epIdxMem=new Map();
+async function loadEpIndex(id){
+  const k=String(id);
+  if(epIdxMem.has(k))return epIdxMem.get(k);
+  const v=await idbGet('epidx.'+k);
+  if(v&&v.v===EPIDX_V&&Array.isArray(v.e)){epIdxMem.set(k,v);return v}
+  return null;
+}
+function saveEpIndex(id,eps,lu){
+  try{
+    const k=String(id);
+    const prev=epIdxMem.get(k);
+    const rec={v:EPIDX_V,at:Date.now(),lu:lu||(prev&&prev.lu)||null,e:eps.map(e=>[e.id,e.seasonNumber,e.number,e.aired||'',e.runtime||0,e.finaleType||''])};
+    if(lu===null&&prev&&prev.lu)rec.lu=null;
+    epIdxMem.set(k,rec);
+    idbSet('epidx.'+k,rec);
+  }catch{}
+}
+function epIndexToEps(id,rec){
+  return rec.e.map(a=>({id:a[0],seasonNumber:a[1],number:a[2],aired:a[3]||null,runtime:a[4]||null,finaleType:a[5]||undefined,seriesId:id,_light:true}));
+}
+const seasonEpCache=new Map();
+function getSeasonEpisodes(id,sn){
+  if(epCache.has(id))return Promise.resolve(epCache.get(id).filter(e=>e.seasonNumber===sn).sort((a,b)=>a.number-b.number));
+  const k=id+':'+sn;
+  if(seasonEpCache.has(k))return seasonEpCache.get(k);
+  const p=(async()=>{
+    try{
+      let page=0,all=[],guard=0;
+      while(true){
+        const j=await Api._getRaw(`/series/${id}/episodes/default?season=${sn}&page=${page}`);
+        all=all.concat(j.data?.episodes||[]);
+        if(!j.links?.next)break;
+        page++;if(++guard>50)break;
+      }
+      const list=all.filter(e=>e.seasonNumber===sn);
+      if(!list.length)throw new Error('empty');
+      list.forEach(e=>{if(e.seriesId==null)e.seriesId=id});
+      return list.sort((a,b)=>a.number-b.number);
+    }catch{
+      const full=await getEpisodes(id);
+      return full.filter(e=>e.seasonNumber===sn).sort((a,b)=>a.number-b.number);
+    }
+  })();
+  seasonEpCache.set(k,p);
+  p.catch(()=>seasonEpCache.delete(k));
+  return p;
 }
 function triggerConfetti(){
   const colors=['#ffd400','#a855f7','#6fff21','#fa320a','#f5c518','#ffffff'];
@@ -2426,7 +2317,7 @@ function backButton(route){
   const back=document.createElement('button');
   back.className='back';
   back.textContent='Back';
-  back.addEventListener('click',()=>nav(route));
+  back.addEventListener('click',()=>{if(_sheet)closeDetailSheet();else nav(route)});
   return back;
 }
 function detailHeroWrap({bannerUrl,backEl,heroEl,progressEl}){
@@ -2466,7 +2357,7 @@ function emptyState(msg,route,label){
   return `<div class="empty">${msg}${route?` <a data-link="${route}">${label||'Go there'}</a>`:''}</div>`;
 }
 function loadingHtml(text){
-  return `<div class="loading-row" role="status" aria-live="polite" aria-label="${esc(text)}"><span class="loader" aria-hidden="true"></span></div>`;
+  return `<div class="loading-row" role="status" aria-live="polite" aria-label="${esc(text)}"><svg class="spinner" viewBox="0 0 50 50" aria-hidden="true"><circle class="sp-track" cx="25" cy="25" r="20"/><circle class="sp-arc" cx="25" cy="25" r="20"/></svg></div>`;
 }
 function closeLibPopup(){
   document.querySelectorAll('.lib-popup').forEach(p=>p.remove());
@@ -2705,13 +2596,8 @@ function listBoxRect(route){
   const r=el.getBoundingClientRect();
   return{left:r.left,top:r.top,width:r.width,height:r.height,radius:getComputedStyle(el).borderRadius||'16px'};
 }
-const _borderCol=()=>getComputedStyle(document.documentElement).getPropertyValue('--border').trim()||'#3a3a3a';
 const _geo=r=>({left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px'});
-const _shadow=(on)=>{
-  const d=document.documentElement.dataset;
-  if(d.style==='glass')return '0 0 0 0 rgba(0,0,0,0)';
-  return `0 0 0 1px ${_borderCol()}, 0 ${on?12:0}px ${on?32:0}px rgba(0,0,0,${on?.5:0})`;
-};
+const _shadow=()=>'0 0 0 0 rgba(0,0,0,0)';
 const _bgOf=el=>el?getComputedStyle(el).backgroundColor:'transparent';
 function removeListOverlay(){
   if(!_listOv)return;
@@ -2914,10 +2800,10 @@ function openListOverlay(route){
     boxEl.style.visibility='hidden';
     const bgPanel=_bgOf(panel);
     panel.animate([
-      {..._geo(box),borderRadius:box.radius,boxShadow:_shadow(false),backgroundColor:_bgOf(boxEl)},
-      {..._geo(F),borderRadius:'18px',boxShadow:_shadow(true),backgroundColor:bgPanel}
+      {..._geo(box),borderRadius:box.radius,boxShadow:_shadow(),backgroundColor:_bgOf(boxEl)},
+      {..._geo(F),borderRadius:'18px',boxShadow:_shadow(),backgroundColor:bgPanel}
     ],{duration:dur,easing:ease});
-    if(document.documentElement.dataset.style==='glass'){
+    {
       const cs=getComputedStyle(document.documentElement);
       try{panel.animate([{boxShadow:cs.getPropertyValue('--rim-soft')},{boxShadow:cs.getPropertyValue('--rim')}],{duration:dur,easing:ease,pseudoElement:'::after'})}catch{}
     }
@@ -2956,10 +2842,10 @@ function closeListOverlay(){
     ov.ghost.getAnimations().forEach(a=>a.cancel());
     ov.ghost.animate([{opacity:0},{opacity:0,offset:.5},{opacity:1}],{duration:dur,easing:'linear',fill:'forwards'});
     const a=panel.animate([
-      {..._geo(F),borderRadius:'18px',boxShadow:_shadow(true),backgroundColor:_bgOf(panel)},
-      {..._geo(box),borderRadius:box.radius,boxShadow:_shadow(false),backgroundColor:_bgOf(document.querySelector(`#outlet .hscroll-section[data-route="${ov.route}"]`))}
+      {..._geo(F),borderRadius:'18px',boxShadow:_shadow(),backgroundColor:_bgOf(panel)},
+      {..._geo(box),borderRadius:box.radius,boxShadow:_shadow(),backgroundColor:_bgOf(document.querySelector(`#outlet .hscroll-section[data-route="${ov.route}"]`))}
     ],{duration:dur,easing:ease,fill:'forwards'});
-    if(document.documentElement.dataset.style==='glass'){
+    {
       const cs=getComputedStyle(document.documentElement);
       try{panel.animate([{boxShadow:cs.getPropertyValue('--rim')},{boxShadow:cs.getPropertyValue('--rim-soft')}],{duration:dur,easing:ease,fill:'forwards',pseudoElement:'::after'})}catch{}
     }
@@ -2978,11 +2864,6 @@ function updateNavPill(instant){
   pill.style.transform=`translateX(${act.offsetLeft}px)`;
   if(instant){pill.offsetWidth;requestAnimationFrame(()=>pill.classList.remove('no-anim'))}
 }
-function followNavPill(ms=800){
-  const t0=performance.now();
-  cancelAnimationFrame(window._pillRaf);
-  (function f(){updateNavPill(true);if(performance.now()-t0<ms)window._pillRaf=requestAnimationFrame(f)})();
-}
 ['gesturestart','gesturechange','gestureend'].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
 document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
 window.addEventListener('resize',()=>updateNavPill(true));
@@ -2993,7 +2874,65 @@ document.addEventListener('keydown',e=>{
 });
 let _navFirst=true,_curHash='';
 function setHash(h){_curHash=h;if(location.hash.slice(1)!==h)location.hash=h}
+let _sheet=null,_sheetReturn='';
+function openDetailSheet(route,params){
+  const outlet=document.getElementById('outlet');
+  let animate=!params.noAnim;
+  if(!_sheet){
+    const ret=currentRoute;
+    if(!outlet.firstElementChild&&!_listOv){nav(route==='movie'?'movies':'shows',{noAnim:true});animate=false}
+    if(_listOv)removeListOverlay();
+    _sheetReturn=LIST_ROUTES.includes(ret)?ret:'';
+    if(LIST_ROUTES.includes(currentRoute))currentRoute='stats';
+  }
+  const inner=document.createElement('div');
+  let sheet=_sheet;
+  const fresh=!sheet;
+  if(fresh){
+    sheet=document.createElement('div');sheet.className='detail-sheet';
+    sheet.appendChild(inner);document.body.appendChild(sheet);_sheet=sheet;
+  }else sheet.replaceChildren(inner);
+  (routes[route]||renderShow)(inner,params);
+  setHash(params.id?`${route}/${params.id}`:route);
+  if(fresh&&animate&&sheet.animate)sheet.animate([{transform:'translateY(100%)'},{transform:'none'}],{duration:260,easing:'cubic-bezier(.2,.9,.25,1)'});
+}
+function closeDetailSheet(){
+  const sh=_sheet;if(!sh)return;
+  _sheet=null;
+  const ret=_sheetReturn;_sheetReturn='';
+  const finish=()=>sh.remove();
+  const a=sh.animate?sh.animate([{transform:'none'},{transform:'translateY(100%)'}],{duration:220,easing:'cubic-bezier(.4,0,.8,.4)',fill:'forwards'}):null;
+  if(a){a.onfinish=finish;a.oncancel=finish}else finish();
+  const outlet=document.getElementById('outlet');
+  if((showsDirty||moviesDirty)&&routes[currentRoute]&&!LIST_ROUTES.includes(currentRoute)){
+    const st=outlet.scrollTop;
+    outlet.className='';outlet.innerHTML='';
+    routes[currentRoute](outlet,{});
+    requestAnimationFrame(()=>{outlet.scrollTop=st;requestAnimationFrame(()=>{outlet.scrollTop=st})});
+  }
+  if(LIST_ROUTES.includes(ret))nav(ret);else setHash(currentRoute);
+  NavBar.onRoute(currentRoute);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&_sheet&&!document.querySelector('.profile-edit-overlay.open'))closeDetailSheet()});
+let _navProfSvg=null;
+function updateNavAvatar(){
+  const ic=document.querySelector('#bottomnav .nav-item[data-route="stats"] .nav-icon');
+  if(!ic)return;
+  if(_navProfSvg===null)_navProfSvg=ic.innerHTML;
+  const onProfile=currentRoute==='stats'||LIST_ROUTES.includes(currentRoute);
+  if(!onProfile&&ProfileImg.avatar){
+    const im=ic.querySelector('img.nav-avatar');
+    if(im){if(im.getAttribute('src')!==ProfileImg.avatar)im.src=ProfileImg.avatar}
+    else ic.innerHTML='<img class="nav-avatar" alt="" />',ic.firstChild.src=ProfileImg.avatar;
+  }else if(ic.querySelector('img.nav-avatar'))ic.innerHTML=_navProfSvg;
+}
 function nav(route,params={}){
+  if(route==='show'||route==='movie'){openDetailSheet(route,params);return}
+  if(_sheet){
+    const ret=_sheetReturn,same=route===currentRoute;
+    closeDetailSheet();
+    if(same||route===ret)return;
+  }
   const prevRoute=currentRoute;
   const firstNav=_navFirst;_navFirst=false;
   if(_listOv){
@@ -3027,6 +2966,7 @@ function nav(route,params={}){
   (routes[route]||renderExplore)(outlet,params);
   setHash(params.id?`${route}/${params.id}`:route);
   currentRoute=route;
+  updateNavAvatar();
   NavBar.onRoute(route);
 }
 window.addEventListener('hashchange',()=>{
@@ -3328,12 +3268,10 @@ async function renderUpcomingTab(o){
   const sinceKey=dateKeyInTz(Date.now()-864e5*2,getUserTimeZone());
   const fetchOne=async s=>{
     const sum=P[s.id];
-    // Step 1: light call only (series info incl. nextAired + season list) - no episode list.
     const series=await Api.seriesExtended(s.id).catch(()=>null);
     const na=series?.nextAired||'';
     const hasNext=(na&&na>=sinceKey)||(sum&&sum.nx&&sum.nx>=sinceKey)||epCache.has(s.id);
     if(!hasNext)return[];
-    // Step 2: only the newest season's episodes (full list only as a fallback).
     let eps;
     if(epCache.has(s.id))eps=epCache.get(s.id);
     else{
@@ -3372,7 +3310,6 @@ async function renderUpcomingTab(o){
       return{ep:e,channel,ts,timed,tag};
     }).filter(x=>dateKeyInTz(x.ts,getUserTimeZone())>=todayKey);
   };
-  // Stage 1: episode boxes (appear as soon as each show answers)
   await loadAllItems(stubs,fetchOne,({stub:s,data})=>{
     (data||[]).forEach(({ep,channel,ts,timed,tag})=>insertSorted({show:s,ep,channel,ts,timed,tag}));
     if(data&&data.length)schedule();
@@ -3381,7 +3318,6 @@ async function renderUpcomingTab(o){
   redraw();
   o.querySelector('.loading-row')?.remove();
   if(!sorted.length)listEl.appendChild(noUpcomingCard('No upcoming episodes at the moment'));
-  // Stage 2: translations, Stage 3: images
   const els=[...rowEls.values()];
   await Promise.race([Promise.allSettled(els.map(el=>el._translate())),sleep(1500)]);
   els.forEach(el=>el._loadImg());
@@ -3636,9 +3572,6 @@ function renderStats(o,opts){
           </div>
         </div>
         <div class="setting-row">
-          <div class="seg-toggle slide" id="style-toggle" data-pos="${profile.style==='glass'?1:0}" role="group" aria-label="Interface style"><span class="seg-thumb" aria-hidden="true"></span><button type="button" data-style="flat" class="${profile.style==='glass'?'':'active'}">Flat</button><button type="button" data-style="glass" class="${profile.style==='glass'?'active':''}">Glass</button></div>
-        </div>
-        <div class="setting-row">
           <label class="switch" title="Switch between dark and light mode"><input type="checkbox" id="theme-toggle" ${profile.theme==='light'?'checked':''} /><span class="slider"><span class="thumb"><svg class="ico-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span></span></label>
         </div>
         <div class="setting-cat">Local Data</div>
@@ -3738,18 +3671,11 @@ function renderStats(o,opts){
     }
   }
   const avatarInput=o.querySelector('#profile-avatar-input');
-  avatarInput.addEventListener('change',()=>pickImage(avatarInput,'avatar',d=>{o.querySelector('#profile-avatar-img').src=d}));
+  avatarInput.addEventListener('change',()=>pickImage(avatarInput,'avatar',d=>{o.querySelector('#profile-avatar-img').src=d;updateNavAvatar()}));
   const bannerInput=o.querySelector('#profile-banner-input');
   bannerInput.addEventListener('change',()=>pickImage(bannerInput,'banner',d=>{o.querySelector('#profile-banner').style.backgroundImage=`url('${d}')`}));
   const sheetEl=o.querySelector('#profile-edit-overlay');
   sheetEl.addEventListener('scroll',()=>{if(sheetEl.scrollLeft)sheetEl.scrollLeft=0},{passive:true});
-  o.querySelectorAll('#style-toggle button').forEach(btn=>btn.addEventListener('click',()=>{
-    const st=btn.dataset.style;
-    if(st===(Store.profile().style==='glass'?'glass':'flat'))return;
-    o.querySelectorAll('#style-toggle button').forEach(b=>b.classList.toggle('active',b===btn));
-    o.querySelector('#style-toggle').dataset.pos=st==='glass'?1:0;
-    switchStyle(st);
-  }));
   const themeToggle=o.querySelector('#theme-toggle');
   themeToggle.addEventListener('change',()=>{
     const t=themeToggle.checked?'light':'dark';
@@ -3883,7 +3809,7 @@ function renderStats(o,opts){
     if(surf){surf.el.remove();surf=null}
     editOverlay.scrollTop=0;
     const g0={...cached.g},home=editToggle.getBoundingClientRect();
-    { // refresh theme-dependent colours so the close animation matches the current theme
+    {
       const f=geo();
       g0.bBg=f.bBg;g0.oBg=f.oBg;g0.bBd=f.bBd;g0.oBd=f.oBd;g0.oRad=f.oRad;
       g0.bFont={...g0.bFont,color:f.bFont.color};g0.tFont={...g0.tFont,color:f.tFont.color};
@@ -3972,10 +3898,10 @@ function renderStats(o,opts){
         Cloud.noteLocalWipe();
         Object.values(K).forEach(k=>localStorage.removeItem(k));
         _pk.clear();_progCache=null;
-        idbDel('profile.avatar');idbDel('profile.banner');ProfileImg.avatar=ProfileImg.banner='';
+        idbDel('profile.avatar');idbDel('profile.banner');ProfileImg.avatar=ProfileImg.banner='';updateNavAvatar();
         bumpShowsCache();
         bumpMoviesCache();
-        applyTheme('dark');applyStyle();
+        applyTheme('dark');
         closeSettings();
         setTimeout(()=>{if(o.isConnected)renderStats(o,{noAnim:true})},560);
       }
@@ -4415,8 +4341,18 @@ async function renderShow(o,{id}){
   o.innerHTML=`<div id="content" style="padding-top:28px">${loadingHtml('Loading…')}</div>`;
   const content=o.querySelector('#content');
   try{
-    const[series,eps]=await Promise.all([Api.seriesExtended(id),getEpisodes(id)]);
-    const bannerUrl=await getBannerUrl('series',id,series);
+    const series=await Api.seriesExtended(id);
+    const idxP=loadEpIndex(id);
+    const bannerP=getBannerUrl('series',id,series);
+    let eps,idx=null;
+    if(epCache.has(id))eps=epCache.get(id);
+    else{
+      idx=await idxP;
+      const fresh=idx&&((series.lastUpdated&&idx.lu&&idx.lu===series.lastUpdated)||(Date.now()-idx.at<6*3600e3));
+      eps=fresh?epIndexToEps(id,idx):await getEpisodes(id);
+    }
+    if(!eps.some(e=>e._light))saveEpIndex(id,eps,series.lastUpdated||null);
+    const bannerUrl=await bannerP;
     const ended=isEndedStatus(series);
     saveShowProgress(id,eps,ended);
     const progress=calcShowProgress(eps,ended);
@@ -4459,6 +4395,22 @@ async function renderShow(o,{id}){
       const slots=allCaughtUp
         ?[seq.length>1?seq[seq.length-2]:null,seq[seq.length-1]||null,'END']
         :[idx>0?seq[idx-1]:null,seq[idx],idx+1<seq.length?seq[idx+1]:'END'];
+      const tok=(renderContinueWatching._t=(renderContinueWatching._t||0)+1);
+      list.innerHTML='';
+      slots.forEach(()=>{const e=document.createElement('div');e.className='feed-item feed-item-empty';list.appendChild(e)});
+      continueWrap.appendChild(list);
+      const getFull=async ep=>{
+        if(!ep||ep==='END'||!ep._light)return ep;
+        const l=await getSeasonEpisodes(series.id,ep.seasonNumber);
+        return l.find(x=>x.id===ep.id)||ep;
+      };
+      Promise.all(slots.map(getFull)).then(full=>{
+        if(tok!==renderContinueWatching._t)return;
+        list.innerHTML='';
+        drawSlots(full,list);
+      }).catch(()=>{});
+    }
+    function drawSlots(slots,list){
       slots.forEach(ep=>{
         if(ep==='END'){
           list.appendChild(caughtUpMiniCard(bannerUrl));
@@ -4483,7 +4435,6 @@ async function renderShow(o,{id}){
         },showItem);
         list.appendChild(row);
       });
-      continueWrap.appendChild(list);
     }
     renderContinueWatching();
     body.appendChild(continueWrap);
@@ -4579,7 +4530,18 @@ function seasonEpisodesSection(eps,showId,onProgressChange,showItem,seasonRefres
       markBtn.classList.toggle('on',allWatched);markBtn.setAttribute('aria-pressed',allWatched);
       seasonRwGroup?.classList.toggle('hidden',!allWatched);
     }
-    seasonEps.forEach(e=>list.appendChild(episodeRow(e,()=>{onProgressChange?.();refreshSeasonMeta();syncSeasonRewatchFromEpisodes()},showItem,syncSeasonRewatchFromEpisodes)));
+    let rowsState=0;
+    async function ensureRows(){
+      if(rowsState)return;
+      rowsState=1;
+      list.innerHTML=loadingHtml('Loading…');
+      let full;
+      try{full=await getSeasonEpisodes(showId,sn)}
+      catch{rowsState=0;list.innerHTML='';list.insertAdjacentHTML('beforeend',emptyState('Could not load this season.'));return}
+      list.innerHTML='';
+      full.forEach(e=>list.appendChild(episodeRow(e,()=>{onProgressChange?.();refreshSeasonMeta();syncSeasonRewatchFromEpisodes()},showItem,syncSeasonRewatchFromEpisodes)));
+      rowsState=2;
+    }
     seasonRefreshers?.set(sn,refreshSeasonMeta);
     syncSeasonRewatchFromEpisodes();
     wireRewatchGroup(seasonRwGroup,{
@@ -4600,6 +4562,7 @@ function seasonEpisodesSection(eps,showId,onProgressChange,showItem,seasonRefres
       if(e.target.closest('.season-mark-btn')||e.target.closest('.rewatch-group'))return;
       const open=groupWrap.classList.toggle('open');
       toggle.setAttribute('aria-expanded',open);
+      if(open)ensureRows();
     });
     markBtn.addEventListener('click',e=>{
       e.stopPropagation();
@@ -4796,17 +4759,13 @@ async function renderMovie(o,{id}){
   }
 }
 
-document.querySelectorAll('.nav-item[data-route]').forEach(b=>b.addEventListener('click',()=>{if(window._navJustDragged)return;nav(b.dataset.route)}));   // tapping the current tab reloads it
+document.querySelectorAll('.nav-item[data-route]').forEach(b=>b.addEventListener('click',()=>{if(window._navJustDragged)return;nav(b.dataset.route)}));
 const NavBar=(()=>{
-  /* Glass style only: the bar shrinks to 84% (16% smaller) while a list, the settings sheet or a show/movie page is open,
-     or after scrolling down; it grows again on scroll up, a tap, or when the mouse is within 50px of it.
-     The flat style bar never changes. */
   const bar=document.getElementById('bottomnav'),root=document.documentElement,ZONE=50;
   let route='',scrolled=false,tapBig=false,hover=false,overlayOpen=false,raf=0,tops=new WeakMap();
-  const isGlass=()=>root.dataset.style==='glass';
   const follow=()=>{const t0=performance.now();cancelAnimationFrame(raf);(function f(){updateNavPill(true);if(performance.now()-t0<500)raf=requestAnimationFrame(f)})()};
   const evaluate=()=>{
-    const want=isGlass()&&!hover&&!tapBig&&(overlayOpen||route==='show'||route==='movie'||scrolled);
+    const want=!hover&&!tapBig&&(overlayOpen||route==='show'||route==='movie'||scrolled);
     if(bar.classList.contains('compact')!==want){bar.classList.toggle('compact',want);follow()}
   };
   const checkOverlay=()=>{
@@ -4814,7 +4773,6 @@ const NavBar=(()=>{
     if(o!==overlayOpen){overlayOpen=o;tapBig=false;evaluate()}
   };
   new MutationObserver(checkOverlay).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
-  new MutationObserver(evaluate).observe(root,{attributes:true,attributeFilter:['data-style']});
   document.addEventListener('scroll',e=>{
     const t=e.target;
     if(t.closest&&t.closest('.list-overlay,.profile-edit-overlay'))return;
@@ -4835,7 +4793,6 @@ const NavBar=(()=>{
   const tap=()=>{if(!tapBig){tapBig=true;evaluate()}};
   bar.addEventListener('pointerdown',tap);
   bar.addEventListener('focusin',tap);
-  /* press feedback: 5% bigger and 10% brighter while a finger/mouse is down; touch can also hold and slide across the tabs */
   let press=null,pressAt=0;
   const navItems=()=>[...bar.querySelectorAll('.nav-item[data-route]')];
   const scaleOf=()=>{const r=bar.getBoundingClientRect();return bar.offsetWidth?r.width/bar.offsetWidth:1};
@@ -4884,7 +4841,7 @@ const NavBar=(()=>{
     }
   }
   bar.addEventListener('pointerdown',e=>{
-    if(!isGlass()||(e.pointerType==='mouse'&&e.button!==0))return;
+    if(e.pointerType==='mouse'&&e.button!==0)return;
     if(!e.target.closest('.nav-item'))return;
     press={id:e.pointerId,x:e.clientX,startX:e.clientX,drag:false,touch:e.pointerType!=='mouse',timer:0};
     pressAt=performance.now();bar.classList.add('pressing');
@@ -4905,6 +4862,32 @@ const NavBar=(()=>{
   return{
     onRoute(r){route=r;scrolled=false;tapBig=false;tops=new WeakMap();evaluate()}
   };
+})();
+
+(function(){
+  let cur=null;
+  const base=ic=>{const t=getComputedStyle(ic).transform;return t&&t!=='none'?t:'none'};
+  document.addEventListener('pointerdown',e=>{
+    const it=e.target.closest&&e.target.closest('#bottomnav .nav-item');
+    if(!it||!it.animate)return;
+    const ic=it.querySelector('.nav-icon');if(!ic)return;
+    if(cur&&cur.anim)cur.anim.cancel();
+    const from=base(ic);
+    cur={ic,from,anim:ic.animate([{transform:from},{transform:'scale(.76)'}],{duration:110,easing:'ease-out',fill:'forwards'})};
+  },true);
+  const release=()=>{
+    if(!cur)return;
+    const {ic,from,anim}=cur;cur=null;
+    anim.cancel();
+    ic.animate([
+      {transform:'scale(.76)',offset:0},
+      {transform:'scale(1.28) rotate(-9deg)',offset:.45,easing:'cubic-bezier(.3,0,.3,1)'},
+      {transform:'scale(.94) rotate(4deg)',offset:.72},
+      {transform:from==='none'?'none':from,offset:1}
+    ],{duration:460,easing:'cubic-bezier(.25,.8,.35,1)'});
+  };
+  document.addEventListener('pointerup',release,true);
+  document.addEventListener('pointercancel',release,true);
 })();
 const runSearch=()=>{
   if(!searchInput.value.trim())return;
@@ -5041,17 +5024,9 @@ async function offerRestore(){
   showConfirmDialog({title:'Restore your data?',message:'This device has no saved library, but a backup file is connected. Load it now?',confirmLabel:'Load backup',onConfirm:restore});
 }
 
-/* =====================================================================================================
-   Cloud sync (Supabase). Optional: the app works exactly as before when nobody is logged in.
-   - What is synced: exactly the file the Export Backup button produces (the .zip with the four organised files,
-     avatar/banner included), stored base64-encoded inside public.user_data.data (v2). Older rows (v1, a native
-     snapshot) are still understood and are upgraded to v2 on the next sync, after a safety copy.
-   - Safety: writes are compare-and-swap on updated_at, so a stale device can never silently overwrite newer
-     cloud data; every ambiguous situation asks the user and keeps a safety copy of whatever gets replaced.
-   ===================================================================================================== */
 const CLOUD_KEYS=['lib','movieLib','watched','movieWatched','favShows','favMovies','rewatch','epRewatch','seasonRewatch','profile','stopped','showReg','movieReg'].map(n=>K[n]);
 const SB_SDK_URL='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js';
-const CLOUD_META='nx.cloudmeta';      // per-device sync bookkeeping (never uploaded, never wiped by "Delete local data")
+const CLOUD_META='nx.cloudmeta';
 const CLOUD_DATA_KEYS=[K.lib,K.movieLib,K.watched,K.movieWatched,K.favShows,K.favMovies];
 
 function cloudCanon(v){
@@ -5059,7 +5034,7 @@ function cloudCanon(v){
   if(Array.isArray(v))return '['+v.map(cloudCanon).join(',')+']';
   return '{'+Object.keys(v).sort().filter(k=>v[k]!==undefined).map(k=>JSON.stringify(k)+':'+cloudCanon(v[k])).join(',')+'}';
 }
-function cloudHash(snap){   // canonical (key-order independent: Postgres JSONB reorders keys) 53-bit hash
+function cloudHash(snap){
   const str=cloudCanon(snap);let h1=0xdeadbeef,h2=0x41c6ce57;
   for(let i=0;i<str.length;i++){const c=str.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);
@@ -5073,30 +5048,9 @@ function cloudSnapshot(){
 }
 function cloudIsEmpty(snap){return !snap||!snap.keys||CLOUD_DATA_KEYS.every(k=>!Object.keys(snap.keys[k]||{}).length)}
 function rowEmpty(d){return !d||(d.keys?cloudIsEmpty(d):(!d.zip||d.empty===true))}
-function cloudCounts(d){
-  if(d&&d.counts)return `${d.counts.shows} shows, ${d.counts.movies} movies`;
-  const n=k=>Object.keys((d&&d.keys&&d.keys[k])||{}).length;return `${n(K.lib)} shows, ${n(K.movieLib)} movies`;
-}
 const b64FromBlob=blob=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]||'');r.onerror=()=>rej(r.error);r.readAsDataURL(blob)});
 function bytesFromB64(b){const bin=atob(b),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u}
 
-/* union merge: nothing is lost, counters take the larger value. (A merge cannot represent deletions.) */
-function mergeSnapshots(a,b){
-  const ts=o=>o&&typeof o==='object'?(o.at||o.watchedAt||o.addedAt||o.favAt||0):0;
-  const mergeMap=(x={},y={})=>{const r={...y};for(const k in x)r[k]=(k in y&&ts(y[k])>ts(x[k]))?y[k]:x[k];return r};
-  const maxMap=(x={},y={})=>{const r={...y};for(const k in x)r[k]=Math.max(x[k]||0,y[k]||0);return r};
-  const keys={};
-  CLOUD_KEYS.forEach(k=>{
-    const x=a.keys[k],y=b.keys[k];
-    if(x===undefined&&y===undefined)return;
-    if(k===K.profile){keys[k]={...(y||{}),...Object.fromEntries(Object.entries(x||{}).filter(([,v])=>v!==''&&v!=null))}}
-    else if(k===K.rewatch){keys[k]={...(y||{}),...(x||{}),show:maxMap((x||{}).show,(y||{}).show),movie:maxMap((x||{}).movie,(y||{}).movie)}}
-    else if(k===K.epRewatch||k===K.seasonRewatch)keys[k]=maxMap(x,y);
-    else keys[k]=mergeMap(x,y);
-  });
-  const ia=a.images||{},ib=b.images||{};
-  return{app:'tv_plus',v:1,keys,images:{avatar:ia.avatar||ib.avatar||'',banner:ia.banner||ib.banner||''}};
-}
 
 function cloudAuthMessage(e){
   const m=String((e&&(e.message||e.msg||e.error_description))||e||'');
@@ -5109,7 +5063,7 @@ function cloudAuthMessage(e){
   if(/failed to fetch|network|load failed|timeout/i.test(m)||!navigator.onLine)return 'No connection. Check your internet and try again.';
   return m||'Something went wrong. Please try again.';
 }
-function cloudCleanAuthHash(){   // email-confirmation links land on "#access_token=..."; keep that out of the app's hash router
+function cloudCleanAuthHash(){
   const h=location.hash||'';
   if(/^#(access_token|error|error_code)=/.test(h)||/[#&]type=(signup|recovery|magiclink|email_change)/.test(h)){
     const p=new URLSearchParams(h.slice(1));
@@ -5117,23 +5071,9 @@ function cloudCleanAuthHash(){   // email-confirmation links land on "#access_to
     try{history.replaceState(null,'',location.pathname+location.search)}catch{}
   }
 }
-function cloudChoice({title,message,options}){
-  return new Promise(res=>{
-    const back=document.createElement('div');back.className='modal-backdrop';
-    back.innerHTML=`<div class="modal-card" role="dialog" aria-modal="true"><div class="modal-title">${esc(title)}</div><div class="modal-message">${esc(message)}</div><div class="modal-actions cl-choices"></div></div>`;
-    const box=back.querySelector('.cl-choices');
-    options.forEach(o=>{
-      const b=document.createElement('button');b.type='button';
-      b.className='btn '+(o.primary?'btn-accent':o.danger?'btn-disconnect':'btn-ghost');b.textContent=o.label;
-      b.addEventListener('click',()=>{back.remove();res(o.value)});box.appendChild(b);
-    });
-    document.body.appendChild(back);
-  });
-}
-
 const Cloud={
   debounceMs:2500,
-  sb:null,user:null,status:'off',error:'',held:false,note:'',backups:[],rev:0,
+  sb:null,user:null,status:'off',error:'',note:'',
   q:Promise.resolve(),timer:null,retryT:null,retryN:0,pollT:null,applying:false,listeners:new Set(),initDone:false,
   cfg(){return window.TVPLUS_SUPABASE||{}},
   configured(){const c=this.cfg();return !!(c.url&&c.publishableKey&&/^https?:\/\//.test(c.url)&&!/PASTE|YOUR_/i.test(c.publishableKey))},
@@ -5141,14 +5081,14 @@ const Cloud={
   emit(){this.listeners.forEach(f=>{try{f()}catch{}})},
   setStatus(st,err=''){this.status=st;this.error=err;this.emit()},
   setNote(t){this.note=t;this.emit();clearTimeout(this._noteT);if(t)this._noteT=setTimeout(()=>{this.note='';this.emit()},9000)},
-  lock(fn){const r=this.q.then(()=>fn());this.q=r.catch(()=>{});return r},      // one sync operation at a time: no overlapping uploads
+  lock(fn){const r=this.q.then(()=>fn());this.q=r.catch(()=>{});return r},
   meta(){try{return JSON.parse(localStorage.getItem(CLOUD_META)||'{}')||{}}catch{return{}}},
   setMeta(p){const m={...this.meta(),...p};try{localStorage.setItem(CLOUD_META,JSON.stringify(m))}catch{}return m},
   lastSync(){return this.meta().lastSyncAt||0},
 
   async init(){
     if(this.initDone)return;this.initDone=true;
-    try{this.backups=JSON.parse((await idbGet('cloud.backups'))||'[]')}catch{this.backups=[]}
+    idbDel('cloud.backups');
     window.addEventListener('online',()=>{if(this.user){this.retryN=0;this.syncSoon('online')}});
     window.addEventListener('offline',()=>{if(this.user)this.setStatus('offline')});
     document.addEventListener('visibilitychange',()=>{if(!document.hidden&&this.user)this.syncSoon('focus')});
@@ -5158,7 +5098,7 @@ const Cloud={
     const c=this.cfg();
     this.sb=window.supabase.createClient(c.url,c.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
     this.sb.auth.onAuthStateChange((ev,session)=>{
-      setTimeout(()=>{   // never await Supabase calls inside this callback
+      setTimeout(()=>{
         if(ev==='SIGNED_OUT'){if(this.user)this.userGone()}
         else if((ev==='SIGNED_IN'||ev==='INITIAL_SESSION')&&session&&session.user&&!(this.user&&this.user.id===session.user.id))this.onUser(session.user);
       },0);
@@ -5178,7 +5118,6 @@ const Cloud={
     });
   },
 
-  /* ---- authentication ---- */
   async signUp(email,password){
     if(!this.sb)return{ok:false,message:this.configured()?'The cloud service is not available right now.':'Cloud sync is not configured.'};
     const {data,error}=await this.sb.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}});
@@ -5194,34 +5133,32 @@ const Cloud={
   },
   async signOut(opts={}){
     clearTimeout(this.timer);
-    if(!opts.skipFlush&&this.user&&navigator.onLine){   // best-effort: don't leave unsynced changes behind
+    if(!opts.skipFlush&&this.user&&navigator.onLine){
       try{await Promise.race([this.lock(()=>this.pushLocked()),new Promise(r=>setTimeout(r,4000))])}catch{}
     }
     this.userGone();
-    try{await this.sb.auth.signOut({scope:'local'})}catch{}   // local scope: other devices stay logged in
+    try{await this.sb.auth.signOut({scope:'local'})}catch{}
   },
   userGone(){
-    this.user=null;this.held=false;
+    this.user=null;
     clearTimeout(this.timer);clearTimeout(this.retryT);clearInterval(this.pollT);this.pollT=null;
-    this.setStatus('off');       // local data and bookkeeping stay untouched
+    this.setStatus('off');
   },
   onUser(user){
-    this.user=user;this.retryN=0;this.held=false;
+    this.user=user;this.retryN=0;
     this.setStatus('syncing');
     clearInterval(this.pollT);this.pollT=setInterval(()=>{if(!document.hidden&&this.user&&this.status!=='syncing')this.syncSoon('poll')},60000);
     this.syncSoon('login');
   },
 
-  /* ---- scheduling ---- */
   syncSoon(reason){
     return this.lock(async()=>{
       if(!this.user)return;
       try{await this.syncLocked(reason);this.retryN=0}catch(e){this.fail(e)}
     });
   },
-  syncNow(){clearTimeout(this.retryT);return this.syncSoon('manual')},
   markDirty(){
-    if(!this.user||this.applying||this.held)return;
+    if(!this.user||this.applying)return;
     const m=this.meta();if(m.owner!==this.user.id||m.wiped)return;
     this.setStatus(navigator.onLine?'syncing':'offline');
     clearTimeout(this.timer);
@@ -5233,19 +5170,12 @@ const Cloud={
     this.setStatus(net?'offline':'failed',net?'':cloudAuthMessage(e));
     if(!this.user)return;
     clearTimeout(this.retryT);
-    this.retryT=setTimeout(()=>this.syncSoon('retry'),Math.min(300,5*2**this.retryN++)*1000);   // local data stays as it is; retry with back-off
+    this.retryT=setTimeout(()=>this.syncSoon('retry'),Math.min(300,5*2**this.retryN++)*1000);
   },
-  noteLocalWipe(){   // "Delete local data": must never turn into "delete cloud data"
+  noteLocalWipe(){
     clearTimeout(this.timer);
     if(this.meta().owner)this.setMeta({wiped:true});
   },
-  uploadLocal(){
-    if(!this.user)return;
-    this.setMeta({owner:this.user.id,base:null,hash:'',fmt:2,wiped:false});this.held=false;
-    return this.syncSoon('upload');
-  },
-
-  /* ---- what gets uploaded: the exact export zip ---- */
   async currentExport(){
     const files=buildExportFiles(),blob=await zipFiles(files),snap=cloudSnapshot();
     return{
@@ -5256,20 +5186,19 @@ const Cloud={
   },
   async isDirty(m){
     if(m.fmt===2)return(await this.currentExport()).hash!==m.hash;
-    return cloudHash(cloudSnapshot())!==m.hash;      // device last synced with the older (v1) format
+    return cloudHash(cloudSnapshot())!==m.hash;
   },
 
-  /* ---- core sync steps (always called inside lock) ---- */
   markSynced(){this.setMeta({lastSyncAt:Date.now()});this.setStatus('synced')},
   async syncLocked(){
     const u=this.user;if(!u||!this.sb)return;
     if(!navigator.onLine){this.setStatus('offline');return}
     const m=this.meta();
-    if(m.owner===u.id&&!m.wiped&&!this.held){
+    if(m.owner===u.id&&!m.wiped){
       this.setStatus('syncing');
       const {data,error}=await this.sb.from('user_data').select('updated_at').eq('user_id',u.id).maybeSingle();
       if(error)throw error;
-      if((data?data.updated_at:null)===(m.base||null)){   // cloud unchanged since our last sync
+      if((data?data.updated_at:null)===(m.base||null)){
         if(await this.isDirty(m))await this.pushLocked();else this.markSynced();
         return;
       }
@@ -5280,7 +5209,7 @@ const Cloud={
     if(base){
       const {data,error}=await this.sb.from('user_data').update({data:doc,updated_at:new Date().toISOString()}).eq('user_id',uid).eq('updated_at',base).select('updated_at');
       if(error)throw error;
-      if(!data||!data.length)return{conflict:true};      // someone else wrote since our last sync
+      if(!data||!data.length)return{conflict:true};
       return{updated_at:data[0].updated_at};
     }
     const {data,error}=await this.sb.from('user_data').insert({user_id:uid,data:doc,updated_at:new Date().toISOString()}).select('updated_at');
@@ -5290,16 +5219,15 @@ const Cloud={
   async pushLocked(depth=0){
     const u=this.user;if(!u||!this.sb)return;
     const m=this.meta();
-    if(m.owner!==u.id||m.wiped||this.held)return;
+    if(m.owner!==u.id||m.wiped)return;
     if(!navigator.onLine){this.setStatus('offline');return}
     const exp=await this.currentExport();
     if(m.fmt===2&&exp.hash===m.hash){this.markSynced();return}
     this.setStatus('syncing');
-    if(m.fmt!==2&&m.base){   // first upgrade of an older (v1) cloud row: keep a safety copy of it on this device
+    if(m.fmt!==2&&m.base){
       const {data:old,error:e0}=await this.sb.from('user_data').select('data,updated_at').eq('user_id',u.id).maybeSingle();
       if(e0)throw e0;
       if(old&&old.updated_at!==m.base){await this.reconcileFull(depth+1);return}
-      if(old&&old.data&&old.data.keys&&!cloudIsEmpty(old.data))await this.saveBackup('Cloud copy before format upgrade',old.data);
     }
     const res=await this.write(u.id,exp.doc,m.base||null);
     if(res.conflict){
@@ -5308,22 +5236,6 @@ const Cloud={
     }
     this.setMeta({base:res.updated_at,hash:exp.hash,fmt:2,lastSyncAt:Date.now(),hadData:!exp.doc.empty,wiped:false});
     this.setStatus('synced');
-  },
-  async ask(kind,ctx){
-    const dev=cloudCounts(ctx.snap);
-    const T={
-      upload:{title:'Back up to the cloud?',message:`Your account has no cloud data yet. Upload the collection on this device (${dev})?`,
-        options:[{label:'Upload to the cloud',value:'upload',primary:true},{label:'Not now',value:'later'}]},
-      otherEmpty:{title:'Different account',message:`The data on this device was last synced with another account (${dev}). It will not be uploaded to this account unless you choose to.`,
-        options:[{label:'Upload this device’s data to this account',value:'upload'},{label:'Cancel and log out',value:'logout',primary:true}]},
-      both:{title:'Cloud data found',message:`This account already has a collection in the cloud (${cloudCounts(ctx.cloud)}) and this device has its own data (${dev}). A safety copy of anything that gets replaced is kept.`,
-        options:[{label:'Merge both (recommended)',value:'merge',primary:true},{label:'Use cloud data (replace this device)',value:'cloud'},{label:'Use this device (replace cloud)',value:'device',danger:true}]},
-      other:{title:'Different account',message:`The data on this device was last synced with another account (${dev}). It will not be merged into this account. A safety copy of anything that gets replaced is kept.`,
-        options:[{label:'Use this account’s cloud data',value:'cloud',primary:true},{label:'Upload this device’s data (replace cloud)',value:'device',danger:true},{label:'Cancel and log out',value:'logout'}]},
-      conflict:{title:'Changes on two devices',message:`This collection was changed on another device (cloud: ${cloudCounts(ctx.cloud)}) and you also have changes here that are not synced yet (this device: ${dev}). Nothing has been overwritten. A safety copy of anything that gets replaced is kept.`,
-        options:[{label:'Merge both (recommended)',value:'merge',primary:true},{label:'Use cloud data (discard my changes here)',value:'cloud'},{label:'Use this device (replace cloud)',value:'device',danger:true}]}
-    }[kind];
-    return cloudChoice(T);
   },
   async reconcileFull(depth=0){
     const u=this.user;if(!u)return;const uid=u.id;
@@ -5338,66 +5250,38 @@ const Cloud={
     const mine=m.owner===uid,dirty=mine?await this.isDirty(m):!localEmpty;
     const ctx={snap,cloud:d};
 
-    if(m.wiped){   // local data was deleted on purpose; the cloud copy is never deleted by that
+    if(m.wiped){
       if(!cloudEmpty){await this.applyCloud(row,uid,'Restored your collection from the cloud.');return}
       this.setMeta({wiped:false,owner:uid,base:rowBase,hash:'',fmt:2,hadData:false});this.markSynced();return;
     }
     if(cloudEmpty){
-      if(localEmpty){const exp=await this.currentExport();this.setMeta({owner:uid,base:rowBase,hash:exp.hash,fmt:2,hadData:false,lastSyncAt:Date.now()});this.held=false;this.setStatus('synced');return}
-      if(mine&&dirty&&m.base==null&&rowBase==null){await this.pushLocked(depth);return}     // this account already owns this device's data
-      const choice=await this.ask(!mine&&m.owner?'otherEmpty':'upload',ctx);
-      if(choice==='upload'){this.setMeta({owner:uid,base:rowBase,hash:'',fmt:2,wiped:false,hadData:false});this.held=false;await this.pushLocked(depth);return}
-      if(choice==='logout'){await this.signOut({skipFlush:true});return}
-      this.held=true;this.setStatus('idle');return;     // "Not now": nothing is uploaded; local data untouched
+      if(localEmpty){const exp=await this.currentExport();this.setMeta({owner:uid,base:rowBase,hash:exp.hash,fmt:2,hadData:false,lastSyncAt:Date.now()});this.setStatus('synced');return}
+      this.setMeta({owner:uid,base:rowBase,hash:'',fmt:2,wiped:false,hadData:false});await this.pushLocked(depth);return;
     }
-    let choice;
-    if(mine){
-      if(rowBase===m.base){if(dirty)await this.pushLocked(depth);else this.markSynced();return}
-      if(!dirty){await this.applyCloud(row,uid,'Loaded the latest changes from your other device.');return}
-      choice=await this.ask('conflict',ctx);
-    }else if(localEmpty){await this.applyCloud(row,uid,'Loaded your collection from the cloud.');return}
-    else choice=await this.ask(m.owner?'other':'both',ctx);
-    await this.applyChoice(choice,row,uid,snap,depth);
-  },
-  async applyChoice(choice,row,uid,snap,depth){
-    const d=row.data;
-    if(choice==='logout'){await this.signOut({skipFlush:true});return}
-    if(choice==='cloud'){await this.saveBackup('This device, before loading cloud data',snap);await this.applyCloud(row,uid,'Loaded your collection from the cloud.');return}
-    if(choice==='merge'){
-      await this.saveBackup('This device, before merge',snap);
-      await this.pullRow(d,'merge');
-      this.setMeta({owner:uid,base:row.updated_at,hash:'',fmt:2,wiped:false,hadData:true});this.held=false;
-      this.setNote('Merged this device with your cloud collection.');
-      await this.pushLocked(depth);return;
-    }
-    if(choice==='device'){
-      await this.saveBackup('Cloud copy, before it was replaced',d);
-      this.setMeta({owner:uid,base:row.updated_at,hash:'',fmt:2,wiped:false,hadData:true});this.held=false;
-      await this.pushLocked(depth);return;
-    }
+    if(mine&&rowBase===m.base){if(dirty)await this.pushLocked(depth);else this.markSynced();return}
+    await this.applyCloud(row,uid,'Loaded the latest synced data.');
   },
   async applyCloud(row,uid,note){
-    await this.pullRow(row.data,'replace');
+    await this.pullRow(row.data);
     const exp=await this.currentExport();
     this.setMeta({owner:uid,base:row.updated_at,hash:exp.hash,fmt:2,lastSyncAt:Date.now(),hadData:true,wiped:false});
-    this.held=false;this.setStatus('synced');if(note)this.setNote(note);
+    this.setStatus('synced');if(note)this.setNote(note);
   },
-  /* Bring a cloud document into this device. v2 = the export zip, read by the same importer as "Import Backup". */
-  async pullRow(d,mode){
+  async pullRow(d){
     this.applying=true;
     try{
-      if(d&&d.keys){                       // v1 row (native snapshot)
-        await this.applySnapshot(mode==='merge'?mergeSnapshots(cloudSnapshot(),d):d);
+      if(d&&d.keys){
+        await this.applySnapshot(d);
       }else{
         const files=await unzipFiles(bytesFromB64(d.zip));
-        await importBackupFiles(files,{mode,localRegistry:true});
+        await importBackupFiles(files,{mode:'replace',localRegistry:true});
         this.afterApply();
       }
     }finally{this.applying=false}
   },
   afterApply(){
     showsDirty=true;moviesDirty=true;bumpShowsCache();bumpMoviesCache();
-    applyTheme(Store.profile().theme);applyStyle(Store.profile().style);
+    applyTheme(Store.profile().theme);
     const{route,id}=hashRoute();nav(route,{id,noAnim:true});
   },
   async applySnapshot(snap){
@@ -5411,42 +5295,27 @@ const Cloud={
       const im=snap.images||{};
       for(const kind of ['avatar','banner']){
         const v=im[kind];
-        if(v&&IMG_OK.test(v))await saveProfileImage(kind,v);    // a missing image in the snapshot never deletes the local one
+        if(v&&IMG_OK.test(v))await saveProfileImage(kind,v);
       }
       this.afterApply();
     }finally{this.applying=was}
-  },
-
-  /* ---- safety copies (kept on this device, newest 3) ---- */
-  async saveBackup(label,snap){
-    this.backups=[{id:Date.now().toString(36),at:Date.now(),label,snap},...this.backups].slice(0,3);
-    await idbSet('cloud.backups',JSON.stringify(this.backups));this.rev++;this.emit();
-  },
-  async restoreBackup(id){
-    const b=this.backups.find(x=>x.id===id);if(!b)return;
-    await this.saveBackup('This device, before restoring a safety copy',cloudSnapshot());
-    await this.pullRow(b.snap,'replace');
-    if(this.user&&this.meta().owner===this.user.id)this.markDirty();
   }
 };
 _cloudHook=k=>{if(k==='img'||(CLOUD_KEYS.includes(k)&&k!==K.showReg&&k!==K.movieReg))Cloud.markDirty()};
 
-/* ---- account UI (Settings > Account & Cloud Sync) and the status chip next to the Settings button ---- */
 function cloudMountUI(o){
   const box=o.querySelector('#cloud-account'),chip=o.querySelector('#cloud-chip');
   if(!box)return;
-  const LABEL={syncing:'Syncing…',synced:'Synced',offline:'Offline',failed:'Sync failed',held:'Not uploaded',idle:'Not synced'};
-  const key=()=>Cloud.held?'held':(Cloud.status==='off'?'':Cloud.status);
+  const LABEL={syncing:'Syncing…',synced:'Synced',offline:'Offline',failed:'Sync failed',idle:'Not synced'};
+  const key=()=>Cloud.status==='off'?'':Cloud.status;
   const fmt=t=>t?new Date(t).toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Never';
   const mode=()=>!Cloud.configured()?'unconfigured':(Cloud.user?'in':'out');
-  let cur='',rev=-1,busy=false;
+  let cur='',busy=false;
   const paint=()=>{
     const k=key();
-    if(chip){chip.hidden=!(Cloud.user&&k);chip.dataset.k=k;chip.innerHTML=`<span class="cl-dot"></span>${esc(LABEL[k]||'')}`}
-    const st=box.querySelector('#cl-stat'),last=box.querySelector('#cl-last'),msgs=box.querySelector('#cl-msgs');
-    if(st){st.dataset.k=k;st.innerHTML=`<span class="cl-dot"></span>${esc(LABEL[k]||'')}`}
-    if(last)last.textContent='Last sync: '+fmt(Cloud.lastSync());
-    if(msgs){   // notes / errors exist only while there is something to say
+    if(chip){chip.hidden=!(Cloud.user&&k);chip.dataset.k=k;chip.innerHTML=`<span class="cl-dot"></span>${esc(LABEL[k]||'')}${Cloud.lastSync()?`<span class="cl-chip-time">${esc(fmt(Cloud.lastSync()))}</span>`:''}`}
+    const msgs=box.querySelector('#cl-msgs');
+    if(msgs){
       const e=Cloud.status==='failed'?Cloud.error:'',n=Cloud.note||'';
       const html=(n?`<div class="cl-ok">${esc(n)}</div>`:'')+(e?`<div class="cl-err" role="status">${esc(e)}</div>`:'');
       if(msgs.dataset.h!==html){msgs.dataset.h=html;msgs.innerHTML=html}
@@ -5454,7 +5323,7 @@ function cloudMountUI(o){
   };
   const setMsg=(t,ok)=>{const m=box.querySelector('#cl-msg');if(m){m.textContent=t||'';m.className=ok?'cl-ok':'cl-err'}};
   function render(){
-    cur=mode();rev=Cloud.rev;
+    cur=mode();
     if(cur==='unconfigured'){
       box.innerHTML='<div class="cl-line">Cloud sync is not set up yet. Add your Supabase publishable key to <b>supabase-config.js</b> to enable accounts and syncing across devices.</div>';
     }else if(cur==='out'){
@@ -5483,21 +5352,15 @@ function cloudMountUI(o){
       box.querySelector('#cl-signup').addEventListener('click',()=>run((a,b)=>Cloud.signUp(a,b)));
     }else{
       const email=Cloud.user&&Cloud.user.email||'';
-      box.innerHTML=`<div class="cl-row"><div class="cl-left"><div class="cl-line">Signed in as <b>${esc(email)}</b></div><div class="cl-state"><span id="cl-stat" class="cl-status"></span><span class="cl-sep">·</span><span id="cl-last" class="cl-line"></span></div></div><button type="button" id="cl-logout" class="btn btn-disconnect cl-fit">Log out</button></div>
-        <div id="cl-msgs"></div>
-        ${Cloud.held?'<div class="data-row"><button type="button" id="cl-upload" class="btn btn-ghost">Upload this device’s data</button></div>':''}
-        ${Cloud.backups.length?`<div class="cl-line">Safety copies kept on this device</div><div class="cl-backups">${Cloud.backups.map(b=>`<div class="cl-backup"><span>${esc(b.label)} · ${esc(fmt(b.at))}</span><button type="button" class="btn btn-ghost" data-restore="${esc(b.id)}">Restore</button></div>`).join('')}</div>`:''}`;
+      box.innerHTML=`<div class="cl-row"><div class="cl-left"><img class="cl-avatar" src="${ProfileImg.avatar||avatarPlaceholder()}" alt="" /><span class="cl-line cl-who"><b>${esc(email)}</b></span></div><button type="button" id="cl-logout" class="btn btn-disconnect cl-fit" style="display:inline-flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>Log out</button></div>
+        <div id="cl-msgs"></div>`;
       box.querySelector('#cl-logout').addEventListener('click',async e=>{e.target.disabled=true;await Cloud.signOut()});
-      const up=box.querySelector('#cl-upload');if(up)up.addEventListener('click',()=>Cloud.uploadLocal());
-      box.querySelectorAll('[data-restore]').forEach(btn=>btn.addEventListener('click',()=>{
-        showConfirmDialog({title:'Restore this safety copy?',message:'This device’s collection will be replaced by the selected copy and then synced. Your current collection is saved as a new safety copy first.',confirmLabel:'Restore',onConfirm:()=>Cloud.restoreBackup(btn.dataset.restore)});
-      }));
     }
     paint();
   }
   const unsub=Cloud.subscribe(()=>{
     if(!box.isConnected){unsub();return}
-    if(mode()!==cur||Cloud.rev!==rev||(cur==='in'&&!!box.querySelector('#cl-upload')!==Cloud.held))render();else paint();
+    if(mode()!==cur)render();else paint();
   });
   render();
 }
@@ -5505,10 +5368,9 @@ function cloudMountUI(o){
 (async function boot(){
   cloudCleanAuthHash();
   applyTheme(Store.profile().theme);
-  if(Store.profile().style==='liquid')Store.setProfile({style:'glass'});
-  applyStyle(Store.profile().style);
   await FileSync.init();
   await loadProfileImages();
+  updateNavAvatar();
   pruneEpRewatch();
   restoreWatchedShows();
   ['nx.apikey','nx.omdb'].forEach(k=>{try{localStorage.removeItem(k)}catch{}});
@@ -5523,5 +5385,6 @@ function cloudMountUI(o){
 
 </script>
 
+<script>(function(){function f(){var w=document.documentElement.clientWidth,pw=1200,side=Math.max(0,(w-Math.min(w,pw))/2),r=document.documentElement.style;r.setProperty('--side',side+'px')}f();addEventListener('resize',f)})();</script>
 </body>
 </html>
