@@ -236,11 +236,28 @@ html,body,body *{touch-action:pan-x pan-y}
 .profile-edit-overlay,.profile-edit-overlay *{touch-action:pan-y}
 .profile-edit-overlay{overflow-x:hidden!important;overscroll-behavior-x:none}
 .profile-edit-overlay :is(select,input,textarea){max-width:100%;min-width:0}
-.overview-text{color:var(--text)!important;margin:0 0 14px}
+.overview-text{color:var(--text)!important;margin:0 0 14px;overflow-wrap:anywhere}
+.overview-text:not([data-fit]){max-height:3.3em;overflow:hidden}
 .see-more-btn{display:inline-block;margin:0 0 0 6px;background:#fff;color:#2C1F14;border:none;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:800;letter-spacing:.07em;cursor:pointer}
 .see-more-btn:hover{background:#ececec}
-.stats-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:24px}
-@media(min-width:680px){.stats-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.stats-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-bottom:24px;align-items:start}
+@media(min-width:680px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat-combo{cursor:pointer;-webkit-tap-highlight-color:transparent;outline:none;user-select:none}
+.stat-combo:focus-visible{box-shadow:0 0 0 2px var(--accent)}
+.stat-combo .stat-card2-head{position:relative}
+.stat-chev{position:absolute;right:0;top:50%;width:calc(16px*var(--sc))!important;height:calc(16px*var(--sc))!important;margin-top:calc(-8px*var(--sc));color:var(--text-dim);transition:transform .45s cubic-bezier(.2,.8,.2,1),color .2s}
+.stat-combo.open .stat-chev{transform:rotate(180deg);color:var(--accent)}
+.stat-main{display:flex;align-items:center;justify-content:center;gap:calc(20px*var(--sc))}
+.stat-sep{width:1px;align-self:stretch;background:var(--border)}
+.stat-more{display:grid;grid-template-rows:0fr;width:100%;transition:grid-template-rows .5s cubic-bezier(.2,.8,.2,1)}
+.stat-combo.open .stat-more{grid-template-rows:1fr}
+.stat-more-in{min-height:0;overflow:hidden;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;white-space:normal;opacity:0;transition:opacity .3s ease}
+.stat-combo.open .stat-more-in{opacity:1;padding-top:14px}
+@media(min-width:420px){.stat-more-in{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.stat-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:10px 6px;border-radius:12px;background:var(--bg-elev);min-width:0;text-align:center}
+.stat-combo.open .stat-tile{animation:castIn .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 35ms)}
+.stat-tile-v{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--text);line-height:1.1}
+.stat-tile-l{font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--text-dim);text-transform:uppercase;overflow-wrap:anywhere}
 .stats-grid{--sc:1}
 .stat-card2{background:#000;border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;white-space:nowrap;min-width:0}
 .stat-card2-head{display:flex;align-items:center;justify-content:center;gap:calc(6px*var(--sc));font-size:calc(13px*var(--sc));font-weight:600;color:var(--text);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);width:100%;white-space:nowrap}
@@ -250,12 +267,15 @@ html,body,body *{touch-action:pan-x pan-y}
 .stat-part{display:flex;flex-direction:column;align-items:center}
 @media(max-width:600px){
 .feed-item.ghost{pointer-events:none;align-items:center;gap:12px;padding:0 12px 0 0;border-color:transparent;background:var(--bg-card)}
-.ghost-th{width:141px;height:100%;flex-shrink:0;background:linear-gradient(100deg,var(--bg-elev) 30%,color-mix(in srgb,var(--bg-elev) 60%,var(--text) 14%) 50%,var(--bg-elev) 70%) 0 0/220% 100%;animation:ghostSh 1.3s ease-in-out infinite}
+.ghost-th{width:141px;height:100%;flex-shrink:0;background:var(--bg-elev)}
 .ghost-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:9px;padding-left:2px}
-.ghost-bar{display:block;height:11px;border-radius:6px;background:linear-gradient(100deg,var(--bg-elev) 30%,color-mix(in srgb,var(--bg-elev) 60%,var(--text) 14%) 50%,var(--bg-elev) 70%) 0 0/220% 100%;animation:ghostSh 1.3s ease-in-out infinite}
+.ghost-bar{display:block;height:11px;border-radius:6px;background:var(--bg-elev);animation:none}
 .ghost-bar.w1{width:46%}.ghost-bar.w2{width:78%;height:9px}
 .ghost-dot{width:30px;height:30px;border-radius:50%;flex-shrink:0;background:var(--bg-elev);animation:ghostPulse 1.3s ease-in-out infinite}
-@keyframes ghostSh{from{background-position:120% 0}to{background-position:-120% 0}}
+@keyframes ghostWipe{0%{transform:translateX(-120%)}60%,100%{transform:translateX(120%)}}
+.feed-item.ghost{position:relative;overflow:hidden}
+.feed-item.ghost::after{content:'';position:absolute;top:0;bottom:0;left:0;width:70%;background:linear-gradient(100deg,rgba(255,255,255,0) 0,rgba(255,255,255,.32) 35%,rgba(255,255,255,.62) 50%,rgba(255,255,255,.32) 65%,rgba(255,255,255,0) 100%);transform:translateX(-120%);animation:ghostWipe 1.5s cubic-bezier(.4,0,.3,1) infinite;animation-delay:calc(var(--gi,0) * 70ms);pointer-events:none}
+html[data-theme="light"] .feed-item.ghost::after{background:linear-gradient(100deg,rgba(255,255,255,0) 0,rgba(255,255,255,.7) 40%,rgba(255,255,255,.95) 50%,rgba(255,255,255,.7) 60%,rgba(255,255,255,0) 100%)}
 @keyframes ghostPulse{50%{opacity:.5}}
 .season-episodes .feed-item:not(.ghost){animation:rowIn .5s cubic-bezier(.2,.8,.2,1) both}
 .feed-item.ghost{animation:ghostIn .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--gi,0) * 45ms)}
@@ -263,7 +283,7 @@ html,body,body *{touch-action:pan-x pan-y}
 @keyframes rowIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
 @keyframes ghostIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes epListIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){.season-episodes .feed-item,.feed-item.ghost,.season-group.open>.season-episodes{animation:none}}
+@media (prefers-reduced-motion:reduce){.season-episodes .feed-item,.feed-item.ghost,.feed-item.ghost::after,.season-group.open>.season-episodes{animation:none}}
 .season-episodes .feed-item{height:93px}
 .season-episodes .feed-thumb{width:141px}
 .season-episodes .feed-content{padding:6px 8px;gap:8px}
@@ -608,7 +628,7 @@ body.drag-scrolling,body.drag-scrolling *{cursor:grabbing!important;user-select:
 .cast-group.open .cast-card,.cast-group.open .cast-chip{animation:castIn .5s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 45ms)}
 .cast-group.open .cast-label{animation:castFade .4s ease both}
 @media (prefers-reduced-motion:reduce){.cast-group.open .cast-card,.cast-group.open .cast-chip,.cast-group.open .cast-inner,.cast-group.open .cast-label{animation:none}}
-.ui-card .cl-email{color:#fff;font-weight:700;background:rgba(0,0,0,.4);box-sizing:border-box;height:38px;line-height:38px;padding:0 14px;border-radius:999px;text-shadow:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
+.ui-below .cl-email{box-sizing:border-box;height:38px;line-height:38px;padding:0;background:none;border:none;box-shadow:none}
 
 .profile-edit-overlay{transform:translate(-50%,-43%) scale(.92);transition:opacity .28s ease,transform .45s cubic-bezier(.2,.9,.25,1.08),visibility 0s linear .45s}
 @keyframes settingsItemIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
@@ -965,7 +985,7 @@ html.fullgrid body::after{display:none}
 .ui-card::after,.ui-avatar-wrap::after,.profile-avatar-wrap::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;padding:1px;background:linear-gradient(180deg,var(--rim-L,rgba(255,255,255,.4)) 0,var(--rim-D,rgba(0,0,0,.28)) min(80px,50%),var(--rim-D,rgba(0,0,0,.28)) max(calc(100% - 80px),50%),var(--rim-L,rgba(255,255,255,.4)) 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);mask-composite:exclude}
 .ui-avatar-wrap{position:relative;flex:none;border-radius:50%;display:block;line-height:0}
 .ui-btns{display:flex;gap:8px}
-.ui-btns .field-btn{flex:1 1 0;min-width:0;padding:8px 4px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(18,22,30,.6)}
+.ui-btns .field-btn{flex:1 1 0;min-width:0;padding:8px 4px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cl-acct{display:flex;align-items:center;gap:12px}
 .cl-email{flex:1;min-width:0;font-size:14px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cl-group .cl-acct .btn.cl-fit{flex:none;width:112px;padding:0}
@@ -973,14 +993,15 @@ html.fullgrid body::after{display:none}
 
 .ui-card{flex-direction:column;align-items:stretch;gap:12px}
 .ui-top{display:flex;align-items:center;gap:12px}
-.ui-card .cl-acct{padding-top:2px}
-.ui-card .cl-acct[hidden]{display:none}
-.ui-card .cl-email{color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.7)}
-html .profile-edit-overlay .ui-btns label.field-btn{background:rgba(8,10,16,.82)!important;color:#fff!important;border-color:rgba(255,255,255,.12)}
+.ui-card{min-height:0}
+.ui-below{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.ui-below .cl-acct[hidden]{display:none}
+.ui-card .ui-edit{flex:none;width:38px;height:38px;border-radius:50%;border:none;padding:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.ui-card #profile-name[readonly]{cursor:default;background:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0 4px;font-size:18px;font-weight:700;text-shadow:0 1px 6px rgba(0,0,0,.6)}
 .ui-card::before{background:linear-gradient(180deg,rgba(0,0,0,.22),rgba(0,0,0,.34))}
-html .ui-card #profile-name,html .profile-edit-overlay .ui-btns label.field-btn,html .ui-card .cl-email{background:rgba(255,255,255,.18)!important;color:#fff!important;border:none!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.34)!important;-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);text-shadow:none!important}
+html .ui-card #profile-name,html .ui-card .ui-edit{background:rgba(255,255,255,.18)!important;color:#fff!important;border:none!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.34)!important;-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);text-shadow:none!important}
 html .ui-card #profile-name::placeholder{color:rgba(255,255,255,.78)}
-html .profile-edit-overlay .ui-btns label.field-btn:hover{background:rgba(255,255,255,.3)!important}
+html .ui-card .ui-edit:hover{background:rgba(255,255,255,.3)!important}
 html .ui-card #profile-name:focus{background:rgba(255,255,255,.26)!important;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.8)!important;outline:none}
 .cl-acct .btn.cl-fit{flex:none;width:112px;height:38px;padding:0;display:inline-flex;align-items:center;justify-content:center}
 </style>
@@ -1021,10 +1042,18 @@ function lget(k,f){const r=localStorage.getItem(k);if(r===null)return f;try{retu
 const _pk=new Map();
 let _cloudHook=null;
 function lpeek(k,f){if(_pk.has(k))return _pk.get(k);const v=lget(k,f);_pk.set(k,v);return v}
+let dataVer=0,_outletVer=-1,_outletRoute='';
+const _routeCache=new Map(),CACHE_ROUTES=['explore','shows','movies','stats'];
+let _visK=null;
 function lset(k,v){
-  try{localStorage.setItem(k,JSON.stringify(v))}
+  let j;
+  try{j=JSON.stringify(v)}catch(e){return false}
+  if(j!==undefined&&localStorage.getItem(k)===j){_pk.delete(k);return true}
+  try{localStorage.setItem(k,j)}
   catch(e){_pk.delete(k);return false}
   _pk.delete(k);
+  if(!_visK)_visK=new Set([K.lib,K.movieLib,K.watched,K.movieWatched,K.favShows,K.favMovies,K.rewatch,K.epRewatch,K.seasonRewatch,K.profile,K.stopped,K.prog]);
+  if(_visK.has(k))dataVer++;
   if(k===K.lib||k===K.watched||k===K.stopped||k===K.prog||k===K.profile)showsDirty=true;
   if(k===K.movieLib||k===K.movieWatched||k===K.profile)moviesDirty=true;
   scheduleSync();
@@ -1241,7 +1270,7 @@ async function downloadBackup(){
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-const APP_VERSION='185';
+const APP_VERSION='189';
 function applyTheme(t){
   const light=t==='light';
   document.documentElement.dataset.theme=light?'light':'dark';
@@ -1275,7 +1304,7 @@ async function loadProfileImages(){
 }
 async function saveProfileImage(key,dataUrl){
   const ok=await idbSet('profile.'+key,dataUrl);
-  if(ok){ProfileImg[key]=dataUrl;if(_cloudHook)_cloudHook('img')}
+  if(ok){if(ProfileImg[key]!==dataUrl)dataVer++;ProfileImg[key]=dataUrl;if(_cloudHook)_cloudHook('img')}
   return ok;
 }
 
@@ -1669,6 +1698,61 @@ function pruneEpRewatch(){
   const w=Store.watched(),r=Store.epRewatch();let ch=false;
   Object.keys(r).forEach(id=>{if(!w[id]||!(r[id]>0)){delete r[id];ch=true}});
   if(ch)lset(K.epRewatch,r);
+}
+function fmtHours(m){const h=m/60;return h>=100?Math.round(h).toLocaleString()+' h':(Math.round(h*10)/10)+' h'}
+function fmtMin(m){return m?Math.round(m)+' min':'–'}
+function computeExtraStats(epTotal,showMins,epRewatchTotal){
+  const now=Date.now(),D=86400000;
+  const w=Store.watched(),regS=Store.reg('show'),libS=Store.lib('show');
+  const recs=Object.values(w).filter(x=>x&&typeof x==='object');
+  const byShow={},seasons=new Set();
+  let d7=0,d30=0;
+  recs.forEach(x=>{
+    if(x.showId!=null){byShow[x.showId]=(byShow[x.showId]||0)+1;seasons.add(x.showId+':'+x.s)}
+    if(x.at){if(now-x.at<=7*D)d7++;if(now-x.at<=30*D)d30++}
+  });
+  const nm=(id,a,b)=>((a[id]||b[id]||{}).name)||'–';
+  const topS=Object.entries(byShow).sort((a,b)=>b[1]-a[1])[0];
+  const stopped=Object.keys(Store.stoppedMap()).filter(k=>k.startsWith('show:')).length;
+  const favS=Object.keys(lget(Store._favKey('show'),{})).length;
+  const base=Object.keys(w).length;
+  const tvExtra=[
+    [String(Object.keys(byShow).length),'Shows watched'],
+    [String(Object.keys(libS).length),'In library'],
+    [String(seasons.size),'Seasons watched'],
+    [String(epRewatchTotal),'Episodes rewatched'],
+    [fmtHours(showMins),'Total time'],
+    [fmtMin(base?showMins/Math.max(epTotal,1):0),'Avg episode'],
+    [String(d7),'Last 7 days'],
+    [String(d30),'Last 30 days'],
+    [String(stopped),'Stopped'],
+    [String(favS),'Favorites'],
+    [topS?topS[1]+' eps':'–','Most watched'+(topS?' · '+nm(topS[0],regS,libS):'')]
+  ];
+  const mw=Store.movieWatched(),regM=Store.reg('movie'),libM=Store.lib('movie');
+  const ids=Object.keys(mw);
+  let m30=0,mY=0,rew=0,longest=null;
+  const yr=new Date().getFullYear();
+  ids.forEach(id=>{
+    const m=mw[id]||{};
+    if(m.watchedAt){if(now-m.watchedAt<=30*D)m30++;if(new Date(m.watchedAt).getFullYear()===yr)mY++}
+    rew+=Store.getRewatch('movie',id);
+    if(!longest||(m.runtime||0)>(longest.rt||0))longest={id,rt:m.runtime||100};
+  });
+  const mMins=movieMinutesTotal();
+  const watchlist=Object.values(libM).filter(x=>!mw[x.id]).length;
+  const favM=Object.keys(lget(Store._favKey('movie'),{})).length;
+  const movieExtra=[
+    [fmtHours(mMins),'Total time'],
+    [fmtMin(ids.length?mMins/(ids.length+rew):0),'Avg movie'],
+    [String(rew),'Rewatches'],
+    [String(m30),'Last 30 days'],
+    [String(mY),'This year'],
+    [String(watchlist),'Watchlist'],
+    [String(favM),'Favorites'],
+    [longest?fmtMin(longest.rt):'–','Longest'+(longest?' · '+nm(longest.id,regM,libM):'')]
+  ];
+  return{tvExtra,movieExtra};
 }
 function exportProfileSection(){
   const username=Store.profile().name||'';
@@ -2689,28 +2773,59 @@ function isArabicText(text){
   const letterChars=(text.match(/[^\s\d.,!?;:'"()\-]/g)||[]).length;
   return letterChars>0&&arabicChars/letterChars>0.3;
 }
-const overviewCap=()=>matchMedia('(max-width:600px)').matches?20:50;
-function truncateWords(text,limit){
-  const words=(text||'').split(/\s+/).filter(Boolean);
-  if(words.length<=limit)return{truncated:text,isLong:false};
-  return{truncated:words.slice(0,limit).join(' ')+'…',isLong:true};
-}
 function overviewHtml(text,id){
-  const t=text||'No overview available.';
-  const{truncated,isLong}=truncateWords(t,overviewCap());
-  return`<p id="${id}" class="overview-text"><span class="ov-t">${esc(isLong?truncated:t)}</span>${isLong?` <button type="button" class="see-more-btn" data-target="${id}">READ MORE</button>`:''}</p>`;
+  return`<p id="${id}" class="overview-text"><span class="ov-t">${esc(text||'No overview available.')}</span></p>`;
 }
 function wireOverview(container,id,originalText){
   const p=container.querySelector(`#${id}`);
   if(!p)return;
   let txt=p.querySelector('.ov-t');
   if(!txt){txt=document.createElement('span');txt.className='ov-t';p.prepend(txt)}
-  let btn=p.querySelector('.see-more-btn');
-  let expanded=false;
+  p.querySelectorAll('.see-more-btn').forEach(b=>b.remove());
+  let btn=null,expanded=false,lastW=-1;
   let full=originalText||'No overview available.';
-  const toggle=()=>{
+  const lineH=()=>{const cs=getComputedStyle(p);const l=parseFloat(cs.lineHeight);return l||parseFloat(cs.fontSize)*1.6};
+  const mkBtn=()=>{
+    const b=document.createElement('button');
+    b.type='button';b.className='see-more-btn';b.dataset.target=id;
+    b.addEventListener('click',toggle);
+    return b;
+  };
+  const fit=()=>{
+    if(!p.isConnected||!p.clientWidth)return;
+    lastW=p.clientWidth;
+    if(btn){btn.remove();btn=null}
+    txt.textContent=full;
+    const max=lineH()*2+2;
+    p.dataset.fit='1';
+    if(p.scrollHeight<=max){expanded=false;return}
+    btn=mkBtn();
+    if(expanded){btn.textContent='READ LESS';p.append(' ',btn);return}
+    btn.textContent='READ MORE';
+    p.append(' ',btn);
+    const chars=Array.from(full);
+    let lo=0,hi=chars.length;
+    const trial=n=>{
+      let t=chars.slice(0,n).join('').trimEnd().replace(/[\s.,;:!?،؛…-]+$/,'');
+      txt.textContent=t+'…';
+      return p.scrollHeight<=max;
+    };
+    while(lo<hi){
+      const mid=(lo+hi+1)>>1;
+      if(trial(mid))lo=mid;else hi=mid-1;
+    }
+    if(lo<chars.length){
+      let cut=chars.slice(0,lo).join('');
+      const sp=cut.search(/\s\S{0,14}$/);
+      if(sp>cut.length*.6)cut=cut.slice(0,sp);
+      txt.textContent=cut.trimEnd().replace(/[\s.,;:!?،؛…-]+$/,'')+'…';
+      if(p.scrollHeight>max)trial(lo);
+    }
+  };
+  function toggle(){
     const h0=p.offsetHeight;
-    expanded=!expanded;sync();
+    expanded=!expanded;
+    fit();
     const h1=p.offsetHeight;
     if(h0===h1)return;
     clearTimeout(p._ovT);
@@ -2719,29 +2834,20 @@ function wireOverview(container,id,originalText){
     p.style.transition='height .45s cubic-bezier(.2,.8,.2,1)';p.style.height=h1+'px';
     txt.animate([{opacity:.25,transform:'translateY(-4px)'},{opacity:1,transform:'none'}],{duration:380,easing:'ease-out'});
     p._ovT=setTimeout(()=>{p.style.height='';p.style.overflow='';p.style.transition=''},470);
-  };
-  const sync=()=>{
-    const{truncated,isLong}=truncateWords(full,overviewCap());
-    if(isLong&&!btn){
-      btn=document.createElement('button');
-      btn.type='button';btn.className='see-more-btn';btn.dataset.target=id;
-      btn.addEventListener('click',toggle);
-      p.append(' ',btn);
-    }else if(!isLong&&btn){btn.remove();btn=null;expanded=false}
-    txt.textContent=isLong&&!expanded?truncated:full;
-    if(btn)btn.textContent=expanded?'READ LESS':'READ MORE';
-  };
-  btn?.addEventListener('click',toggle);
-  const mq=matchMedia('(max-width:600px)');
-  const onMq=()=>{if(!p.isConnected){mq.removeEventListener('change',onMq);return}expanded=false;sync()};
-  mq.addEventListener('change',onMq);
-  sync();
+  }
+  const ro=new ResizeObserver(()=>{
+    if(!p.isConnected&&!document.contains(p))return;
+    if(p.clientWidth&&p.clientWidth!==lastW&&!p._ovT2){p._ovT2=requestAnimationFrame(()=>{p._ovT2=0;fit()})}
+  });
+  ro.observe(p);
+  fit();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(p.isConnected)fit()});
   if(!originalText||originalText==='No overview available.')return;
   if(!needsTranslation(originalText))return;
   translateToEnglish(originalText).then(({text,sourceLang})=>{
     if(sourceLang&&sourceLang.startsWith('en'))return;
     if(!text||text.trim()===originalText.trim())return;
-    full=text;sync();
+    full=text;expanded=false;fit();
   }).catch(()=>{});
 }
 function wireTitleTranslate(container,id,originalText){
@@ -3099,8 +3205,8 @@ function closeDetailSheet(){
   const a=sh.animate?sh.animate([{transform:'none'},{transform:'translateY(100%)'}],{duration:220,easing:'cubic-bezier(.4,0,.8,.4)',fill:'forwards'}):null;
   if(a){a.onfinish=finish;a.oncancel=finish}else finish();
   const outlet=document.getElementById('outlet');
-  if((showsDirty||moviesDirty)&&routes[currentRoute]&&!LIST_ROUTES.includes(currentRoute)){
-    const st=outlet.scrollTop;
+  if((showsDirty||moviesDirty)&&_outletVer!==dataVer&&routes[currentRoute]&&!LIST_ROUTES.includes(currentRoute)){
+    const st=outlet.scrollTop;_outletVer=dataVer;_outletRoute=currentRoute;
     outlet.className='';outlet.innerHTML='';
     routes[currentRoute](outlet,{});
     requestAnimationFrame(()=>{outlet.scrollTop=st;requestAnimationFrame(()=>{outlet.scrollTop=st})});
@@ -3155,10 +3261,33 @@ function nav(route,params={}){
   });
   updateNavPill(firstNav);
   const outlet=document.getElementById('outlet');
-  outlet.className='';
-  outlet.innerHTML='';
-  outlet.scrollTop=0;
-  (routes[route]||renderExplore)(outlet,params);
+  const cacheable=CACHE_ROUTES.includes(route)&&!params.fresh;
+  if(cacheable&&route===prevRoute&&_outletRoute===route&&_outletVer===dataVer&&outlet.firstChild){
+    outlet.scrollTo?outlet.scrollTo({top:0,behavior:'smooth'}):(outlet.scrollTop=0);
+    setHash(params.id?`${route}/${params.id}`:route);
+    updateNavAvatar();NavBar.onRoute(route);
+    return;
+  }
+  if(CACHE_ROUTES.includes(prevRoute)&&_outletRoute===prevRoute&&_outletVer===dataVer&&outlet.firstChild&&!document.querySelector('.profile-edit-overlay.open')){
+    const fr=document.createDocumentFragment();
+    const cls=outlet.className,st=outlet.scrollTop;
+    while(outlet.firstChild)fr.appendChild(outlet.firstChild);
+    _routeCache.set(prevRoute,{fr,cls,st,ver:dataVer,day:todayKey(),at:Date.now()});
+  }
+  const hit=cacheable&&_routeCache.get(route);
+  _routeCache.delete(route);
+  if(hit&&hit.ver===dataVer&&hit.day===todayKey()&&Date.now()-hit.at<3600000){
+    outlet.className=hit.cls;
+    outlet.innerHTML='';
+    outlet.appendChild(hit.fr);
+    outlet.scrollTop=hit.st;
+  }else{
+    outlet.className='';
+    outlet.innerHTML='';
+    outlet.scrollTop=0;
+    (routes[route]||renderExplore)(outlet,params);
+  }
+  _outletVer=dataVer;_outletRoute=route;
   setHash(params.id?`${route}/${params.id}`:route);
   currentRoute=route;
   updateNavAvatar();
@@ -3233,7 +3362,8 @@ async function doExploreSearch(q,el){
       const id=numericId(h);
       const row=searchResultRow({id,name:h.name,image:h.image_url,kind});
       list.appendChild(row);
-      row.animate?.([{opacity:0},{opacity:1}],{duration:400,delay:i*100,easing:'ease-out',fill:'backwards'});
+      const sd=stagger(i,0,100);
+      row.animate?.([{opacity:0},{opacity:1}],{duration:sd.dur,delay:sd.delay,easing:'ease-out',fill:'backwards'});
     });
   }catch(err){el.innerHTML=emptyState(esc(err.message))}
 }
@@ -3565,12 +3695,18 @@ async function renderMovies(o){
   ensureMoviesTabLoaded();
 }
 async function waitVisible(el){for(let i=0;i<60&&!el.offsetParent;i++)await new Promise(r=>setTimeout(r,50))}
+function rowsFast(){return matchMedia('(max-width:600px)').matches?4:3}
+function stagger(r,i,step){
+  const N=rowsFast();
+  if(r<N)return{delay:(r+i)*step,dur:400};
+  return{delay:N*step+((r-N)+i)*step/2,dur:200};
+}
 function staggerFadeGrid(grid){
   if(!grid.animate)return;
   const cells=[...grid.children].filter(c=>c.offsetParent).sort((p,q)=>(p.offsetTop-q.offsetTop)||(p.offsetLeft-q.offsetLeft));
   const rows=[];
   cells.forEach(c=>{const last=rows[rows.length-1];if(last&&Math.abs(last[0].offsetTop-c.offsetTop)<4)last.push(c);else rows.push([c])});
-  rows.forEach((row,r)=>row.forEach((c,i)=>c.animate([{opacity:0},{opacity:1}],{duration:400,delay:(r+i)*100,easing:'ease-out',fill:'backwards'})));
+  rows.forEach((row,r)=>row.forEach((c,i)=>{const s=stagger(r,i,100);c.animate([{opacity:0},{opacity:1}],{duration:s.dur,delay:s.delay,easing:'ease-out',fill:'backwards'})}));
 }
 async function renderMovieWatchlistTab(o){
   const allUnwatched=Object.values(Store.lib('movie')).filter(m=>!Store.isMovieWatched(m.id));
@@ -3682,7 +3818,7 @@ async function renderMovieUpcomingTab(o){
       pill=document.createElement('div');pill.className='upcoming-date-pill-wrap';
       pill.innerHTML='<span class="upcoming-date-pill">LATER</span>';
     }else pill=upcomingDatePill(g.key);
-    listEl.appendChild(pill);anim.push([pill,t]);t+=100;
+    listEl.appendChild(pill);anim.push([pill,t,400]);t+=100;
     const grid=document.createElement('div');grid.className='grid';
     listEl.appendChild(grid);
     g.items.forEach(f=>grid.appendChild(upcomingMoviePoster(f.movie,f.date)));
@@ -3694,11 +3830,12 @@ async function renderMovieUpcomingTab(o){
     cells.forEach(c=>{
       const r=rowsTop.findIndex(y=>Math.abs(y-c.offsetTop)<4);
       const i=cells.filter(q=>Math.abs(q.offsetTop-c.offsetTop)<4).indexOf(c);
-      anim.push([c,t+(r+i)*100]);
+      const sd=stagger(r,i,100);
+      anim.push([c,t+sd.delay,sd.dur]);
     });
-    t+=rowsTop.length*100;
+    t+=stagger(rowsTop.length,0,100).delay;
   });
-  anim.forEach(([el,d])=>el.animate?.([{opacity:0},{opacity:1}],{duration:400,delay:d,easing:'ease-out',fill:'backwards'}));
+  anim.forEach(([el,d,du])=>el.animate?.([{opacity:0},{opacity:1}],{duration:du||400,delay:d,easing:'ease-out',fill:'backwards'}));
 }
 function upcomingMoviePoster(m,date){
   const el=document.createElement('div');
@@ -3735,6 +3872,10 @@ function renderStats(o,opts){
   const epIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M8 5V3M16 5V3M2 10h20"/></svg>';
   const filmIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 4v16M17 4v16M2 9h5M2 15h5M17 9h5M17 15h5"/></svg>';
 
+  const chevIcon='<svg class="stat-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+  const statTile=([v,l])=>`<div class="stat-tile"><span class="stat-tile-v">${esc(v)}</span><span class="stat-tile-l">${esc(l)}</span></div>`;
+  const {tvExtra,movieExtra}=computeExtraStats(watchedEpCount,showMins,epRewatchTotal);
+
   const profile=Store.profile();
   o.innerHTML=`
     <div class="profile-hero">
@@ -3754,12 +3895,15 @@ function renderStats(o,opts){
         <div class="ui-card" id="ui-card" style="${ProfileImg.banner?`background-image:url('${ProfileImg.banner}')`:''}">
           <div class="ui-top"><span class="ui-avatar-wrap"><img class="ui-avatar" id="ui-avatar" src="${ProfileImg.avatar||avatarPlaceholder()}" alt="" /></span>
           <div class="ui-col">
-            <input type="text" id="profile-name" placeholder="User name" maxlength="20" value="${esc((profile.name||'').slice(0,20))}" />
-            <div class="ui-btns">
-              <label class="field-btn fb-pill" for="profile-avatar-input">Change picture</label>
-              <label class="field-btn fb-pill" for="profile-banner-input">Change banner</label>
-            </div>
+            <input type="text" id="profile-name" placeholder="User name" maxlength="20" readonly value="${esc((profile.name||'').slice(0,20))}" />
           </div>
+          <button type="button" class="ui-edit" id="ui-edit" aria-label="Edit name"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+          </div>
+        </div>
+        <div class="ui-below">
+          <div class="ui-btns">
+            <label class="field-btn fb-pill" for="profile-avatar-input">Change picture</label>
+            <label class="field-btn fb-pill" for="profile-banner-input">Change banner</label>
           </div>
           <div class="cl-acct" id="ui-acct" hidden></div>
         </div>
@@ -3785,6 +3929,7 @@ function renderStats(o,opts){
       <div class="field fs-field"><span id="fs-status">${FileSync.supported?'No data file connected yet. Choose or create a .zip file to keep your data auto-saved on this device.':'You can export/import a backup .zip file below.'}</span></div>
       <div class="data-row">
         ${FileSync.supported?`<button type="button" id="fs-choose" class="btn btn-accent">Choose / Create Data File</button><button type="button" id="fs-load" class="btn btn-ghost">Load From File</button><button type="button" id="fs-bak" class="btn btn-ghost">Restore Auto-Backup</button>`:''}
+        <button type="button" id="fs-prune" class="btn btn-ghost">Remove Unwatched Shows</button>
         <div class="data-row-io">
         <button type="button" id="fs-download" class="btn"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="m7 8 5-5 5 5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>Export Backup</button>
         <button type="button" id="fs-import" class="btn btn-ghost"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>Import Backup</button>
@@ -3800,29 +3945,31 @@ function renderStats(o,opts){
       <div class="settings-backdrop" aria-hidden="true"></div>
     </div>
     <div class="stats-grid">
-      <div class="stat-card2">
-        <div class="stat-card2-head">${clockIcon}<span>TV time</span></div>
-        <div class="stat-parts">
-          <div class="stat-part"><span class="stat-part-num">${showTime.months}</span><span class="stat-part-label">MONTHS</span></div>
-          <div class="stat-part"><span class="stat-part-num">${showTime.days}</span><span class="stat-part-label">DAYS</span></div>
-          <div class="stat-part"><span class="stat-part-num">${showTime.hours}</span><span class="stat-part-label">HOURS</span></div>
+      <div class="stat-card2 stat-combo" role="button" tabindex="0" aria-expanded="false">
+        <div class="stat-card2-head">${epIcon}<span>TV Shows</span>${chevIcon}</div>
+        <div class="stat-main">
+          <div class="stat-parts">
+            <div class="stat-part"><span class="stat-part-num">${showTime.months}</span><span class="stat-part-label">MONTHS</span></div>
+            <div class="stat-part"><span class="stat-part-num">${showTime.days}</span><span class="stat-part-label">DAYS</span></div>
+            <div class="stat-part"><span class="stat-part-num">${showTime.hours}</span><span class="stat-part-label">HOURS</span></div>
+          </div>
+          <span class="stat-sep"></span>
+          <div class="stat-part"><span class="stat-part-num" data-grp="1">${watchedEpCount.toLocaleString()}</span><span class="stat-part-label">EPISODES</span></div>
         </div>
+        <div class="stat-more"><div class="stat-more-in">${tvExtra.map(statTile).join('')}</div></div>
       </div>
-      <div class="stat-card2">
-        <div class="stat-card2-head">${epIcon}<span>Episodes watched</span></div>
-        <div class="stat-single">${watchedEpCount.toLocaleString()}</div>
-      </div>
-      <div class="stat-card2">
-        <div class="stat-card2-head">${clockIcon}<span>Movie time</span></div>
-        <div class="stat-parts">
-          <div class="stat-part"><span class="stat-part-num">${movieTime.months}</span><span class="stat-part-label">MONTHS</span></div>
-          <div class="stat-part"><span class="stat-part-num">${movieTime.days}</span><span class="stat-part-label">DAYS</span></div>
-          <div class="stat-part"><span class="stat-part-num">${movieTime.hours}</span><span class="stat-part-label">HOURS</span></div>
+      <div class="stat-card2 stat-combo" role="button" tabindex="0" aria-expanded="false">
+        <div class="stat-card2-head">${filmIcon}<span>Movies</span>${chevIcon}</div>
+        <div class="stat-main">
+          <div class="stat-parts">
+            <div class="stat-part"><span class="stat-part-num">${movieTime.months}</span><span class="stat-part-label">MONTHS</span></div>
+            <div class="stat-part"><span class="stat-part-num">${movieTime.days}</span><span class="stat-part-label">DAYS</span></div>
+            <div class="stat-part"><span class="stat-part-num">${movieTime.hours}</span><span class="stat-part-label">HOURS</span></div>
+          </div>
+          <span class="stat-sep"></span>
+          <div class="stat-part"><span class="stat-part-num" data-grp="1">${moviesWatchedCount.toLocaleString()}</span><span class="stat-part-label">WATCHED</span></div>
         </div>
-      </div>
-      <div class="stat-card2">
-        <div class="stat-card2-head">${filmIcon}<span>Movies watched</span></div>
-        <div class="stat-single">${moviesWatchedCount.toLocaleString()}</div>
+        <div class="stat-more"><div class="stat-more-in">${movieExtra.map(statTile).join('')}</div></div>
       </div>
     </div>
     <div id="profile-lists"></div>
@@ -3852,12 +3999,17 @@ function renderStats(o,opts){
       const last=rows[rows.length-1];
       if(last&&Math.abs(last[0].top-it.top)<6)last.push(it);else rows.push([it]);
     });
-    rows.forEach((row,r)=>row.forEach(it=>it.el.animate([{opacity:0},{opacity:1}],{duration:300,delay:r*100,easing:'ease-out',fill:'backwards'})));
+    rows.forEach((row,r)=>row.forEach(it=>{const sd=stagger(r,0,100);it.el.animate([{opacity:0},{opacity:1}],{duration:sd.dur*.75,delay:sd.delay,easing:'ease-out',fill:'backwards'})}));
   }
 
   cloudMountUI(o);
   const nameInput=o.querySelector('#profile-name');
   const nameDisplay=o.querySelector('#profile-name-display');
+  const editBtn=o.querySelector('#ui-edit');
+  const lockName=()=>{nameInput.readOnly=true;nameInput.blur()};
+  editBtn.addEventListener('click',()=>{nameInput.readOnly=false;nameInput.focus();nameInput.select()});
+  nameInput.addEventListener('blur',()=>{nameInput.readOnly=true});
+  nameInput.addEventListener('keydown',e=>{if(e.key==='Enter')lockName()});
   nameInput.addEventListener('change',()=>{
     const v=nameInput.value.trim();
     Store.setProfile({name:v});
@@ -4094,6 +4246,27 @@ function renderStats(o,opts){
     }catch(err){importError(err)}
     importInput.value='';
   });
+  o.querySelector('#fs-prune').addEventListener('click',()=>{
+    const list=Object.values(Store.lib('show')).filter(x=>x&&!showHasWatched(x.id));
+    if(!list.length){showConfirmDialog({title:'Nothing to remove',message:'Every show in your library has at least one watched episode.',confirmLabel:'OK',onConfirm(){}});return}
+    showConfirmDialog({
+      title:`Remove ${list.length} show${list.length===1?'':'s'}?`,
+      message:'These shows have no episodes marked as watched. They will be removed from your library. Shows with any watched episode are kept.',
+      confirmLabel:'Remove',
+      danger:true,
+      onConfirm:()=>{
+        list.forEach(x=>{
+          if(showHasWatched(x.id))return;
+          Store.rmLib('show',x.id);
+          Store.setStopped('show',x.id,false);
+          document.dispatchEvent(new CustomEvent('nx:libremoved',{detail:{kind:'show',id:x.id}}));
+        });
+        showsDirty=true;bumpShowsCache();
+        closeSettings();
+        setTimeout(()=>{if(o.isConnected)renderStats(o,{noAnim:true})},560);
+      }
+    });
+  });
   o.querySelector('#fs-delete').addEventListener('click',()=>{
     showConfirmDialog({
       title:'Delete local data?',
@@ -4130,18 +4303,27 @@ function renderStats(o,opts){
     };
     const overflows=()=>cards.some(c=>{
       const avail=inner(c)+0.5;
-      return [...c.children].some(ch=>needed(ch)>avail);
+      return [...c.children].some(ch=>!ch.classList.contains('stat-more')&&needed(ch)>avail);
     });
     let sc=1;
     statsGrid.style.setProperty('--sc',sc);
     while(overflows()&&sc>0.4){sc=Math.round((sc-0.03)*100)/100;statsGrid.style.setProperty('--sc',sc)}
   }
   fitStats();
+  statsGrid.querySelectorAll('.stat-combo').forEach(c=>{
+    const flip=()=>{
+      const open=c.classList.toggle('open');
+      c.setAttribute('aria-expanded',open);
+      c.querySelectorAll('.stat-tile').forEach((t,i)=>t.style.setProperty('--i',i));
+    };
+    c.addEventListener('click',flip);
+    c.addEventListener('keydown',e=>{if(e.target===c&&(e.key==='Enter'||e.key===' ')){e.preventDefault();flip()}});
+  });
   if(!opts.msg){
     o.querySelectorAll('.stat-part-num,.stat-single').forEach(el=>{
       const target=parseInt(el.textContent.replace(/[^\d]/g,''),10)||0;
       if(!target)return;
-      const grouped=el.classList.contains('stat-single');
+      const grouped=el.classList.contains('stat-single')||!!el.dataset.grp;
       const fmt=v=>grouped?v.toLocaleString():String(v);
       el.textContent=fmt(0);
       const t0=performance.now();
@@ -4753,7 +4935,7 @@ function seasonEpisodesSection(eps,showId,onProgressChange,showItem,seasonRefres
       seasonRwGroup?.classList.toggle('hidden',!allWatched);
     }
     const ghost=()=>{const g=document.createElement('div');g.className='feed-item ghost';g.innerHTML='<div class="ghost-th"></div><div class="ghost-body"><span class="ghost-bar w1"></span><span class="ghost-bar w2"></span></div><span class="ghost-dot"></span>';return g};
-    const showGhosts=()=>{list.replaceChildren(...seasonEps.map((_,i)=>{const g=ghost();g.style.setProperty('--gi',Math.min(i,10));return g}))};
+    const showGhosts=()=>{list.replaceChildren(...seasonEps.map((_,i)=>{const g=ghost();const N=rowsFast(),fast=i>=N;g.style.setProperty('--gi',fast?N+(Math.min(i,10)-N)/2:i);if(fast)g.style.animationDuration='.25s';return g}))};
     showGhosts();
     let rowsP=null,rowEls=null,mounted=false,imgRun=0;
     const isOpen=()=>groupWrap.classList.contains('open');
@@ -4769,23 +4951,25 @@ function seasonEpisodesSection(eps,showId,onProgressChange,showItem,seasonRefres
       setTimeout(step,60);
     }
     function mountRows(animate){
-      if(!rowEls||mounted)return;
+      if(!rowEls||mounted)return Promise.resolve();
       mounted=true;
-      if(!animate){list.replaceChildren(...rowEls);return}
+      if(!animate||!rowEls.length){list.replaceChildren(...rowEls);return Promise.resolve()}
       const ghosts=[...list.children];
-      rowEls.forEach((r,i)=>setTimeout(()=>{
-        const g=ghosts[i];
-        if(g&&g.parentNode===list)g.replaceWith(r);else list.appendChild(r);
-        if(i===rowEls.length-1){[...list.querySelectorAll('.ghost')].forEach(x=>x.remove());loadImages()}
-      },Math.min(i,14)*28));
+      const step=Math.min(32,800/Math.max(rowEls.length,1));
+      return new Promise(done=>{
+        rowEls.forEach((r,i)=>setTimeout(()=>{
+          const g=ghosts[i];
+          if(g&&g.parentNode===list)g.replaceWith(r);else list.appendChild(r);
+          if(i===rowEls.length-1){[...list.querySelectorAll('.ghost')].forEach(x=>x.remove());loadImages();done()}
+        },i*step));
+      });
     }
     function ensureRows(){
       if(rowsP)return rowsP;
       rowsP=(async()=>{
         const full=await getSeasonEpisodes(showId,sn);
         rowEls=full.map(e=>episodeRow(e,()=>{onProgressChange?.();refreshSeasonMeta();syncSeasonRewatchFromEpisodes()},showItem,syncSeasonRewatchFromEpisodes,{deferImg:true}));
-        if(!isOpen())mountRows(false);
-        else mountRows(true);
+        await mountRows(isOpen());
       })().catch(()=>{
         rowsP=null;
         list.replaceChildren();
@@ -5664,9 +5848,11 @@ const Cloud={
   },
   async mergeCloud(row,uid,mine,depth){
     const L=cloudSnapshot();
+    const sig0=this.cloudSig();
     await idbSet('cloud.premerge',{at:Date.now(),keys:L.keys});
     const B=(mine&&await idbGet('cloud.base'))||{keys:{},imgs:{}};
-    await this.pullRow(row.data);
+    this.quiet=true;
+    try{await this.pullRow(row.data)}finally{this.quiet=false}
     const C=cloudSnapshot();
     await cloudSaveBase();
     const keys={};
@@ -5676,7 +5862,9 @@ const Cloud={
       const lv=L.images[kind];
       images[kind]=lv&&imgSig(lv)!==(B.imgs||{})[kind]?lv:C.images[kind];
     });
-    await this.applySnapshot({keys,images});
+    this.quiet=true;
+    try{await this.applySnapshot({keys,images})}finally{this.quiet=false}
+    this.afterApply(this.cloudSig()!==sig0);
     this.setMeta({owner:uid,base:row.updated_at,hash:'',fmt:2,wiped:false});
     await this.pushLocked(depth);
     this.setNote('Combined the changes from your devices.');
@@ -5687,19 +5875,24 @@ const Cloud={
       if(d&&d.keys){
         await this.applySnapshot(d);
       }else{
+        const sig0=this.cloudSig();
         const files=await unzipFiles(bytesFromB64(d.zip));
         await importBackupFiles(files,{mode:'replace',localRegistry:true});
-        this.afterApply();
+        this.afterApply(this.cloudSig()!==sig0);
       }
     }finally{this.applying=false}
   },
-  afterApply(){
+  cloudSig(){return CLOUD_KEYS.map(k=>localStorage.getItem(k)||'').join('\u0001')+'\u0002'+imgSig(ProfileImg.avatar)+'\u0002'+imgSig(ProfileImg.banner)},
+  afterApply(changed){
+    if(this.quiet||!changed)return;
+    dataVer++;_routeCache.clear();
     showsDirty=true;moviesDirty=true;bumpShowsCache();bumpMoviesCache();
     applyTheme(Store.profile().theme);
     const{route,id}=hashRoute();nav(route,{id,noAnim:true});
   },
   async applySnapshot(snap){
     const was=this.applying;this.applying=true;
+    const sig0=this.cloudSig();
     try{
       CLOUD_KEYS.forEach(k=>{
         if(snap.keys&&Object.prototype.hasOwnProperty.call(snap.keys,k))lset(k,snap.keys[k]);
@@ -5711,7 +5904,7 @@ const Cloud={
         const v=im[kind];
         if(v&&IMG_OK.test(v))await saveProfileImage(kind,v);
       }
-      this.afterApply();
+      this.afterApply(this.cloudSig()!==sig0);
     }finally{this.applying=was}
   }
 };
